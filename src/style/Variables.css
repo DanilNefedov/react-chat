@@ -1,0 +1,13 @@
+:root {
+    --main-blue: #1A66FF;
+    --main-bg:#EAEAEA;
+    --yellow-bnt:#FFE81A;
+    --text-mess:rgba(77,77,77, 0.75);
+    --text-date:rgba(0,0,0, 0.5);
+    --text-head:#000000;
+    --green-online:#00FF75;
+    --white:#ffffff;
+    --light-blue:#00D0FF;
+    --gray-not-read:#A4A4A4;
+    --dark-blue-hover:#004BE1;
+}

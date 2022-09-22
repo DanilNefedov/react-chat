@@ -5,7 +5,9 @@ export class Exit extends Component{
     render(){
         return(
             <div className="sitebar__exit">
-                <img src={exit} alt="Exit" />
+                <a href="#" className="sitebar__exit-link">
+                    <img src={exit} alt="Exit" />
+                </a>
             </div>
         );
     }

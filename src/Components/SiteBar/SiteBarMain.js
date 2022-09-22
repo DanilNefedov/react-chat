@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { Exit } from "./Exit";
 import { HomeLink } from "./HomeLink";
 import { Messages } from "./Messages";
 import { Notification } from "./Notification";
@@ -9,7 +10,7 @@ export class SiteBarMain extends Component{
     render(){
         return(
             <section className="sitebar">
-                <div className="sitebar-container">
+                <div className="container">
                     <User/>
                     <nav className="sitebar-nav">
                         <HomeLink/>
@@ -17,7 +18,7 @@ export class SiteBarMain extends Component{
                         <Notification/>
                         <Settings/>
                     </nav>
-                    
+                    <Exit/>
                 </div>
             </section>
         );

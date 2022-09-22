@@ -1,0 +1,31 @@
+.sitebar{
+    max-width: 186px;
+    background-color: var(--main-blue);
+    border-radius: 20px;
+}
+.sitebar-nav{
+    padding: 98px 0 196px 0;
+}
+
+.sitebar__messages,
+.sitebar__notification,
+.sitebar__settings{
+    padding-top: 43px;
+}
+
+.sitebar__user{
+    padding: 38px 43px 0 43px;
+}
+
+.sitebar-nav .sitebar__img{
+    padding: 20px 0 25px 20px;
+    margin-left: 25px;
+    
+}
+
+.sitebar__link{
+    margin-left: 25px;
+    display: block;
+    background-color: var(--dark-blue-hover);
+    border-radius: 20px 0px 0px 20px;
+}

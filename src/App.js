@@ -1,11 +1,15 @@
-import './App.css';
+import './style/Variables.css'
+import './style/App.css';
+import './style/SiteBar.css';
 import { SiteBarMain } from './Components/SiteBar/SiteBarMain';
 
 
 function App() {
   return (
     <div className="wrapper">
-      <SiteBarMain/>
+      <main className='main-content'>
+         <SiteBarMain/>
+      </main>
     </div> 
   );
 }

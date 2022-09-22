@@ -5,7 +5,10 @@ export class Messages extends Component{
     render(){
         return(
             <div className="sitebar__messages">
-                <img src={messages} alt="Messages" className="sitebar__img"/>
+                <a href="#" className="sitebar__link">
+                    <img src={messages} alt="Messages" className="sitebar__img"/>
+                </a>
+                
             </div>
         );
     }

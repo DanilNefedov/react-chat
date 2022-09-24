@@ -1,0 +1,47 @@
+.groups {
+    background-color: var(--white);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border-radius: 20px;
+    margin-top: 43px;
+}
+
+.groups .container {
+    max-width: 385px;
+    margin: 0 auto;
+    padding: 13px 0 21px;
+}
+
+.groups-head__header {
+    margin-bottom: 17px;
+}
+
+/* .groups-list {
+    display: flex;
+    align-items: center;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.25);
+    padding: 13px 0;
+} */
+
+/* .list-content:last-child {
+    border: none;
+    padding-bottom: 0;
+} */
+
+/* .groups-list__name {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+} */
+
+/* .groups-list__message{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--text-mess);
+} */
+
+/* .user-mess{
+    margin-right: 14px;
+} */

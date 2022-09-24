@@ -26,6 +26,31 @@
 .sitebar__link{
     margin-left: 25px;
     display: block;
+    position: relative;
+    transition: 0.3s;
+}
+
+.sitebar__link:hover{
     background-color: var(--dark-blue-hover);
     border-radius: 20px 0px 0px 20px;
+}
+
+.active-link{
+    background-color: var(--dark-blue-hover);
+    border-radius: 20px 0px 0px 20px;
+}
+
+.active-link::after{
+    content: '';
+    position: absolute;
+    top:0;
+    right: 0;
+    width: 8px;
+    height: 100%;
+    background-color: var(--yellow-bnt);
+    border-radius:25px 0px 0px 25px;
+}
+
+.sitebar__exit-link img{
+    margin: 0 auto;
 }

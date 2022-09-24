@@ -117,3 +117,58 @@ h6 {
     justify-content: space-between;
     padding: 2.4%;
 }
+
+.header{
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+}
+
+.list-content{
+    display: flex;
+    align-items: center;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.25);
+    padding: 13px 0;
+}
+
+.head-name{
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+}
+
+.head-mess{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--text-mess);
+}
+
+.user-mess{
+    margin-right: 14px;
+}
+
+.list-content:last-child {
+    border: none;
+    padding-bottom: 0;
+}
+
+.list-date-check{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+.list-date{
+    padding: 16px 0 14px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--text-date)
+}
+
+.recents-list__check-img{
+    margin-right: 5px;
+}

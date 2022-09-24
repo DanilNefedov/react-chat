@@ -1,0 +1,29 @@
+.recents{
+    background-color: var(--white);
+    border-radius: 20px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    margin-top: 43px;
+}
+
+.recents .container {
+    max-width: 385px;
+    margin: 0 auto;
+    padding: 13px 0 21px;
+}
+
+.recents-head{
+    display: flex;
+    justify-content: space-between;
+}
+
+.recents .search-dots{
+    position: static;
+}
+
+.recents-list__user-mess{
+    display: flex;
+    align-items: center;
+}
+.recents-list{
+    justify-content: space-between;
+}

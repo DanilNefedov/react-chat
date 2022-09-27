@@ -116,6 +116,14 @@ h6 {
     display: flex;
     justify-content: space-between;
     padding: 2.4%;
+    flex-wrap: wrap;
+}
+
+.section-main{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    flex-grow: 1;
 }
 
 .header{
@@ -171,4 +179,8 @@ h6 {
 
 .recents-list__check-img{
     margin-right: 5px;
+}
+
+.second-column{
+    padding: 0 22px 0 42px; 
 }

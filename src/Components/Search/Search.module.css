@@ -1,4 +1,4 @@
-#search-icon{
+#searchIcon{
     width: 427px;
     height: 59px;
     border-radius: 29px;
@@ -7,19 +7,19 @@
     padding: 0 10px 0 78px;
 }
 
-#search-icon::placeholder{
+#searchIcon::placeholder{
     color:rgba(61,61,61, .3);
 }
 
 .cont{
     position: relative;
 }
-.search-loupe{
+.loupe{
     position: absolute;
     left: 23px;
     top:18px;
 }
-.search-dots{
+.dots{
     position: absolute;
     right: 23px;
     top:18px;

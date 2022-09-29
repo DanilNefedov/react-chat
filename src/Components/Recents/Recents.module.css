@@ -5,25 +5,27 @@
     margin-top: 43px;
 }
 
-.recents .container {
+.container {
     max-width: 385px;
     margin: 0 auto;
     padding: 13px 0 21px;
 }
 
-.recents-head{
+.head{
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .recents .search-dots{
     position: static;
 }
 
-.recents-list__user-mess{
+.mess{
     display: flex;
     align-items: center;
 }
-.recents-list{
+.list{
     justify-content: space-between;
 }
+

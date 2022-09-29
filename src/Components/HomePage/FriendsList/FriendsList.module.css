@@ -1,0 +1,22 @@
+.list{
+    padding: 15px 0 13px;
+    justify-content: space-between;
+}
+.message{
+    display: flex;
+    align-items: center;
+}
+.user{
+    width: 52px;
+    
+}
+.userMess{
+    font-size: 12px;
+}
+.name{
+    font-size: 14px;
+}
+
+.date{
+    font-size: 10px;
+}

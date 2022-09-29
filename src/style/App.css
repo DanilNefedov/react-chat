@@ -184,3 +184,9 @@ h6 {
 .second-column{
     padding: 0 22px 0 42px; 
 }
+
+.head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

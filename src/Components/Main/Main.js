@@ -3,8 +3,9 @@ import { Search } from '../Search/Search';
 import { Groups } from '../Groups/Groups';
 import { Recents } from '../Recents/Recents';
 import { Friends } from '../HomePage/Friends';
+import { MessagesMain } from '../MessagesPage/MessagesMain';
 
-export function HomeMain() {
+export function Main() {
 
     return (
         <main className="section-main">
@@ -13,7 +14,8 @@ export function HomeMain() {
                 <Groups />
                 <Recents />
             </div>
-            <Friends />
+            {/* <Friends /> */}
+            <MessagesMain/>
         </main>
     );
 

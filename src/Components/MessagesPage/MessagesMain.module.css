@@ -1,0 +1,75 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: rgba(0,0,0, 0.25);
+    padding-bottom: 25px;
+}
+
+.user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.userImg {
+    margin-right: 33px;
+    max-width: 75px;
+}
+
+
+.name {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 36px;
+}
+
+
+.online {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    opacity: 0.8;
+}
+
+.dots{
+    position: static;
+}
+
+.container{    
+    margin: 0 auto;
+    padding: 25px 26px 34px 51px;
+}
+
+
+.input{
+    background-color: #E0E0E0;
+    border-radius: 10px;
+    margin-right: 20px;
+    padding: 10px 20px;
+    width: 100%;
+    resize: none;
+}
+
+.send{
+    padding: 5px 5px;
+    width: 40px;
+    background-color: var(--main-blue);
+    border-radius: 10px;
+}
+
+.textArea{
+    display: flex;
+    width: 100%;
+    padding-top: 35px;
+    border-width: 2px 0 0 0;
+    border-color: rgba(0, 0, 0, 0.25);
+    border-style: solid;
+}
+
+.messages{
+    height: 718px;
+    /* remove adaptive */
+}

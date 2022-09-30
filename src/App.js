@@ -1,7 +1,7 @@
 import './style/Variables.css'
 import './style/App.css';
 import { SiteBarMain } from './Components/SiteBar/SiteBarMain';
-import { HomeMain } from './Components/MainContent/HomeMain';
+import { Main } from './Components/Main/Main';
 
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
     <div className="wrapper">
       <section className='main-content'>
           <SiteBarMain/>
-          <HomeMain/>
+          <Main/>
       </section>
     </div> 
   );

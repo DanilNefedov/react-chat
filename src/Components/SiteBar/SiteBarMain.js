@@ -1,10 +1,7 @@
 import { Exit } from "./Exit";
-import { HomeLink } from "./HomeLink";
-import { Messages } from "./Messages";
-import { Notification } from "./Notification";
-import { Settings } from "./Settings";
 import { User } from "./User";
 import style from './SiteBar.module.css'
+import { Navigation } from "./Navigation";
 
 export function SiteBarMain() {
 
@@ -12,15 +9,9 @@ export function SiteBarMain() {
         <section className={style.sitebar}>
             <div className="container">
                 <User />
-                <nav className={style.nav}>
-                    <HomeLink />
-                    <Messages />
-                    <Notification />
-                    <Settings />
-                </nav>
+                <Navigation/>
                 <Exit />
             </div>
         </section>
     );
-
 }

@@ -1,17 +1,24 @@
 import './style/Variables.css'
 import './style/App.css';
-import { SiteBarMain } from './Components/SiteBar/SiteBarMain';
-import { Main } from './Components/Main/Main';
+import { Layout } from './Components/Layout/Layout';
+import { Friends } from './Components/HomePage/Friends';
+import { MessagesMain } from './Components/MessagesPage/MessagesMain';
+import { Route, Routes } from 'react-router-dom';
+
 
 
 function App() {
   return (
     <div className="wrapper">
-      <section className='main-content'>
-          <SiteBarMain/>
-          <Main/>
-      </section>
-    </div> 
+      <Routes>
+        <Route path='/' element={<Layout/>}>
+          <Route index element={<Friends />}/>
+          <Route path='/:friend1' element={<MessagesMain/>}/>
+          {/* перезапись линки */}
+          <Route path='messages' element={<MessagesMain />}/>
+        </Route>
+      </Routes>
+    </div>
   );
 }
 

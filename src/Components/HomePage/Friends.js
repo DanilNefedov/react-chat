@@ -2,12 +2,23 @@ import dots from '../../img/dots.svg';
 import style from './Friends.module.css';
 import classNames from 'classnames';
 import { FriendsList } from "./FriendsList/FriendsList";
+import { Search } from '../Search/Search';
+import { Groups } from '../Groups/Groups';
+import { Recents } from '../Recents/Recents';
+import { Outlet } from 'react-router-dom';
 
 
 
 export function Friends() {
 
     return (
+        <> 
+        <div className="second-column">
+            <Search />
+            <Groups />
+            <Recents />
+        </div>
+        {/* разделить на компоненты */}
         <section className={style.friends}>
             <div className={classNames(style.container, 'container')}>
                 <div className={classNames(style.head, 'head')}>
@@ -19,6 +30,6 @@ export function Friends() {
                 <FriendsList />
             </div>
         </section>
+        </>
     );
-
 }

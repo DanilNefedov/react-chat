@@ -4,10 +4,19 @@ import styleFriends from '../HomePage/Friends.module.css';
 import user from '../../img/user-M.png';
 import dots from '../../img/dots.svg';
 import send from '../../img/send.svg';
-
+import { Search } from '../Search/Search';
+import { Groups } from '../Groups/Groups';
+import { Recents } from '../Recents/Recents';
+//import { Friends } from '../HomePage/Friends';
 
 export function MessagesMain() {
     return (
+        <>
+        <div className="second-column">
+            <Search />
+            <Groups />
+            <Recents />
+        </div>
         <section className={styleFriends.friends}>
             <div className={classNames(style.container, 'container')}>
                 <header className={style.header}>
@@ -34,7 +43,7 @@ export function MessagesMain() {
 
                 <section className={style.textArea}>
                     {/* <div className={style.textBlock}> */}
-                        {/* <label className={style.send} htmlFor="textarea"><img src={send} alt="Send" /></label> */}
+                    {/* <label className={style.send} htmlFor="textarea"><img src={send} alt="Send" /></label> */}
                     <textarea name="textarea" id='textarea' className={style.input} rows="1"></textarea>
                     {/* </div> */}
                     <button type='submit' className={style.send}>
@@ -43,5 +52,7 @@ export function MessagesMain() {
                 </section>
             </div>
         </section>
+        </>
+
     );
 }

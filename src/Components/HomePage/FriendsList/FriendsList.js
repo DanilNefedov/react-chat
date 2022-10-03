@@ -2,10 +2,11 @@ import React from 'react';
 import user from '../../../img/user-M.png';
 import style from './FriendsList.module.css';
 import classNames from 'classnames';
+import { Link, Outlet } from 'react-router-dom';
 
 export function FriendsList() {
     return (
-        <div className={classNames(style.list, 'list-content')}>
+        <Link to='friend1' className={classNames(style.list, 'list-content')}>
             <div className={style.message}>
                 <div className={classNames(style.user, 'user-mess')}>
                     <img src={user} alt="User" />
@@ -20,6 +21,6 @@ export function FriendsList() {
                     Today, 8:56pm
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }

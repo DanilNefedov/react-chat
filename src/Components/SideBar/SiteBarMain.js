@@ -1,12 +1,12 @@
 import { Exit } from "./Exit";
 import { User } from "./User";
-import style from './SiteBar.module.css'
+import style from './SideBar.module.css'
 import { Navigation } from "./Navigation";
 
-export function SiteBarMain() {
+export function SideBarMain() {
 
     return (
-        <section className={style.sitebar}>
+        <section className={style.sidebar}>
             <div className="container">
                 <User />
                 <Navigation/>

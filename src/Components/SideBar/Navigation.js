@@ -1,4 +1,4 @@
-import style from './SiteBar.module.css';
+import style from './SideBar.module.css';
 import messages from '../../img/messages.svg';
 import home from '../../img/home.svg';
 import notification from '../../img/notification.svg';
@@ -12,11 +12,6 @@ export function Navigation(){
             <div className={style.home}>
                 <NavLink to='/' className={`${style.active} ${style.link}`}>
                     <img src={home} alt="Home" className={style.img} />
-                </NavLink>
-            </div>
-            <div className={style.messages}>
-                <NavLink to="/messages" className={style.link}>
-                    <img src={messages} alt="Messages" className={style.img} />
                 </NavLink>
             </div>
             <div className={style.notification}>

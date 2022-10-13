@@ -1,5 +1,5 @@
 import img from '../../img/user-M.png'
-import style from './SiteBar.module.css'
+import style from './SideBar.module.css'
 
 export function User() {
 

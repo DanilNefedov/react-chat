@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import { SiteBarMain } from "../SiteBar/SiteBarMain";
+import { SideBarMain } from "../SideBar/SiteBarMain";
 
 
 export function Layout(){
     return(
         <section className='main-content'>
-            <SiteBarMain/>
+            <SideBarMain/>
             <main className="section-main">
                 <Outlet/>
             </main>

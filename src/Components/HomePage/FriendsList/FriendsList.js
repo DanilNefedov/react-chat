@@ -2,18 +2,20 @@ import React from 'react';
 import user from '../../../img/user-M.png';
 import style from './FriendsList.module.css';
 import classNames from 'classnames';
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-export function FriendsList() {
+export function FriendsList(props) {
+    const {id, name, message} = props;
+
     return (
-        <Link to='friend1' className={classNames(style.list, 'list-content')}>
+        <Link to={id} className={classNames(style.list, 'list-content')}>
             <div className={style.message}>
                 <div className={classNames(style.user, 'user-mess')}>
                     <img src={user} alt="User" />
                 </div>
                 <div className={style.userMess}>
-                    <p className={classNames(style.name, 'head-name')}>Raghav</p>
-                    <p className="head-mess">Dinner?</p>
+                    <p className={classNames(style.name, 'head-name')}>{name}</p>
+                    <p className="head-mess">{message}</p>
                 </div>
             </div>
             <div className="list-date-check">

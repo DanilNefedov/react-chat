@@ -5,11 +5,10 @@ import { FriendsList } from "./FriendsList/FriendsList";
 import { Search } from '../Search/Search';
 import { Groups } from '../Groups/Groups';
 import { Recents } from '../Recents/Recents';
-import { Outlet } from 'react-router-dom';
 
 
-
-export function Friends() {
+export function Friends(props) {
+    const drawFriendMess = props.friend.map( el => <FriendsList key={el.id} id={el.id} name={el.name} message={el.lastMessage}/>)
 
     return (
         <> 
@@ -27,7 +26,7 @@ export function Friends() {
                     </h2>
                     <div className={classNames(style.dots, 'search-dots')}><img src={dots} alt="Search" /></div>
                 </div>
-                <FriendsList />
+                {drawFriendMess}
             </div>
         </section>
         </>

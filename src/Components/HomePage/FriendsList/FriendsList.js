@@ -4,9 +4,11 @@ import style from './FriendsList.module.css';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
-export function FriendsList(props) {
-    const {id, name, message} = props;
 
+export function FriendsList(friend) {
+    const {id, name, lastMessages} = friend.friend
+
+    //console.log(id)
     return (
         <Link to={id} className={classNames(style.list, 'list-content')}>
             <div className={style.message}>
@@ -15,7 +17,7 @@ export function FriendsList(props) {
                 </div>
                 <div className={style.userMess}>
                     <p className={classNames(style.name, 'head-name')}>{name}</p>
-                    <p className="head-mess">{message}</p>
+                    <p className="head-mess">{lastMessages}</p>
                 </div>
             </div>
             <div className="list-date-check">

@@ -121,9 +121,10 @@ h6 {
 
 .section-main{
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     flex-wrap: wrap;
     flex-grow: 1;
+    margin-left: 60px;
 }
 
 .header{
@@ -190,3 +191,4 @@ h6 {
     justify-content: space-between;
     align-items: center;
 }
+

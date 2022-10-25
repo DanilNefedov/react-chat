@@ -95,4 +95,27 @@ const state = {
 }
 
 
+
+
+
+console.log(state.messages)
+const messList = state.messages;
+
+export function newMessage(resFind, lastMess){
+    let userPage;
+    messList.forEach(el =>{
+        if(el.id === resFind){
+            userPage = el
+        }
+    });
+    userPage.messages.push({me:lastMess})
+    console.log(userPage)
+}
+
+
+
 export default state;
+
+
+
+

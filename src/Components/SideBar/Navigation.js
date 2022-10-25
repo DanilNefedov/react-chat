@@ -1,8 +1,8 @@
 import style from './SideBar.module.css';
-import messages from '../../img/messages.svg';
 import home from '../../img/home.svg';
 import notification from '../../img/notification.svg';
 import settings from '../../img/settings.svg';
+import search from '../../img/search-sidebar.svg'
 import { NavLink } from 'react-router-dom';
 
 
@@ -12,6 +12,11 @@ export function Navigation(){
             <div className={style.home}>
                 <NavLink to='/' className={`${style.active} ${style.link}`}>
                     <img src={home} alt="Home" className={style.img} />
+                </NavLink>
+            </div>
+            <div className={style.search}>
+                <NavLink href="#" className={style.link}>
+                    <img src={search} alt="Settings" className={style.img} />
                 </NavLink>
             </div>
             <div className={style.notification}>

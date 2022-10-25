@@ -4,11 +4,12 @@
     border-radius: 20px;
 }
 .nav{
-    padding: 98px 0 196px 0;
+    padding: 98px 0 186px 0;
 }
 
 .messages,
 .notification,
+.search,
 .settings{
     padding-top: 43px;
 }
@@ -55,4 +56,8 @@
 .exitLink img{
     margin: 0 auto;
     padding-left: 10px;
+}
+
+.exit{
+    padding-bottom: 30px;
 }

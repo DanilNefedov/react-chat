@@ -70,6 +70,40 @@
 }
 
 .messages{
-    height: 718px;
+    height: 787px;
+    overflow-y: scroll;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: end; */
     /* remove adaptive */
+}
+
+
+.messagesMe{
+    justify-content: end;
+    background-color:var(--main-blue);
+}
+
+.messagesFriend{
+    background-color:#CFCFCF ;
+}
+
+
+
+.messagesMe, .messagesFriend{
+    display: flex;
+    padding: 13px 27px 20px;
+    max-width: 50%;
+}
+
+.messageContainerMe, .messageContainerFriend{
+    display: flex;
+    padding: 15px 0;
+}
+.messageContainerMe{
+    justify-content: end;
+}
+
+.messageContainerFriend{
+    justify-content: start;
 }

@@ -20,7 +20,8 @@ export function Friends() {
     //console.log(friend)
 
     const dispatch = useDispatch()
-    const taskAddFriend = () => {
+    const taskAddFriend = (event) => {
+        event.preventDefault();
         dispatch(addFrined({ text, userId }))
         setText('')//clear the entry text
     }

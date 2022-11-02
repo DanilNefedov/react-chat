@@ -4,17 +4,12 @@ import styleFriends from '../HomePage/Friends.module.css';
 import classNames from 'classnames';
 import user from '../../img/user-M.png';
 import dots from '../../img/dots.svg';
-// import send from '../../img/send.svg';
-// import { MessagesFieldMe } from './MessagesFieldMe';
-// import { MessagesFieldFriend } from './MessagesFieldFriend';
-// import { useEffect } from 'react';
-// import { newMessage } from '../../State';
-// import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import {addMessage, addMessagesOldFriend} from '../../store/messagesSlice'
 import { useState } from 'react';
 import { SendMessages } from './SendMessages';
+import { MessagesFieldMe } from './MessagesFieldMe';
 
 
 export function MessagesMain() {
@@ -31,18 +26,18 @@ export function MessagesMain() {
             friendInfo = el
         }
     })
-    console.log(friendInfo, messagesState)
 
 
+    
 
-
+    const oldFriend = messagesState.find(el => el.idUser === friendInfo.id )
     const addMessageTask = () => {
-        const oldFriend = messagesState.find(el => el.idUser === friendInfo.id )
         oldFriend ? dispatch(addMessagesOldFriend({messageText, friendInfo})) : dispatch(addMessage({messageText, friendInfo}))
         setMessageText('')
     }
 
     
+
     return (
         <section className={styleFriends.friends}>
             <div className={classNames(style.container, 'container')}>
@@ -65,7 +60,12 @@ export function MessagesMain() {
                 </header>
 
                 <section id='scroll' className={style.messages}>
-                    Messages
+                    {   (oldFriend === undefined)?
+                        (<div>List messages if empty</div>) :
+                        (
+                            oldFriend.messages.map(el => <MessagesFieldMe messages={el.me} key={el.date}></MessagesFieldMe>)
+                        )
+                    }
                 </section>
 
                 <SendMessages addMessageTask={addMessageTask} messageText={messageText} setMessageText={setMessageText}/>

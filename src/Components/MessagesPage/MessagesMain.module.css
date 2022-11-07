@@ -72,20 +72,21 @@
 .messages{
     height: 787px;
     overflow-y: scroll;
-    /* display: flex;
-    flex-direction: column;
-    justify-content: end; */
-    /* remove adaptive */
+    padding: 10px 10px 0 0;
 }
 
 
 .messagesMe{
     justify-content: end;
     background-color:var(--main-blue);
+    color: var(--white);
+    margin-right: 7px;
+    word-break: break-word;
 }
 
 .messagesFriend{
     background-color:#CFCFCF ;
+    margin-left: 10px;
 }
 
 
@@ -93,12 +94,15 @@
 .messagesMe, .messagesFriend{
     display: flex;
     padding: 13px 27px 20px;
-    max-width: 50%;
+    max-width: 48%;
+    border-radius: 10px;
+    position: relative;
 }
 
 .messageContainerMe, .messageContainerFriend{
     display: flex;
-    padding: 15px 0;
+    margin-bottom: 55px;
+    position: relative;
 }
 .messageContainerMe{
     justify-content: end;
@@ -106,4 +110,33 @@
 
 .messageContainerFriend{
     justify-content: start;
+}
+
+
+.messagesMe::after, .messagesFriend::after{
+    content: '';
+    position: absolute;
+    /* background: url(../../img/triangle-messages.svg) 100% 100% no-repeat; */
+    width: 20px;
+    height: 28px;
+    /* right: -7px; */
+    bottom: 0;
+}
+.messagesMe::after{
+    background: url(../../img/triangle-messages.svg) 100% 100% no-repeat;
+    right: -7px;
+}
+.messagesFriend::after{
+    background: url(../../img/triangle-messages-gray.svg) 100% 100% no-repeat;
+    left: -21px;
+    margin-left: 10px;
+}
+
+.dateMessages{
+    position: absolute;
+    bottom: -20px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    color:rgba(0,0,0, 0.25);
 }

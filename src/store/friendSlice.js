@@ -13,6 +13,7 @@ const friendSlice = createSlice({
             state.friend.push({
                 id:action.payload.userId,
                 name:action.payload.text,
+                userImg: action.payload.userImg,
                 lastMessages:''
             })
         }

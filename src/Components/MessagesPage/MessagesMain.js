@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import style from './MessagesMain.module.css';
 import styleFriends from '../HomePage/Friends.module.css';
 import classNames from 'classnames';
-import user from '../../img/user-M.png';
 import dots from '../../img/dots.svg';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -27,12 +26,18 @@ export function MessagesMain() {
         }
     })
 
+    const getWeekDay = (date) =>{
+        const day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] 
+        return day[date.getDay()]
+    }
 
-    
 
     const oldFriend = messagesState.find(el => el.idUser === friendInfo.id )
     const addMessageTask = () => {
-        oldFriend ? dispatch(addMessagesOldFriend({messageText, friendInfo})) : dispatch(addMessage({messageText, friendInfo}))
+        const dateNow = new Date()
+        const timeNow = dateNow.toLocaleTimeString('en-US')
+        const datePush = `${getWeekDay(dateNow)}, ${timeNow}`
+        oldFriend ? dispatch(addMessagesOldFriend({messageText, friendInfo, datePush})) : dispatch(addMessage({messageText, friendInfo, datePush}))
         setMessageText('')
     }
 
@@ -44,7 +49,7 @@ export function MessagesMain() {
                 <header className={style.header}>
                     <div className={style.user}>
                         <div className={style.userImg}>
-                            <img src={user} alt="User" />
+                            <img src={friendInfo.userImg} alt="User" />
                         </div>
                         <div className={style.about}>
                             <h2 className={style.name}>
@@ -61,9 +66,9 @@ export function MessagesMain() {
 
                 <section id='scroll' className={style.messages}>
                     {   (oldFriend === undefined)?
-                        (<div>List messages if empty</div>) :
+                        (<div>List messages is empty</div>) :
                         (
-                            oldFriend.messages.map(el => <MessagesFieldMe messages={el.me} key={el.date}></MessagesFieldMe>)
+                            oldFriend.messages.map(el => <MessagesFieldMe messages={el} key={el.date}></MessagesFieldMe>)
                         )
                     }
                 </section>

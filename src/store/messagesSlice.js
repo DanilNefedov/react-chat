@@ -14,9 +14,10 @@
                 state.messages.push(
                     {
                         idUser: action.payload.friendInfo.id,
+                        //photoUser: action.payload.friendInfo.img,
                         messages:[
                             {
-                                date: new Date().toISOString(),
+                                date: action.payload.datePush,
                                 me: action.payload.messageText
                             }
                         ]
@@ -25,7 +26,7 @@
             },
             addMessagesOldFriend(state, action){
                 const oldFriend = state.messages.find(el => el.idUser === action.payload.friendInfo.id )
-                oldFriend.messages.push({date: new Date().toISOString(), me:action.payload.messageText})
+                oldFriend.messages.push({date: action.payload.datePush, me:action.payload.messageText})
                 
             }
         }

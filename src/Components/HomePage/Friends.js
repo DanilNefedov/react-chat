@@ -6,12 +6,13 @@ import { FriendsList } from "./FriendsList/FriendsList";
 import { Search } from '../Search/Search'
 import { addFrined } from '../../store/friendSlice'
 import { useState } from 'react';
+import userImg from '../../img/user-M.png'
 
 
 export function Friends() {
     const [text, setText] = useState('')
     const friend = useSelector(state => state.friend.friend)
-
+    
 
     const numberID = friend.length <= 0 ? 1 : parseInt(friend[friend.length - 1].id.match(/\d+/))//search number of id user
     const userId = friend.length <= 0 ? `friend${numberID}` : `friend${numberID + 1}`
@@ -22,7 +23,7 @@ export function Friends() {
     const dispatch = useDispatch()
     const taskAddFriend = (event) => {
         event.preventDefault();
-        dispatch(addFrined({ text, userId }))
+        dispatch(addFrined({ text, userId, userImg}))
         setText('')//clear the entry text
     }
 

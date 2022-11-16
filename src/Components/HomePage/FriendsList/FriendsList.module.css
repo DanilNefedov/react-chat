@@ -5,6 +5,7 @@
 .message{
     display: flex;
     align-items: center;
+    max-width: 90%;
 }
 .user{
     width: 52px;
@@ -12,6 +13,7 @@
 }
 .userMess{
     font-size: 12px;
+    max-width: 85%;
 }
 .name{
     font-size: 14px;
@@ -19,4 +21,17 @@
 
 .date{
     font-size: 10px;
+}
+.headMess{
+    max-width: 100%;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--text-mess);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
 }

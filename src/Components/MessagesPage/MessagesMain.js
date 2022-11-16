@@ -9,6 +9,8 @@ import {addMessage, addMessagesOldFriend} from '../../store/messagesSlice'
 import { useState } from 'react';
 import { SendMessages } from './SendMessages';
 import { MessagesFieldMe } from './MessagesFieldMe';
+import { addLastMessage } from '../../store/friendSlice';
+
 
 
 export function MessagesMain() {
@@ -39,9 +41,10 @@ export function MessagesMain() {
         const datePush = `${getWeekDay(dateNow)}, ${timeNow}`
         oldFriend ? dispatch(addMessagesOldFriend({messageText, friendInfo, datePush})) : dispatch(addMessage({messageText, friendInfo, datePush}))
         setMessageText('')
+
+        dispatch(addLastMessage({messageText, friendInfo, datePush}))
     }
 
-    
 
     return (
         <section className={styleFriends.friends}>

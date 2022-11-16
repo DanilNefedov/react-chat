@@ -7,12 +7,16 @@ import { Search } from '../Search/Search'
 import { addFrined } from '../../store/friendSlice'
 import { useState } from 'react';
 import userImg from '../../img/user-M.png'
+//import { redirect } from 'react-router-dom';
 
 
 export function Friends() {
+    //const user = true;
+
+
     const [text, setText] = useState('')
     const friend = useSelector(state => state.friend.friend)
-    
+
 
     const numberID = friend.length <= 0 ? 1 : parseInt(friend[friend.length - 1].id.match(/\d+/))//search number of id user
     const userId = friend.length <= 0 ? `friend${numberID}` : `friend${numberID + 1}`
@@ -23,11 +27,12 @@ export function Friends() {
     const dispatch = useDispatch()
     const taskAddFriend = (event) => {
         event.preventDefault();
-        dispatch(addFrined({ text, userId, userImg}))
+        dispatch(addFrined({ text, userId, userImg }))
         setText('')//clear the entry text
     }
 
     return (
+
         <>
             <Search handleSubmit={taskAddFriend} text={text} setText={setText} />
             <section className={style.friends}>
@@ -52,6 +57,7 @@ export function Friends() {
                 </div>
             </section>
         </>
+
 
     );
 }

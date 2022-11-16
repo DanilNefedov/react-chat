@@ -14,13 +14,19 @@ const friendSlice = createSlice({
                 id:action.payload.userId,
                 name:action.payload.text,
                 userImg: action.payload.userImg,
+                date: '',
                 lastMessages:''
             })
+        },
+        addLastMessage(state, action){
+            const friend = state.friend.find(el => el.id === action.payload.friendInfo.id)
+            friend.lastMessages = action.payload.messageText
+            friend.date = action.payload.datePush
         }
     }
 })
 
 
-export const {addFrined} = friendSlice.actions;
+export const {addFrined, addLastMessage} = friendSlice.actions;
 
 export default friendSlice.reducer;

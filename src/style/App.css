@@ -148,12 +148,6 @@ h6 {
     line-height: 27px;
 }
 
-.head-mess{
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 21px;
-    color: var(--text-mess);
-}
 
 .user-mess{
     margin-right: 14px;

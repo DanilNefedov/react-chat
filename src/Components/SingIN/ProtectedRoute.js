@@ -1,13 +1,15 @@
 import { Navigate, useLocation } from "react-router-dom"
 import { Layout } from "../Layout/Layout"
+import { useAuth } from "../../hooks/useAuth";
 
 
 export const ProtecteedRoute = () =>{
     const location = useLocation()
 
-    const user = false
+    const {isAuth} = useAuth()
+    console.log(isAuth)
 
-    if(!user){
+    if(!isAuth){
         return <Navigate to='/login' state={{from:location}}/>
     }
 

@@ -1,14 +1,31 @@
 import { Form } from "./Form";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useDispatch } from "react-redux";
+import {setUser} from '../../store/authSlice'
+import { useNavigate } from "react-router-dom";
+
+
 
 export function Registration () {
-    const dispatch =useDispatch()
+    const dispatch = useDispatch()
 
-    const handleRegister = ( email, password) =>{
+    const navigate = useNavigate()
+
+    const goBack = () => navigate(-1)
+
+
+    const handleRegister = async ( email, password) =>{
         const auth = getAuth();
-        createUserWithEmailAndPassword(auth, email, password)
-            .then(console.log)
+        await createUserWithEmailAndPassword(auth, email, password)
+            .then(({user}) => {
+                console.log(user)
+                dispatch(setUser({
+                    email:user.email,
+                    id:user.uid,
+                    token:user.accessToken
+                }))
+                goBack()
+            })
             .catch(console.error)
     }   
 
@@ -16,11 +33,11 @@ export function Registration () {
     const formProps = {
         nameForm:'Registration',
         nameButton:'Register',
-        link:'/login',
+        link:'/login',//change to navigate
         nameLink:'Back to login'
     }
-    //console.log(handleLogin)formProps={formProps}
+
     return (
-        <Form  handleClick={handleRegister}></Form>
+        <Form formProps={formProps}  handleClick={handleRegister}></Form>
     )
 }

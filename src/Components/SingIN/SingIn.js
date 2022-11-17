@@ -2,15 +2,27 @@ import { Form } from "./Form";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import {setUser} from '../../store/authSlice'
+import { useNavigate } from "react-router-dom";
 
 export function SingIn (){
     const dispatch = useDispatch();
 
+    const navigate = useNavigate()
 
-    const handleLogin = (email, password) =>{
+    const goBack = () => navigate(-1)
+
+    const handleLogin = async (email, password) =>{
         const auth = getAuth();
-        signInWithEmailAndPassword(auth, email, password)
-            .then(console.log)
+        await signInWithEmailAndPassword(auth, email, password)
+            .then(({user}) => {
+                //console.log(user)
+                dispatch(setUser({
+                    email:user.email,
+                    id:user.uid,
+                    token:user.accessToken
+                }))
+                goBack()
+            })
             .catch(console.error)
     }
     
@@ -21,7 +33,7 @@ export function SingIn (){
         nameLink:'Сreate an account'
     }
     return(
-        <Form ></Form>
-        // formProps={formProps} handleLogin={handleLogin}
+        <Form handleClick={handleLogin} formProps={formProps}></Form>
+
     )
 }

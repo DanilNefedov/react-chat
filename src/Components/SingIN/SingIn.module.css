@@ -32,18 +32,20 @@
     text-align: center;
 }
 
-
+.name{
+    padding-top: 20px;
+}
 .email{
     padding: 20px 0;
 }
-.headerEmail, .headerPass{
+.headerEmail, .headerPass, .headerName{
     font-size: 15px;
 }
 
-.email, .pass{
+.email, .pass, .name{
     display: flex;
 }
-.email input, .pass input{
+.email input, .pass input, .name input{
     background-color: var(--main-bg);
     width: 100%;
     margin-left: 10px;

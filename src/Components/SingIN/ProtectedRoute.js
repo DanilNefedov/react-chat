@@ -1,17 +1,21 @@
 import { Navigate, useLocation } from "react-router-dom"
 import { Layout } from "../Layout/Layout"
 import { useAuth } from "../../hooks/useAuth";
+import { lazy, Suspense } from "react";
+import { Loader } from "../Loader/Loader";
 
+//const Layout = lazy(() => import("../Layout/Layout"))
 
 export const ProtecteedRoute = () =>{
     const location = useLocation()
 
     const {isAuth} = useAuth()
-    console.log(isAuth)
+    //console.log(isAuth)
 
     if(!isAuth){
-        return <Navigate to='/login' state={{from:location}}/>
+       return <Navigate to='/login' state={{from:location}}/>
     }
 
     return <Layout/>
 }
+

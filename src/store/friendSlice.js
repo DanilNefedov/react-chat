@@ -10,10 +10,11 @@ const friendSlice = createSlice({
     initialState,
     reducers:{
         addFrined(state, action){
+            //console.log(action.payload)
             state.friend.push({
-                id:action.payload.userId,
-                name:action.payload.text,
-                userImg: action.payload.userImg,
+                id:action.payload.data.name,
+                name:action.payload.data.id,
+                userImg: action.payload.data.email,
                 date: '',
                 lastMessages:''
             })

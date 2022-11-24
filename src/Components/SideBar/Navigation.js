@@ -16,7 +16,7 @@ export function Navigation(){
             </div>
             <div className={style.search}>
                 <NavLink href="#" className={style.link}>
-                    <img src={profile} alt="Settings" className={style.img} />
+                    <img src={profile} alt="Profile" className={style.img} />
                 </NavLink>
             </div>
             <div className={style.notification}>

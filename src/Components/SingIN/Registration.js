@@ -1,8 +1,11 @@
 import { Form } from "./Form";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { useDispatch } from "react-redux";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { useDispatch, useSelector } from "react-redux";
 import {setUser} from '../../store/authSlice'
 import { useNavigate } from "react-router-dom";
+import { getFirestore } from "firebase/firestore";
+
 
 
 
@@ -11,24 +14,48 @@ export function Registration () {
 
     const navigate = useNavigate()
 
-    const goBack = () => navigate(-1)
+    const goBack = () => navigate('/login')
+
+    const db = getFirestore()
+
+    const user2 = useSelector(state => state.user)
 
 
-    const handleRegister = async ( email, password) =>{
+    const handleRegister = async (nameUser, email, password) =>{
         const auth = getAuth();
-        await createUserWithEmailAndPassword(auth, email, password)
+        try{
+            await createUserWithEmailAndPassword(auth, email, password)
             .then(({user}) => {
-                console.log(user)
-                dispatch(setUser({
-                    email:user.email,
-                    id:user.uid,
-                    token:user.accessToken
-                }))
+                updateProfile(auth.currentUser, {
+                    displayName: nameUser
+                }).then( async () => {
+                    dispatch(setUser({
+                        name:user.displayName,
+                        email:user.email,
+                        id:user.uid,
+                        token:user.accessToken
+                    }))
+                    console.log(user, user2)
+                    await setDoc(doc(db, 'users', user.uid),{
+                        name:user.displayName,
+                        email:user.email,
+                        id:user.uid
+                    })
+                    
+                    await setDoc(doc(db, 'chatsList', user.uid),{})
+
+                  }).catch((error) => {
+                    console.error(error)
+                });
                 goBack()
             })
             .catch(console.error)
+        }catch(err){
+            console.error(err)
+        }
+        
     }   
-
+    
 
     const formProps = {
         nameForm:'Registration',

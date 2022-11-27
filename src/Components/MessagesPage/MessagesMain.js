@@ -14,36 +14,36 @@ import { addLastMessage } from '../../store/friendSlice';
 
 
 export function MessagesMain() {
-    const [messageText, setMessageText] = useState('');
-    const friendState = useSelector(state => state.friend.friend)
-    const messagesState = useSelector(state => state.message.messages)
-    const dispatch = useDispatch()
+    // const [messageText, setMessageText] = useState('');
+    // const friendState = useSelector(state => state.friend.friend)
+    // const messagesState = useSelector(state => state.message.messages)
+    // const dispatch = useDispatch()
 
-    let friendInfo
+    // let friendInfo
 
-    const [link] = Object.values(useParams())
-    friendState.forEach(el => {
-        if(el.id === link){
-            friendInfo = el
-        }
-    })
+    // const [link] = Object.values(useParams())
+    // friendState.forEach(el => {
+    //     if(el.id === link){
+    //         friendInfo = el
+    //     }
+    // })
 
-    const getWeekDay = (date) =>{
-        const day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] 
-        return day[date.getDay()]
-    }
+    // const getWeekDay = (date) =>{
+    //     const day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] 
+    //     return day[date.getDay()]
+    // }
 
 
-    const oldFriend = messagesState.find(el => el.idUser === friendInfo.id )
-    const addMessageTask = () => {
-        const dateNow = new Date()
-        const timeNow = dateNow.toLocaleTimeString('en-US')
-        const datePush = `${getWeekDay(dateNow)}, ${timeNow}`
-        oldFriend ? dispatch(addMessagesOldFriend({messageText, friendInfo, datePush})) : dispatch(addMessage({messageText, friendInfo, datePush}))
-        setMessageText('')
+    // const oldFriend = messagesState.find(el => el.idUser === friendInfo.id )
+    // const addMessageTask = () => {
+    //     const dateNow = new Date()
+    //     const timeNow = dateNow.toLocaleTimeString('en-US')
+    //     const datePush = `${getWeekDay(dateNow)}, ${timeNow}`
+    //     oldFriend ? dispatch(addMessagesOldFriend({messageText, friendInfo, datePush})) : dispatch(addMessage({messageText, friendInfo, datePush}))
+    //     setMessageText('')
 
-        dispatch(addLastMessage({messageText, friendInfo, datePush}))
-    }
+    //     dispatch(addLastMessage({messageText, friendInfo, datePush}))
+    // }
 
 
     return (
@@ -52,11 +52,12 @@ export function MessagesMain() {
                 <header className={style.header}>
                     <div className={style.user}>
                         <div className={style.userImg}>
-                            <img src={friendInfo.userImg} alt="User" />
+                            <img src='/' alt="User" />
+                            {/* {friendInfo.userImg} */}
                         </div>
                         <div className={style.about}>
                             <h2 className={style.name}>
-                                {friendInfo.name}
+                                {/* {friendInfo.name} */}
                             </h2>
                             <div className={style.online}>Online</div>
                         </div>
@@ -68,15 +69,15 @@ export function MessagesMain() {
                 </header>
 
                 <section id='scroll' className={style.messages}>
-                    {   (oldFriend === undefined)?
+                    {/* {   (oldFriend === undefined)?
                         (<div>List messages is empty</div>) :
                         (
                             oldFriend.messages.map(el => <MessagesFieldMe messages={el} key={el.date}></MessagesFieldMe>)
                         )
-                    }
+                    } */}
                 </section>
 
-                <SendMessages addMessageTask={addMessageTask} messageText={messageText} setMessageText={setMessageText}/>
+                {/* <SendMessages addMessageTask={addMessageTask} messageText={messageText} setMessageText={setMessageText}/> */}
             </div>
         </section>
     );

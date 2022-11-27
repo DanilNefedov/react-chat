@@ -5,19 +5,19 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 
-export function FriendsList(nameUser) {
-    //console.log(friend)
-    //const {id, name, lastMessages, userImg, date} = friend.friend
-    const friend = useSelector(state => state.friend.friend)
-    console.log(friend)
+export function FriendsList({friends}) {
+
+    const {id, name, userImg, date, lastMessages} = friends
+    
+    console.log( friends)
     return (
-        <Link to='/' className={classNames(style.list, 'list-content')}>
+        <Link to={id}  className={classNames(style.list, 'list-content')}>
             <div className={style.message}>
                 <div className={classNames(style.user, 'user-mess')}>
                     <img src='/' alt="User" />
                 </div>
                 <div className={style.userMess}>
-                    <p className={classNames(style.name, 'head-name')}>{nameUser}</p>
+                    <p className={classNames(style.name, 'head-name')}>{name}</p>
                     <p className={style.headMess}>lastMEss</p>
                 </div>
             </div>

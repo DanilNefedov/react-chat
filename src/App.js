@@ -20,7 +20,7 @@ function App() {
       <Routes>
         <Route element={<ProtecteedRoute/>}>
           <Route index element={<Friends />} />
-          <Route path='/:friend' element={<MessagesMain />} />
+          <Route path='/:userId' element={<MessagesMain />} />
         </Route>
         <Route path='/login' element={<SingIn/>}/>
         <Route path='/registration' element={<Registration/>}/>

@@ -4,7 +4,9 @@ import style from './Search.module.css'
 import { FriendsList } from '../HomePage/FriendsList/FriendsList';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFrined } from '../../store/friendSlice';
-import {SearchList} from './SearchList'
+import { SearchList } from './SearchList'
+import { doc, Firestore, getDoc, getFirestore, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 
 export function Search({ user, handleSubmit, text, setText, handleEvent }) {
@@ -14,17 +16,61 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
     const email = user.email;
 
     const dispatch = useDispatch()
-    
+
+    const db = getFirestore()
+
 
     const friend = useSelector(state => state.friend.friend)
-   // console.log(friend, user)
+    // console.log(friend, user)
+    const myInfo = useSelector(state => state.user)
+
+
+
+    // const bindSearch = () => {
+        
     
+    //     if (!find) {
+    //         dispatch(addFrined({ id, name, email }))
+    //         console.log('www')
+    //     }
+    // }
 
 
-    const bindSearch = () => {
-        const find = friend.find(el => el.id === user.id)
-        if(!find){
-            dispatch(addFrined({id, name, email}))
+    const bindChat = async () => {
+        const combinedId = myInfo.id > id ? myInfo.id + id : id + myInfo.id
+        const find = friend.find(el => el.id === id)
+        //id = combinedId
+        console.log(combinedId, myInfo)
+
+        try {
+
+            if (!find) {
+                dispatch(addFrined({ combinedId, name, email }))
+            }
+            
+            const res = await getDoc(doc(db, 'chats', combinedId))
+            
+            if (!res.exists()) {
+                await setDoc(doc(db, 'chats', combinedId), { messages: [] })
+
+                await updateDoc(doc(db, 'chatsList', myInfo.id), {
+                    [combinedId + '.userInfo']: {
+                        id: id,
+                        displayName: name
+                    },
+                    [combinedId + '.date']: serverTimestamp()
+                })
+
+                await updateDoc(doc(db, 'chatsList', user.id), {
+                    [combinedId + '.userInfo']: {
+                        id: myInfo.id,
+                        displayName: myInfo.name
+                    },
+                    [combinedId + '.date']: serverTimestamp()
+                })
+            }
+        } catch (error) {
+            console.error(error)
         }
     }
 
@@ -46,9 +92,8 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
                     {(!user) ? (
                         <div className="">Friend list empty</div>
                     ) : (
-                        <SearchList userName={name} userId={id} clickLink={bindSearch} />
-                    )
-                    }
+                        <SearchList userName={name} userId={id}  clickChat={bindChat} />
+                    )}
                 </div>
             </section>
         </>

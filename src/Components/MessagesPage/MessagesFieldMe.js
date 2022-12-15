@@ -1,27 +1,85 @@
 import classNames from "classnames"
+import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addMessage } from "../../store/messagesSlice";
 import style from './MessagesMain.module.css'
 
 
-export function MessagesFieldMe ({messages}){
+export function MessagesFieldMe({ infoChat }) {
+  
+    const messagesState = useSelector(state => state.message.messages)
+    const user = useSelector(state => state.user)
+    const findChat = messagesState.find(el => el.chatId === infoChat.id)
+
     useEffect(() => {
         const scroll = document.getElementById("scroll");
         scroll.scrollTop = scroll.scrollHeight;
-    }, [messages])
+    }, [messagesState])
 
-    return(
-        (messages.me) ? 
-        (<div className={style.messageContainerMe}>
-            <span className={classNames("message", style.messagesMe)}>
-                {messages.me}
-            </span>
-            <span className={style.dateMessages}>{messages.date}</span>
-        </div>) :
-        (<div className={style.messageContainerFriend}>
-            <span className={classNames("message", style.messagesFriend)}>
-                {messages.friend}
-            </span>
-            <span className={style.dateMessages}>{messages.date}</span>
-        </div>)
+
+    const db = getFirestore()
+    const dispatch = useDispatch()
+    const dayArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+    useEffect(() => {
+        const unsub = onSnapshot(doc(db, 'chats', infoChat.id), (doc) => {
+            //console.log(doc.data())
+            //console.log('ww')
+            if (doc.data()) {
+                const data = doc.data()
+                const chatId = infoChat.id
+                //console.log(data)
+                data.messages.map(el => {
+                    //console.log(data.messages)
+
+                    const userId = el.userId
+                    const messageText = el.messageText
+                    //const datePush = el.date
+                    const messageId = el.id
+                    const date = el.date
+                    const dayMess = dayArr[date.toDate().getDay()]
+                    const hoursMess = date.toDate().getHours()
+                    const minute = date.toDate().getMinutes()
+                    const datePush = `${dayMess} ${hoursMess}:${minute}`
+
+                    dispatch(addMessage({ chatId, userId, messageText, datePush, messageId }))
+
+                })
+            } else {
+                return false
+            }
+        })
+
+        return () => {
+            unsub()
+        }
+    }, [infoChat.id])
+
+    //console.log(findChat.messages)
+    //messagesState.length > 0 ? console.log(findChat.messages.map(el => el)) : (console.log('do'))
+
+    return (
+
+        (messagesState.length > 0 ? (findChat.messages.map(el => (
+
+            el.userId === user.id ? (
+                <div key={el.messageId} className={style.messageContainerMe}>
+                    <span className={classNames("message", style.messagesMe)}>
+                        {el.text}
+                    </span>
+                    <span className={style.dateMessages}>{el.date}</span>
+                </div>
+            ):(
+                <div key={el.messageId} className={style.messageContainerFriend}>
+                    <span className={classNames("message", style.messagesFriend)}>
+                        {el.text}
+                    </span>
+                    <span className={style.dateMessages}>{el.date}</span>
+                </div>
+            )
+        ))) : (
+            <div>No Messages</div>
+        ))
     );
 }

@@ -5,46 +5,64 @@ import classNames from 'classnames';
 import dots from '../../img/dots.svg';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import {addMessage, addMessagesOldFriend} from '../../store/messagesSlice'
+import { addMessage, addMessagesOldFriend } from '../../store/messagesSlice'
 import { useState } from 'react';
 import { SendMessages } from './SendMessages';
 import { MessagesFieldMe } from './MessagesFieldMe';
 import { addLastMessage } from '../../store/friendSlice';
-
+import { useEffect } from 'react';
+import { arrayUnion, doc, getFirestore, onSnapshot, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
+import { v4 as uuid } from 'uuid';
 
 
 export function MessagesMain() {
-    // const [messageText, setMessageText] = useState('');
-    // const friendState = useSelector(state => state.friend.friend)
-    // const messagesState = useSelector(state => state.message.messages)
-    // const dispatch = useDispatch()
-
-    // let friendInfo
-
-    // const [link] = Object.values(useParams())
-    // friendState.forEach(el => {
-    //     if(el.id === link){
-    //         friendInfo = el
-    //     }
-    // })
-
-    // const getWeekDay = (date) =>{
-    //     const day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] 
-    //     return day[date.getDay()]
-    // }
+    const friend = useSelector(state => state.friend.friend)
+    const user = useSelector(state => state.user)
+    //console.log(friend)
 
 
-    // const oldFriend = messagesState.find(el => el.idUser === friendInfo.id )
-    // const addMessageTask = () => {
-    //     const dateNow = new Date()
-    //     const timeNow = dateNow.toLocaleTimeString('en-US')
-    //     const datePush = `${getWeekDay(dateNow)}, ${timeNow}`
-    //     oldFriend ? dispatch(addMessagesOldFriend({messageText, friendInfo, datePush})) : dispatch(addMessage({messageText, friendInfo, datePush}))
-    //     setMessageText('')
+    const db = getFirestore()
 
-    //     dispatch(addLastMessage({messageText, friendInfo, datePush}))
-    // }
+    const [link] = Object.values(useParams())
+    const infoChat = friend.find(el => el.id === link)
 
+
+    //console.log(messagesState)
+
+    //console.log(infoChat)
+
+    const [messageText, setMessageText] = useState('');
+    const sendMess = async () => {
+
+        const messageId = uuid()
+        const date = Timestamp.now()
+
+        await updateDoc(doc(db, 'chats', infoChat.id), {
+            messages: arrayUnion({
+                id: messageId,
+                messageText,
+                userId: user.id,
+                date: date
+            })
+        })
+
+        await updateDoc(doc(db, 'chatsList', user.id), {
+            [infoChat.id + '.lastMessage']: {
+                messageText
+            },
+            [infoChat.id + '.date']: serverTimestamp()
+        })
+
+
+        await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
+            [infoChat.id + '.lastMessage']: {
+                messageText
+            },
+            [infoChat.id + '.date']: serverTimestamp()
+        })
+
+        setMessageText('')
+    }
 
     return (
         <section className={styleFriends.friends}>
@@ -57,7 +75,7 @@ export function MessagesMain() {
                         </div>
                         <div className={style.about}>
                             <h2 className={style.name}>
-                                {/* {friendInfo.name} */}
+                                {infoChat.name}
                             </h2>
                             <div className={style.online}>Online</div>
                         </div>
@@ -69,15 +87,12 @@ export function MessagesMain() {
                 </header>
 
                 <section id='scroll' className={style.messages}>
-                    {/* {   (oldFriend === undefined)?
-                        (<div>List messages is empty</div>) :
-                        (
-                            oldFriend.messages.map(el => <MessagesFieldMe messages={el} key={el.date}></MessagesFieldMe>)
-                        )
-                    } */}
+
+                    <MessagesFieldMe infoChat={infoChat}></MessagesFieldMe>
+
                 </section>
 
-                {/* <SendMessages addMessageTask={addMessageTask} messageText={messageText} setMessageText={setMessageText}/> */}
+                <SendMessages sendMess={sendMess} messageText={messageText} setMessageText={setMessageText} />
             </div>
         </section>
     );

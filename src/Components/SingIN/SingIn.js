@@ -51,7 +51,7 @@ export function SingIn (){
         nameForm:'Login',
         nameButton:'Log in',
         link:'/registration',
-        nameLink:'Сreate an account'
+        nameLink:'Create an account'
     }
     return(
         <Form handleClick={handleLogin} formProps={formProps}></Form>

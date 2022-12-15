@@ -13,7 +13,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
 
     const name = user.name;
     const id = user.id;
-    const email = user.email;
+    //const email = user.email;
 
     const dispatch = useDispatch()
 
@@ -21,31 +21,22 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
 
 
     const friend = useSelector(state => state.friend.friend)
-    // console.log(friend, user)
+    //console.log(friend,name)
     const myInfo = useSelector(state => state.user)
 
-
-
-    // const bindSearch = () => {
-        
+    const combinedId = myInfo.id > id ? myInfo.id + id : id + myInfo.id
     
-    //     if (!find) {
-    //         dispatch(addFrined({ id, name, email }))
-    //         console.log('www')
-    //     }
-    // }
-
-
     const bindChat = async () => {
-        const combinedId = myInfo.id > id ? myInfo.id + id : id + myInfo.id
-        const find = friend.find(el => el.id === id)
+        
+        const find = friend.find(el => el.id === combinedId)
         //id = combinedId
-        console.log(combinedId, myInfo)
+        //console.log(find, friend)
 
         try {
 
             if (!find) {
-                dispatch(addFrined({ combinedId, name, email }))
+                const friendId = id
+                dispatch(addFrined({ combinedId, name, friendId }))
             }
             
             const res = await getDoc(doc(db, 'chats', combinedId))
@@ -92,7 +83,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
                     {(!user) ? (
                         <div className="">Friend list empty</div>
                     ) : (
-                        <SearchList userName={name} userId={id}  clickChat={bindChat} />
+                        <SearchList userName={name} userId={combinedId}  clickChat={bindChat} />
                     )}
                 </div>
             </section>

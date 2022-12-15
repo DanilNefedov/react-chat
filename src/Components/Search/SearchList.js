@@ -7,7 +7,8 @@ import { useSelector } from 'react-redux';
 
 export function SearchList(friendList) {
     const {userName, userId, clickChat} = friendList
-
+    // const friend = useSelector(state => state.friend.friend)
+    // console.log(friend[0].id)
 
 
     return (

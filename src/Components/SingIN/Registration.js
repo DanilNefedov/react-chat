@@ -18,7 +18,7 @@ export function Registration () {
 
     const db = getFirestore()
 
-    const user2 = useSelector(state => state.user)
+    //const user2 = useSelector(state => state.user)
 
 
     const handleRegister = async (nameUser, email, password) =>{
@@ -35,7 +35,7 @@ export function Registration () {
                         id:user.uid,
                         token:user.accessToken
                     }))
-                    console.log(user, user2)
+                    //console.log(user, user2)
                     await setDoc(doc(db, 'users', user.uid),{
                         name:user.displayName,
                         email:user.email,

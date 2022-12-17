@@ -41,6 +41,8 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
             
             const res = await getDoc(doc(db, 'chats', combinedId))
             
+            
+
             if (!res.exists()) {
                 await setDoc(doc(db, 'chats', combinedId), { messages: [] })
 

@@ -64,6 +64,12 @@ export function MessagesMain() {
         setMessageText('')
     }
 
+    const handleEvent = (e) =>{
+        if(e.code === 'Enter'){
+            sendMess()
+        }
+    }
+
     return (
         <section className={styleFriends.friends}>
             <div className={classNames(style.container, 'container')}>
@@ -92,7 +98,7 @@ export function MessagesMain() {
 
                 </section>
 
-                <SendMessages sendMess={sendMess} messageText={messageText} setMessageText={setMessageText} />
+                <SendMessages handleEvent={handleEvent} sendMess={sendMess} messageText={messageText} setMessageText={setMessageText} />
             </div>
         </section>
     );

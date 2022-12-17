@@ -56,12 +56,12 @@ export function MessagesFieldMe({ infoChat }) {
         }
     }, [infoChat.id])
 
-    //console.log(findChat.messages)
+    //console.log(messagesState)
     //messagesState.length > 0 ? console.log(findChat.messages.map(el => el)) : (console.log('do'))
 
     return (
 
-        (messagesState.length > 0 ? (findChat.messages.map(el => (
+        (messagesState.length > 0 && findChat ? (findChat.messages.map(el => (
 
             el.userId === user.id ? (
                 <div key={el.messageId} className={style.messageContainerMe}>

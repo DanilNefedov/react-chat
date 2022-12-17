@@ -16,13 +16,15 @@ const friendSlice = createSlice({
                 name:action.payload.name,
                 date: action.payload.date,
                 friendId: action.payload.friendId,
-                lastMessages:''
+                lastMessages:action.payload.lastMessages,
+                timePublic: action.payload.timePublic
             })
         },
         addLastMessage(state, action){
-            const friend = state.friend.find(el => el.id === action.payload.friendInfo.id)
+            const friend = state.friend.find(el => el.id === action.payload.friendInfo)
             friend.lastMessages = action.payload.messageText
             friend.date = action.payload.datePush
+            friend.timePublic = action.payload.timePublic
         }
     }
 })

@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/react-chat/static/css/main.f22a88b2.css",
+    "main.js": "/react-chat/static/js/main.cd64b3e6.js",
+    "static/js/787.28cb0dcd.chunk.js": "/react-chat/static/js/787.28cb0dcd.chunk.js",
+    "static/media/Poppins-Medium.ttf": "/react-chat/static/media/Poppins-Medium.c8811e16c7cc3159fb7d.ttf",
+    "static/media/Poppins-SemiBold.ttf": "/react-chat/static/media/Poppins-SemiBold.0763b5bba5e8c46bf86f.ttf",
+    "static/media/Poppins-SemiBold.woff": "/react-chat/static/media/Poppins-SemiBold.71da8e4f0d76b718897c.woff",
+    "static/media/Poppins-Medium.woff": "/react-chat/static/media/Poppins-Medium.7e588a26bdac2428f240.woff",
+    "static/media/Poppins-SemiBold.woff2": "/react-chat/static/media/Poppins-SemiBold.3c3f3613b59d581739fc.woff2",
+    "static/media/Poppins-Medium.woff2": "/react-chat/static/media/Poppins-Medium.563f976db73ca07d8fc3.woff2",
+    "static/media/settings.svg": "/react-chat/static/media/settings.ab8e0ed54f27323b03636544d3eee2b1.svg",
+    "static/media/notification.svg": "/react-chat/static/media/notification.3c87cd99cab658efa3e1dfea1cc1dcc0.svg",
+    "static/media/profile.svg": "/react-chat/static/media/profile.909ba1ab87cd0eba373e90af0c6e817e.svg",
+    "static/media/exit.svg": "/react-chat/static/media/exit.b747e1e3ba9ab26a09b1240ed0b44f58.svg",
+    "static/media/home.svg": "/react-chat/static/media/home.16541ba726c60fbfed400ded76460053.svg",
+    "static/media/search.svg": "/react-chat/static/media/search.0c6a0cf11cabeb06095f57a352c619d4.svg",
+    "static/media/dots.svg": "/react-chat/static/media/dots.fb95bcdbb1190555e91a5e0fb0cf9808.svg",
+    "static/media/send.svg": "/react-chat/static/media/send.e6e41f470c70eedfe79bcc21222a7720.svg",
+    "static/media/triangle-messages-gray.svg": "/react-chat/static/media/triangle-messages-gray.fa6d4d0bd2adf72888f3.svg",
+    "index.html": "/react-chat/index.html",
+    "static/media/triangle-messages.svg": "/react-chat/static/media/triangle-messages.9262385bbcf9e17df7fe.svg",
+    "main.f22a88b2.css.map": "/react-chat/static/css/main.f22a88b2.css.map",
+    "main.cd64b3e6.js.map": "/react-chat/static/js/main.cd64b3e6.js.map",
+    "787.28cb0dcd.chunk.js.map": "/react-chat/static/js/787.28cb0dcd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f22a88b2.css",
+    "static/js/main.cd64b3e6.js"
+  ]
+}

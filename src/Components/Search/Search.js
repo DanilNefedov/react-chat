@@ -1,12 +1,11 @@
 import search from '../../img/search.svg';
 import dots from '../../img/dots.svg';
 import style from './Search.module.css'
-import { FriendsList } from '../HomePage/FriendsList/FriendsList';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFrined } from '../../store/friendSlice';
 import { SearchList } from './SearchList'
-import { doc, Firestore, getDoc, getFirestore, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { doc, getDoc, getFirestore, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+
 
 
 export function Search({ user, handleSubmit, text, setText, handleEvent }) {
@@ -83,7 +82,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
                 <div className={style.searchCont}>
                     <h2 className='header'>Search List</h2>
                     {(!user) ? (
-                        <div className="">Friend list empty</div>
+                        <div className="">Search list is empty</div>
                     ) : (
                         <SearchList userName={name} userId={combinedId}  clickChat={bindChat} />
                     )}

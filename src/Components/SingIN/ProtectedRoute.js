@@ -1,8 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom"
 import { Layout } from "../Layout/Layout"
 import { useAuth } from "../../hooks/useAuth";
-import { lazy, Suspense } from "react";
-import { Loader } from "../Loader/Loader";
+
 
 //const Layout = lazy(() => import("../Layout/Layout"))
 

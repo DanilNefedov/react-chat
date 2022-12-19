@@ -22,6 +22,7 @@ const friendSlice = createSlice({
         },
         addLastMessage(state, action){
             const friend = state.friend.find(el => el.id === action.payload.friendInfo)
+            //console.log(friend)
             friend.lastMessages = action.payload.messageText
             friend.date = action.payload.datePush
             friend.timePublic = action.payload.timePublic

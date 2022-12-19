@@ -1,7 +1,7 @@
 import { Form } from "./Form";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {setUser} from '../../store/authSlice'
 import { useNavigate } from "react-router-dom";
 import { getFirestore } from "firebase/firestore";

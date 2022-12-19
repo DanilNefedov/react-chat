@@ -4,14 +4,10 @@ import styleFriends from '../HomePage/Friends.module.css';
 import classNames from 'classnames';
 import dots from '../../img/dots.svg';
 import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { addMessage, addMessagesOldFriend } from '../../store/messagesSlice'
 import { useState } from 'react';
 import { SendMessages } from './SendMessages';
 import { MessagesFieldMe } from './MessagesFieldMe';
-import { addLastMessage } from '../../store/friendSlice';
-import { useEffect } from 'react';
-import { arrayUnion, doc, getFirestore, onSnapshot, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
+import { arrayUnion, doc, getFirestore, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
 
 
@@ -31,43 +27,53 @@ export function MessagesMain() {
 
     //console.log(infoChat)
 
-    const [messageText, setMessageText] = useState('');
+    const [text, setMessageText] = useState('');
     const sendMess = async () => {
-
-        const messageId = uuid()
-        const date = Timestamp.now()
-
-        await updateDoc(doc(db, 'chats', infoChat.id), {
-            messages: arrayUnion({
-                id: messageId,
-                messageText,
-                userId: user.id,
-                date: date
-            })
-        })
-
-        await updateDoc(doc(db, 'chatsList', user.id), {
-            [infoChat.id + '.lastMessage']: {
-                messageText
-            },
-            [infoChat.id + '.date']: serverTimestamp()
-        })
-
-
-        await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
-            [infoChat.id + '.lastMessage']: {
-                messageText
-            },
-            [infoChat.id + '.date']: serverTimestamp()
-        })
-
+        const messageText = text
         setMessageText('')
+
+        if(messageText !== ''){
+            const messageId = uuid()
+            const date = Timestamp.now()
+
+            await updateDoc(doc(db, 'chats', infoChat.id), {
+                messages: arrayUnion({
+                    id: messageId,
+                    messageText,
+                    userId: user.id,
+                    date: date
+                })
+            })
+
+            await updateDoc(doc(db, 'chatsList', user.id), {
+                [infoChat.id + '.lastMessage']: {
+                    messageText
+                },
+                [infoChat.id + '.date']: serverTimestamp()
+            })
+
+
+            await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
+                [infoChat.id + '.lastMessage']: {
+                    messageText
+                },
+                [infoChat.id + '.date']: serverTimestamp()
+            })
+
+        }
+        
     }
 
     const handleEvent = (e) =>{
-        if(e.code === 'Enter'){
-            sendMess()
+       
+        if(e.code !== 'Enter'){
+            console.log('e.which')
+            return
         }
+        
+        e.preventDefault()
+        sendMess()
+    
     }
 
     return (
@@ -98,7 +104,7 @@ export function MessagesMain() {
 
                 </section>
 
-                <SendMessages handleEvent={handleEvent} sendMess={sendMess} messageText={messageText} setMessageText={setMessageText} />
+                <SendMessages handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />
             </div>
         </section>
     );

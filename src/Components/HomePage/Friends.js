@@ -6,8 +6,7 @@ import { FriendsList } from "./FriendsList/FriendsList";
 import { Search } from '../Search/Search'
 import { addFrined, addLastMessage } from '../../store/friendSlice'
 import { useState } from 'react';
-import userImg from '../../img/user-M.png'
-import { getFirestore, collection, query, where, getDocs, doc, onSnapshot, serverTimestamp } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
 //import { redirect } from 'react-router-dom';
 
@@ -67,9 +66,10 @@ export function Friends() {
 
     // console.log(dateState)
     useEffect(()=>{
-
+        
         const unsub = onSnapshot(doc(db, "chatsList", myInfo.id), (doc) => {
             if(doc.data()){
+               
                 const data = Object.entries(doc.data())
                 //console.log(data)
                 data.map(el => {
@@ -79,8 +79,8 @@ export function Friends() {
                     const lastMessages = el[1].lastMessage ? el[1].lastMessage.messageText : 'No messages'
                     //console.log(lastMessages)
                     const timePublic = el[1].date.toDate().getTime()
-                    const dayMess = day[el[1].date.toDate().getDay()]
-                    const hoursMess = el[1].date.toDate().getHours()
+                    const dayMess = day[el[1].date.toDate().getDay()]//
+                    const hoursMess = el[1].date.toDate().getHours()//
                     let minute = el[1].date.toDate().getMinutes().toString()
                     if(minute.length === 1){
                         minute = `0${minute}`
@@ -89,16 +89,17 @@ export function Friends() {
                     //useDateState(el[1].date)
                     //console.log(minute,timePublic)
                     const find = friendList.find(el => el.id === combinedId)
-                    //console.log(find)
+                    //console.log(find, friendList)
                     if (!find) {
-                        //console.log(find)
+                        //console.log('new')
                         dispatch(addFrined({ combinedId, name, date, friendId, timePublic, lastMessages }))
                     }else if(find.timePublic !== friendList.timePublic){
                         const friendInfo = combinedId
                         const messageText = lastMessages
                         const datePush = date
-                        //console.log(friendList, lastMessages, friendInfo)
+                        //console.log('old')
                         dispatch(addLastMessage({friendInfo, messageText, datePush, timePublic}))
+                        
                     }
 
                     //console.log(data, combinedId)
@@ -108,14 +109,17 @@ export function Friends() {
             }
             
         });
-
+        
         return () => {
             unsub()
+            
         }
-    },[myInfo.id])
+    },[myInfo.id, friendList.map(el => el.timePublic)]) 
     
     
     const sortState = [...friendList]
+
+    //console.log(friendList, sortState)
     //console.log(sortState)
     return (
         <>
@@ -130,7 +134,7 @@ export function Friends() {
                         <div className={classNames(style.dots, 'search-dots')}><img src={dots} alt="Search" /></div>
                     </div>
 
-                    { friendList.length > 0 ? (
+                    { (friendList.length > 0 ) ? (
                         sortState.sort((a,b) => b.timePublic - a.timePublic).map((friend) => ( 
                             <FriendsList key={friend.id} friend={friend}></FriendsList>
                         ))

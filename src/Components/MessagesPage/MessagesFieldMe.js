@@ -38,9 +38,12 @@ export function MessagesFieldMe({ infoChat }) {
                     //const datePush = el.date
                     const messageId = el.id
                     const date = el.date
-                    const dayMess = dayArr[date.toDate().getDay()]
-                    const hoursMess = date.toDate().getHours()
-                    const minute = date.toDate().getMinutes()
+                    const dayMess = dayArr[date.toDate().getDay()]//
+                    const hoursMess = date.toDate().getHours()//
+                    let minute = date.toDate().getMinutes().toString()//
+                    if(minute.length === 1){
+                        minute = `0${minute}`
+                    }
                     const datePush = `${dayMess} ${hoursMess}:${minute}`
 
                     dispatch(addMessage({ chatId, userId, messageText, datePush, messageId }))

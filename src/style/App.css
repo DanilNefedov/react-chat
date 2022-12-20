@@ -186,3 +186,8 @@ h6 {
     align-items: center;
 }
 
+.edit-field{
+    background-color: rgba(77,77,77, 0.25);
+    padding: 15px 25px;
+    border-radius: 10px;
+}

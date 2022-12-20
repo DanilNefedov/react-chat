@@ -8,6 +8,7 @@ import { ProtecteedRoute } from './Components/SingIN/ProtectedRoute';
 import {Registration} from './Components/SingIN/Registration';
 import { lazy, Suspense } from 'react';
 import { Loader } from './Components/Loader/Loader';
+import { Profile } from './Components/Profile/Profile';
 
 //const ProtecteedRoute = lazy(() => import('./Components/SingIN/ProtectedRoute'))
 
@@ -21,6 +22,7 @@ function App() {
         <Route element={<ProtecteedRoute/>}>
           <Route index element={<Friends />} />
           <Route path='/:userId' element={<MessagesMain />} />
+          <Route path='/profile' element={<Profile/>}/>
         </Route>
         <Route path='/login' element={<SingIn/>}/>
         <Route path='/registration' element={<Registration/>}/>

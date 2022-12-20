@@ -10,12 +10,12 @@ export function Navigation(){
     return (
         <nav className={style.nav}>
             <div className={style.home}>
-                <NavLink to='/home' className={`${style.active} ${style.link}`}>
+                <NavLink to='/' className={`${style.active} ${style.link}`}>
                     <img src={home} alt="Home" className={style.img} />
                 </NavLink>
             </div>
             <div className={style.search}>
-                <NavLink href="#" className={style.link}>
+                <NavLink to="/profile" className={style.link}>
                     <img src={profile} alt="Profile" className={style.img} />
                 </NavLink>
             </div>

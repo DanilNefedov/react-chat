@@ -65,15 +65,11 @@ export function MessagesMain() {
     }
 
     const handleEvent = (e) =>{
-       
-        if(e.code !== 'Enter'){
-            console.log('e.which')
-            return
+
+        if(e.code === 'Enter' && e.ctrlKey === false && e.shiftKey === false){
+            e.preventDefault()
+            sendMess()
         }
-        
-        e.preventDefault()
-        sendMess()
-    
     }
 
     return (

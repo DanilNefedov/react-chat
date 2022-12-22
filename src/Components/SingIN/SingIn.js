@@ -1,14 +1,14 @@
 import { Form } from "./Form";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {setUser} from '../../store/authSlice'
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 
 export function SingIn (){
-    //const userState = useSelector(state => state.user)
-
+    const userState = useSelector(state => state.user)
+    
     const dispatch = useDispatch();
 
     const navigate = useNavigate()
@@ -30,23 +30,28 @@ export function SingIn (){
 
     useEffect(() => {
         const auth = getAuth();
-        onAuthStateChanged(auth, (user)=>{
+        const unsub = onAuthStateChanged(auth, (user)=>{
             
             if(user && location === '/login'){
+                // console.log(user)
                 dispatch(setUser({
                     name:user.displayName,
                     email:user.email,
                     id:user.uid,
-                    token:user.accessToken
+                    token:user.accessToken,
+                    photo: user.photoURL
                 }))
             goBack()
         }else {
             navigate('/login')
         }
         })
-    }, [])
+        return () =>{
+            unsub()
+        }
+    }, [userState.id])
     
-
+    //console.log(userState)
     const formProps = {
         nameForm:'Login',
         nameButton:'Log in',

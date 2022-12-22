@@ -35,9 +35,10 @@ export function Profile() {
         const storageRef = ref(storage, `avatar/${user.name}`);
         const uploadTask = uploadBytesResumable(storageRef, photo);
 
-        //console.log(storageRef)
+        console.log(photo)
         try{
             if(photo){
+                console.log('w')
                 uploadTask.on('state_changed',
                     (snapshot) => {
                         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -49,7 +50,7 @@ export function Profile() {
                     () => {
                         getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
                             await updateProfile(auth.currentUser, {
-                                photoURL: downloadURL ? downloadURL : '',
+                                photoURL: downloadURL ? downloadURL : user.photo,
                             }).then(() => {
                             
                             }).catch((error) => {
@@ -58,7 +59,7 @@ export function Profile() {
 
 
                             await updateDoc(doc(db, 'users', user.id),{
-                                photoURL: downloadURL ? downloadURL : '',
+                                photoURL: downloadURL ? downloadURL : user.photo,
                             })
                         });
                     }
@@ -68,7 +69,8 @@ export function Profile() {
             
             await updateProfile(auth.currentUser, {
                 displayName:name !== '' ? name : user.name,
-                email:email !== '' ? email : user.email
+                email:email !== '' ? email : user.email,
+                photoURL:user.photo 
             }).then(() => {
             
             }).catch((error) => {
@@ -77,8 +79,9 @@ export function Profile() {
 
 
             await updateDoc(doc(db, 'users', user.id),{
-                displayName:name !== '' ? name : user.name,
-                email:email !== '' ? email : user.email
+                name:name !== '' ? name : user.name,
+                email:email !== '' ? email : user.email,
+                photoURL:user.photo 
             })
             
             
@@ -86,6 +89,8 @@ export function Profile() {
             console.error(error)
         }
 
+        setEmail('')
+        setName('')
     }    
 
 
@@ -94,7 +99,7 @@ export function Profile() {
             //console.log("Current data: ", doc.data());
             const data = doc.data()
             console.log(data)
-            const name = data.displayName
+            const name = data.name
             const photo = data.photoURL
             const email = data.email
             dispatch(updateUser({name, photo, email}))
@@ -102,7 +107,7 @@ export function Profile() {
         return () => {
             unsub()
         }
-    }, [user.id])
+    }, [user.name, user.photoURL, user.email])
 
     
 

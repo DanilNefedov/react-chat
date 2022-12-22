@@ -8,7 +8,8 @@ import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { updateUser } from "../../store/authSlice";
 
 export function SideBarMain() {
-    // const user = useSelector(state => state.user)
+    const user = useSelector(state => state.user)
+    //console.log(user)
     // const db = getFirestore();
     // const dispatch = useDispatch()
 
@@ -26,7 +27,7 @@ export function SideBarMain() {
     //     return () => {
     //         unsub()
     //     }
-    // }, [user.id])
+    // }, [user.photo])
 
 
     return (

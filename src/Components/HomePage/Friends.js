@@ -8,6 +8,7 @@ import { addFrined, addLastMessage } from '../../store/friendSlice'
 import { useState } from 'react';
 import { getFirestore, collection, query, where, getDocs, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
+import { updateUser } from '../../store/authSlice';
 //import { redirect } from 'react-router-dom';
 
 
@@ -18,7 +19,7 @@ export function Friends() {
     const [user, setUser] = useState('')
 
     const myInfo = useSelector(state => state.user)
-    console.log(myInfo)
+    //console.log(myInfo)
 
     const db = getFirestore();
 
@@ -110,12 +111,39 @@ export function Friends() {
             }
             
         });
-        
+
+        // const unsubPhoto = onSnapshot(doc(db, "users", myInfo.id), (doc) => {
+        //     //console.log("Current data: ", doc.data());
+        //     const data = doc.data()
+        //     //console.log(data)
+        //     // const name = data.name
+        //     const photo = data.photoURL
+        //     //const email = data.email
+        //     dispatch(updateUser({ photo}))
+        // });
+
+    
         return () => {
-            unsub()
-            
+            //unsubPhoto()
+            unsub() 
         }
     },[myInfo.id, friendList.map(el => el.timePublic)]) 
+
+
+    // useEffect (()=>{
+    //     const unsub = onSnapshot(doc(db, "users", myInfo.id), (doc) => {
+    //         //console.log("Current data: ", doc.data());
+    //         const data = doc.data()
+    //         //console.log(data)
+    //        // const name = data.name
+    //         const photo = data.photoURL
+    //         //const email = data.email
+    //         dispatch(updateUser({ photo}))
+    //     });
+    //     return () => {
+    //         unsub()
+    //     }
+    // }, [myInfo.photo])
     
     
     const sortState = [...friendList]

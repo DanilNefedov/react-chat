@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import {setUser} from '../../store/authSlice'
 import { useNavigate } from "react-router-dom";
 import { getFirestore } from "firebase/firestore";
+import img from '../../img/user-M.png'
 
 
 
@@ -33,13 +34,15 @@ export function Registration () {
                         name:user.displayName,
                         email:user.email,
                         id:user.uid,
-                        token:user.accessToken
+                        token:user.accessToken,
+                        photo:''
                     }))
                     //console.log(user, user2)
                     await setDoc(doc(db, 'users', user.uid),{
                         name:user.displayName,
                         email:user.email,
-                        id:user.uid
+                        id:user.uid,
+                        photo:''
                     })
                     
                     await setDoc(doc(db, 'chatsList', user.uid),{})

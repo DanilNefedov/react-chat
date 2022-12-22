@@ -18,6 +18,7 @@ export function Friends() {
     const [user, setUser] = useState('')
 
     const myInfo = useSelector(state => state.user)
+    console.log(myInfo)
 
     const db = getFirestore();
 

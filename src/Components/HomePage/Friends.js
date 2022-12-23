@@ -73,11 +73,12 @@ export function Friends() {
             if(doc.data()){
                
                 const data = Object.entries(doc.data())
-                //console.log(data)
+                console.log(data)
                 data.map(el => {
                     const combinedId = el[0]
                     const friendId = el[1].userInfo.id
                     const name = el[1].userInfo.displayName
+                    const photo = el[1].userInfo.photo
                     const lastMessages = el[1].lastMessage ? el[1].lastMessage.messageText : 'No messages'
                     //console.log(lastMessages)
                     const timePublic = el[1].date.toDate().getTime()
@@ -94,7 +95,7 @@ export function Friends() {
                     //console.log(find, friendList)
                     if (!find) {
                         //console.log('new')
-                        dispatch(addFrined({ combinedId, name, date, friendId, timePublic, lastMessages }))
+                        dispatch(addFrined({ combinedId, name, date, friendId, timePublic, lastMessages, photo }))
                     }else if(find.timePublic !== friendList.timePublic){
                         const friendInfo = combinedId
                         const messageText = lastMessages
@@ -112,16 +113,7 @@ export function Friends() {
             
         });
 
-        // const unsubPhoto = onSnapshot(doc(db, "users", myInfo.id), (doc) => {
-        //     //console.log("Current data: ", doc.data());
-        //     const data = doc.data()
-        //     //console.log(data)
-        //     // const name = data.name
-        //     const photo = data.photoURL
-        //     //const email = data.email
-        //     dispatch(updateUser({ photo}))
-        // });
-
+       
     
         return () => {
             //unsubPhoto()
@@ -130,21 +122,7 @@ export function Friends() {
     },[myInfo.id, friendList.map(el => el.timePublic)]) 
 
 
-    // useEffect (()=>{
-    //     const unsub = onSnapshot(doc(db, "users", myInfo.id), (doc) => {
-    //         //console.log("Current data: ", doc.data());
-    //         const data = doc.data()
-    //         //console.log(data)
-    //        // const name = data.name
-    //         const photo = data.photoURL
-    //         //const email = data.email
-    //         dispatch(updateUser({ photo}))
-    //     });
-    //     return () => {
-    //         unsub()
-    //     }
-    // }, [myInfo.photo])
-    
+ 
     
     const sortState = [...friendList]
 

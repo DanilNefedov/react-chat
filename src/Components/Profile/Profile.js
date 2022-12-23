@@ -4,10 +4,11 @@ import style from './Profile.module.css'
 import img from '../../img/user-M.png'
 import { useState } from "react"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { getAuth, updateEmail, updateProfile } from "firebase/auth";
+import { EmailAuthProvider, getAuth, reauthenticateWithCredential, updateEmail, updateProfile } from "firebase/auth";
 import { updateUser } from "../../store/authSlice"
 import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore"
 import { useEffect } from "react"
+import { Modal } from "../Modal/Modal"
 
 
 
@@ -25,20 +26,17 @@ export function Profile() {
     const [email, setEmail] = useState('')
 
 
-
-
-    //console.log(photo, user)
-
     const submiteUpdates = async (event) =>{
         event.preventDefault()
-        const storage = getStorage();
-        const storageRef = ref(storage, `avatar/${user.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, photo);
+        
 
         console.log(photo)
         try{
             if(photo){
-                console.log('w')
+                const storage = getStorage();
+                const storageRef = ref(storage, `avatar/${user.name}`);
+                const uploadTask = uploadBytesResumable(storageRef, photo);
+                //console.log(user.photo)
                 uploadTask.on('state_changed',
                     (snapshot) => {
                         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -49,8 +47,9 @@ export function Profile() {
                     },
                     () => {
                         getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
+                            //console.log(downloadURL)
                             await updateProfile(auth.currentUser, {
-                                photoURL: downloadURL ? downloadURL : user.photo,
+                                photoURL: downloadURL 
                             }).then(() => {
                             
                             }).catch((error) => {
@@ -59,7 +58,7 @@ export function Profile() {
 
 
                             await updateDoc(doc(db, 'users', user.id),{
-                                photoURL: downloadURL ? downloadURL : user.photo,
+                                photoURL: downloadURL 
                             })
                         });
                     }
@@ -67,6 +66,7 @@ export function Profile() {
                 
             }
             
+
             await updateProfile(auth.currentUser, {
                 displayName:name !== '' ? name : user.name,
                 email:email !== '' ? email : user.email,
@@ -84,21 +84,51 @@ export function Profile() {
                 photoURL:user.photo 
             })
             
+            // await updateDoc(doc(db, 'chatsList', user.id),{
+            //     name:name !== '' ? name : user.name,
+            //     photoURL:user.photo 
+            // })
             
         }catch(error){
             console.error(error)
         }
 
-        setEmail('')
+        
         setName('')
     }    
+    const [activeModal, setActiveModal] = useState(false)
+    const [passwodModal, setPasswordModal] = useState('')
+
+    const promptForCredentials = async () => {
+            setActiveModal(true)
+            console.log(passwodModal)
+            const credential = EmailAuthProvider.credential(
+                auth.currentUser.email,
+                passwodModal// промт c паролем
+            ) 
+            const reUser = auth.currentUser;
+        
+            await reauthenticateWithCredential(reUser, credential).then(async () => {
+                await updateEmail(reUser, email ).then(() => {
+
+                }).catch((err) =>{
+                    console.error(err)
+                })
+            }).catch((error) => {
+                console.error(error)
+            });
+       // }
+       setEmail('')
+    }
+
+
 
 
     useEffect (()=>{
         const unsub = onSnapshot(doc(db, "users", user.id), (doc) => {
             //console.log("Current data: ", doc.data());
             const data = doc.data()
-            console.log(data)
+            //console.log(data)
             const name = data.name
             const photo = data.photoURL
             const email = data.email
@@ -111,7 +141,7 @@ export function Profile() {
 
     
 
-    console.log(user, photo)
+    //console.log(user.photo)
 
     
     return (
@@ -158,9 +188,13 @@ export function Profile() {
                     <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="enter email" type="email" className={classNames('edit-field', style.editEmail)} />
                 </div>
                 <div className={classNames(style.updateSection, 'update')}>
-                    <button onClick={submiteUpdates} className={classNames(style.btnUpdate)}>Update</button>
+                    <button onClick={(event) => {
+                        submiteUpdates(event)
+                        email !== '' && setActiveModal(true)
+                        }} className={classNames(style.btnUpdate)}>Update</button>
                 </div>
             </div>
+            <Modal promptForCredentials={promptForCredentials} activeModal={activeModal} setActiveModal={setActiveModal} passwodModal={passwodModal} setPasswordModal={setPasswordModal}></Modal>
         </section>
     )
 }

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addFrined } from '../../store/friendSlice';
 import { SearchList } from './SearchList'
 import { doc, getDoc, getFirestore, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+import img from '../../img/user-M.png'
 
 
 
@@ -12,6 +13,8 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
 
     const name = user.name;
     const id = user.id;
+    const photo = user.photo 
+    
     //const email = user.email;
 
     const dispatch = useDispatch()
@@ -22,6 +25,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
     const friend = useSelector(state => state.friend.friend)
     //console.log(friend,name)
     const myInfo = useSelector(state => state.user)
+    //console.log(photo, myInfo)
 
     const combinedId = myInfo.id > id ? myInfo.id + id : id + myInfo.id
     
@@ -35,7 +39,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
 
             if (!find) {
                 const friendId = id
-                dispatch(addFrined({ combinedId, name, friendId }))
+                dispatch(addFrined({ combinedId, name, friendId, photo }))
             }
             
             const res = await getDoc(doc(db, 'chats', combinedId))
@@ -48,7 +52,8 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
                 await updateDoc(doc(db, 'chatsList', myInfo.id), {
                     [combinedId + '.userInfo']: {
                         id: id,
-                        displayName: name
+                        displayName: name,
+                        photo
                     },
                     [combinedId + '.date']: serverTimestamp()
                 })
@@ -56,7 +61,8 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
                 await updateDoc(doc(db, 'chatsList', user.id), {
                     [combinedId + '.userInfo']: {
                         id: myInfo.id,
-                        displayName: myInfo.name
+                        displayName: myInfo.name,
+                        photo: myInfo.photo
                     },
                     [combinedId + '.date']: serverTimestamp()
                 })

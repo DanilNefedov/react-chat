@@ -33,7 +33,7 @@ export function SingIn (){
         const unsub = onAuthStateChanged(auth, (user)=>{
             
             if(user && location === '/login'){
-                // console.log(user)
+                //console.log(user)
                 dispatch(setUser({
                     name:user.displayName,
                     email:user.email,

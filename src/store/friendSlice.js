@@ -17,7 +17,8 @@ const friendSlice = createSlice({
                 date: action.payload.date,
                 friendId: action.payload.friendId,
                 lastMessages:action.payload.lastMessages,
-                timePublic: action.payload.timePublic
+                timePublic: action.payload.timePublic,
+                photo: action.payload.photo
             })
         },
         addLastMessage(state, action){

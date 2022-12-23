@@ -6,16 +6,16 @@ import { Link } from 'react-router-dom';
 
 export function FriendsList({friend}) {
 
-    const {id, name, lastMessages, date} = friend
+    const {id, name, lastMessages, date, photo} = friend
     //const datePush = Object.fromEntries(friend.date)
-    //console.log(datePush.toDate().toString())
+    //console.log(friend)
 
     return (
 
         <Link to={id} className={classNames(style.list, 'list-content')}>
             <div className={style.message}>
                 <div className={classNames(style.user, 'user-mess')}>
-                    <img src='/' alt="User" />
+                    <img src={photo} alt="User" />
                 </div>
                 <div className={style.userMess}>
                     <p className={classNames(style.name, 'head-name')}>{name}</p>

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { FriendsList } from "./FriendsList/FriendsList";
 import { Search } from '../Search/Search'
-import { addFrined, addLastMessage } from '../../store/friendSlice'
+import { addFrined, addLastMessage, updateName, updatePhoto, updatePhotoName } from '../../store/friendSlice'
 import { useState } from 'react';
 import { getFirestore, collection, query, where, getDocs, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
@@ -34,22 +34,24 @@ export function Friends() {
 
 
     const searchUsers = async () =>{
-        
-        const q = query(collection(db, "users"), where('name', '==', text));
+        if(text !== myInfo.name){//change to id
+            const q = query(collection(db, "users"), where('name', '==', text));
 
-        try{
-            const querySnapshot = await getDocs(q);
-            querySnapshot.forEach((doc) => {
-                const data = doc.data()
-                //console.log(data)
-                setUser(data)
+            try{
+                const querySnapshot = await getDocs(q);
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data()
+                    console.log(data)
+                    setUser(data)
 
 
-            });
+                });
 
-        }catch (error){
-            console.log(error)
+            }catch (error){
+                console.log(error)
+            }
         }
+        
         
     }
 
@@ -61,7 +63,7 @@ export function Friends() {
         
     } 
     const friendList = useSelector(state => state.friend.friend)
-    //console.log(friendList)
+    console.log(friendList)
     const day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
     // const [dateState, useDateState] = useState('')
@@ -75,13 +77,14 @@ export function Friends() {
                 const data = Object.entries(doc.data())
                 console.log(data)
                 data.map(el => {
+                    //console.log(friendList)
                     const combinedId = el[0]
                     const friendId = el[1].userInfo.id
                     const name = el[1].userInfo.displayName
                     const photo = el[1].userInfo.photo
                     const lastMessages = el[1].lastMessage ? el[1].lastMessage.messageText : 'No messages'
                     //console.log(lastMessages)
-                    const timePublic = el[1].date.toDate().getTime()
+                    const timePublic = el[1].date.toDate().getTime() ? el[1].date.toDate().getTime() : '--:--'
                     const dayMess = day[el[1].date.toDate().getDay()]//
                     const hoursMess = el[1].date.toDate().getHours()//
                     let minute = el[1].date.toDate().getMinutes().toString()
@@ -96,16 +99,19 @@ export function Friends() {
                     if (!find) {
                         //console.log('new')
                         dispatch(addFrined({ combinedId, name, date, friendId, timePublic, lastMessages, photo }))
-                    }else if(find.timePublic !== friendList.timePublic){
+                    }else if(find.timePublic !== timePublic){
                         const friendInfo = combinedId
                         const messageText = lastMessages
                         const datePush = date
-                        //console.log('old')
+                        //console.log(timePublic)
                         dispatch(addLastMessage({friendInfo, messageText, datePush, timePublic}))
                         
+                    }else if(find.name !== name || find.photo !== photo){
+                        const friendInfo = combinedId
+                        console.log(photo)//update when new photo and name
+                        dispatch(updatePhotoName({friendInfo, photo, name}))
                     }
-
-                    //console.log(data, combinedId)
+                    
                 })
             }else{
                 return false
@@ -119,7 +125,7 @@ export function Friends() {
             //unsubPhoto()
             unsub() 
         }
-    },[myInfo.id, friendList.map(el => el.timePublic)]) 
+    },[myInfo.id, friendList.map(el => el.timePublic), friendList.map(el => el.name), friendList.map(el => el.photo)]) //update friend avatar \ name \ 
 
 
  

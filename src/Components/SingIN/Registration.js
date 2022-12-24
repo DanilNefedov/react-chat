@@ -35,14 +35,14 @@ export function Registration () {
                         email:user.email,
                         id:user.uid,
                         token:user.accessToken,
-                        photoURL:''
+                        photo:null
                     }))
                     //console.log(user, user2)
                     await setDoc(doc(db, 'users', user.uid),{
                         name:user.displayName,
                         email:user.email,
                         id:user.uid,
-                        photoURL:''
+                        photoURL:null
                     })
                     
                     await setDoc(doc(db, 'chatsList', user.uid),{})

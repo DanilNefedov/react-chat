@@ -13,7 +13,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
 
     const name = user.name;
     const id = user.id;
-    const photo = user.photo 
+    const photo = user.photoURL
     
     //const email = user.email;
 
@@ -25,14 +25,14 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
     const friend = useSelector(state => state.friend.friend)
     //console.log(friend,name)
     const myInfo = useSelector(state => state.user)
-    //console.log(photo, myInfo)
+    //console.log(name, id,photo, friend, myInfo)
 
     const combinedId = myInfo.id > id ? myInfo.id + id : id + myInfo.id
     
     const bindChat = async () => {
         
         const find = friend.find(el => el.id === combinedId)
-        //id = combinedId
+
         //console.log(find, friend)
 
         try {
@@ -53,7 +53,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
                     [combinedId + '.userInfo']: {
                         id: id,
                         displayName: name,
-                        photo
+                        photo: photo
                     },
                     [combinedId + '.date']: serverTimestamp()
                 })
@@ -90,7 +90,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
                     {(!user) ? (
                         <div className="">Search list is empty</div>
                     ) : (
-                        <SearchList userName={name} userId={combinedId}  clickChat={bindChat} />
+                        <SearchList photo={photo} userName={name} userId={combinedId}  clickChat={bindChat} />
                     )}
                 </div>
             </section>

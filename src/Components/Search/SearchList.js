@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 
 export function SearchList(friendList) {
-    const {userName, userId, clickChat} = friendList
+    const {userName, userId, clickChat, photo} = friendList
     // const friend = useSelector(state => state.friend.friend)
     // console.log(friend[0].id)
 
@@ -17,7 +17,7 @@ export function SearchList(friendList) {
                 clickChat()
             }} className={classNames(style.list)}>
             <div className={classNames(style.user, 'user-mess')}>
-                <img src='/' alt="User" />
+                <img src={photo} alt="User" />
             </div>
             <div className={style.userMess}>
                 <p className={classNames(style.name, 'head-name')}>{userName}</p>

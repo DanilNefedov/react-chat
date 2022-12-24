@@ -27,11 +27,21 @@ const friendSlice = createSlice({
             friend.lastMessages = action.payload.messageText
             friend.date = action.payload.datePush
             friend.timePublic = action.payload.timePublic
+        },
+        updatePhotoName(state,action){
+            const friend = state.friend.find(el => el.id === action.payload.friendInfo)
+            friend.photo = action.payload.photo 
+            friend.name = action.payload.name
+            
         }
+        // updateName(state,action){
+        //     const friend = state.friend.find(el => el.id === action.payload.friendInfo)
+           
+        // }
     }
 })
 
 
-export const {addFrined, addLastMessage} = friendSlice.actions;
+export const {addFrined, addLastMessage, updatePhoto, updatePhotoName} = friendSlice.actions;
 
 export default friendSlice.reducer;

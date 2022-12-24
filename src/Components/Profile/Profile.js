@@ -6,7 +6,7 @@ import { useState } from "react"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { EmailAuthProvider, getAuth, reauthenticateWithCredential, updateEmail, updateProfile } from "firebase/auth";
 import { updateUser } from "../../store/authSlice"
-import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore"
+import { doc, enableNetwork, getFirestore, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore"
 import { useEffect } from "react"
 import { Modal } from "../Modal/Modal"
 
@@ -15,6 +15,7 @@ import { Modal } from "../Modal/Modal"
 export function Profile() {
 
     const user = useSelector(state => state.user)
+    const friend = useSelector(state => state.friend.friend)
     const auth = getAuth();
     const dispatch = useDispatch()
     const db = getFirestore();
@@ -83,10 +84,37 @@ export function Profile() {
                 email:email !== '' ? email : user.email,
                 photoURL:user.photo 
             })
+            console.log(friend, user)
+            friend.map( async (el) => {
+                
+                await updateDoc(doc(db, 'chatsList', el.friendId), {
+                    [el.id + '.userInfo']: {
+                        id: user.id,
+                        displayName: name !== '' ? name : user.name,
+                        photo: user.photo
+                    }
+                })
+            })
             
-            // await updateDoc(doc(db, 'chatsList', user.id),{
-            //     name:name !== '' ? name : user.name,
-            //     photoURL:user.photo 
+            //if(friend.length > 0){
+                
+            //}
+            // await updateDoc(doc(db, 'chatsList', myInfo.id), {
+            //     [combinedId + '.userInfo']: {
+            //         //id: id,
+            //         displayName: name,
+            //         photo
+            //     },
+            //     [combinedId + '.date']: serverTimestamp()
+            // })
+
+            // await updateDoc(doc(db, 'chatsList', user.id), {
+            //     [combinedId + '.userInfo']: {
+            //         id: myInfo.id,
+            //         displayName: myInfo.name,
+            //         photo: myInfo.photo
+            //     },
+            //     [combinedId + '.date']: serverTimestamp()
             // })
             
         }catch(error){

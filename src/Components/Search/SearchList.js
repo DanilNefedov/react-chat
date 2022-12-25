@@ -15,6 +15,7 @@ export function SearchList(friendList) {
         <Link to={userId} onClick={() => {
                 // clickLink()
                 clickChat()
+                //setLink('')
             }} className={classNames(style.list)}>
             <div className={classNames(style.user, 'user-mess')}>
                 <img src={photo} alt="User" />

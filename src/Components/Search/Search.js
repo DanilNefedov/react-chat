@@ -6,6 +6,8 @@ import { addFrined } from '../../store/friendSlice';
 import { SearchList } from './SearchList'
 import { doc, getDoc, getFirestore, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 import img from '../../img/user-M.png'
+import { useState } from 'react';
+import { Empty } from '../Empty/Empty';
 
 
 
@@ -18,8 +20,9 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
     //const email = user.email;
 
     const dispatch = useDispatch()
-
+    //const [link, setLink] = useState(true)
     const db = getFirestore()
+   
 
 
     const friend = useSelector(state => state.friend.friend)
@@ -33,40 +36,44 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
         
         const find = friend.find(el => el.id === combinedId)
 
-        //console.log(find, friend)
+        console.log(user)
 
         try {
+            if(id !== myInfo.id){
+                console.log('n')
+                if (!find) {
+                    const friendId = id
+                    dispatch(addFrined({ combinedId, name, friendId, photo }))
+                }
+                
+                const res = await getDoc(doc(db, 'chats', combinedId))
+                
+                
 
-            if (!find) {
-                const friendId = id
-                dispatch(addFrined({ combinedId, name, friendId, photo }))
+                if (!res.exists()) {
+                    await setDoc(doc(db, 'chats', combinedId), { messages: [] })
+
+                    await updateDoc(doc(db, 'chatsList', myInfo.id), {
+                        [combinedId + '.userInfo']: {
+                            id: id,
+                            displayName: name,
+                            photo: photo
+                        },
+                        [combinedId + '.date']: serverTimestamp()
+                    })
+
+                    await updateDoc(doc(db, 'chatsList', user.id), {
+                        [combinedId + '.userInfo']: {
+                            id: myInfo.id,
+                            displayName: myInfo.name,
+                            photo: myInfo.photo
+                        },
+                        [combinedId + '.date']: serverTimestamp()
+                    })
+                }
             }
-            
-            const res = await getDoc(doc(db, 'chats', combinedId))
-            
-            
 
-            if (!res.exists()) {
-                await setDoc(doc(db, 'chats', combinedId), { messages: [] })
-
-                await updateDoc(doc(db, 'chatsList', myInfo.id), {
-                    [combinedId + '.userInfo']: {
-                        id: id,
-                        displayName: name,
-                        photo: photo
-                    },
-                    [combinedId + '.date']: serverTimestamp()
-                })
-
-                await updateDoc(doc(db, 'chatsList', user.id), {
-                    [combinedId + '.userInfo']: {
-                        id: myInfo.id,
-                        displayName: myInfo.name,
-                        photo: myInfo.photo
-                    },
-                    [combinedId + '.date']: serverTimestamp()
-                })
-            }
+            
         } catch (error) {
             console.error(error)
         }
@@ -87,10 +94,10 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
             <section className={style.searchList}>
                 <div className={style.searchCont}>
                     <h2 className='header'>Search List</h2>
-                    {(!user) ? (
-                        <div className="">Search list is empty</div>
+                    {(!user ) ? (
+                        <Empty />
                     ) : (
-                        <SearchList photo={photo} userName={name} userId={combinedId}  clickChat={bindChat} />
+                        <SearchList photo={photo} userName={name} userId={combinedId} clickChat={bindChat} />
                     )}
                 </div>
             </section>

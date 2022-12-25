@@ -26,18 +26,43 @@ export function Profile() {
 
     const [email, setEmail] = useState('')
 
+    const [activeModal, setActiveModal] = useState(false)
+    const [passwodModal, setPasswordModal] = useState('')
+
 
     const submiteUpdates = async (event) =>{
         event.preventDefault()
         
-
-        console.log(photo)
         try{
+            if(email !== ''){
+                setActiveModal(true)
+                //console.log(passwodModal)
+                const credential = EmailAuthProvider.credential(
+                    auth.currentUser.email,
+                    passwodModal// промт c паролем
+                ) 
+                const reUser = auth.currentUser;
+            
+                await reauthenticateWithCredential(reUser, credential).then(async () => {
+                    await updateEmail(reUser, email ).then(() => {
+
+                    }).catch((err) =>{
+                        console.error(err)
+                    })
+                }).catch((error) => {
+                    console.error(error)
+                });
+                // }
+                setEmail('')
+                setPasswordModal('')
+            }
+
+
             if(photo){
                 const storage = getStorage();
                 const storageRef = ref(storage, `avatar/${user.name}`);
                 const uploadTask = uploadBytesResumable(storageRef, photo);
-                //console.log(user.photo)
+                //console.log('photo')
                 uploadTask.on('state_changed',
                     (snapshot) => {
                         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -61,11 +86,25 @@ export function Profile() {
                             await updateDoc(doc(db, 'users', user.id),{
                                 photoURL: downloadURL 
                             })
+
+
+                            friend.map( async (el) => {
+                
+                                await updateDoc(doc(db, 'chatsList', el.friendId), {
+                                    [el.id + '.userInfo']: {
+                                        id: user.id,
+                                        displayName: name !== '' ? name : user.name,
+                                        photo: downloadURL
+                                    }
+                                })
+                            })
                         });
                     }
                 );
                 
             }
+
+
             
 
             await updateProfile(auth.currentUser, {
@@ -84,7 +123,7 @@ export function Profile() {
                 email:email !== '' ? email : user.email,
                 photoURL:user.photo 
             })
-            console.log(friend, user)
+            //console.log(friend, user)
             friend.map( async (el) => {
                 
                 await updateDoc(doc(db, 'chatsList', el.friendId), {
@@ -96,26 +135,6 @@ export function Profile() {
                 })
             })
             
-            //if(friend.length > 0){
-                
-            //}
-            // await updateDoc(doc(db, 'chatsList', myInfo.id), {
-            //     [combinedId + '.userInfo']: {
-            //         //id: id,
-            //         displayName: name,
-            //         photo
-            //     },
-            //     [combinedId + '.date']: serverTimestamp()
-            // })
-
-            // await updateDoc(doc(db, 'chatsList', user.id), {
-            //     [combinedId + '.userInfo']: {
-            //         id: myInfo.id,
-            //         displayName: myInfo.name,
-            //         photo: myInfo.photo
-            //     },
-            //     [combinedId + '.date']: serverTimestamp()
-            // })
             
         }catch(error){
             console.error(error)
@@ -124,30 +143,6 @@ export function Profile() {
         
         setName('')
     }    
-    const [activeModal, setActiveModal] = useState(false)
-    const [passwodModal, setPasswordModal] = useState('')
-
-    const promptForCredentials = async () => {
-            setActiveModal(true)
-            console.log(passwodModal)
-            const credential = EmailAuthProvider.credential(
-                auth.currentUser.email,
-                passwodModal// промт c паролем
-            ) 
-            const reUser = auth.currentUser;
-        
-            await reauthenticateWithCredential(reUser, credential).then(async () => {
-                await updateEmail(reUser, email ).then(() => {
-
-                }).catch((err) =>{
-                    console.error(err)
-                })
-            }).catch((error) => {
-                console.error(error)
-            });
-       // }
-       setEmail('')
-    }
 
 
 
@@ -217,12 +212,11 @@ export function Profile() {
                 </div>
                 <div className={classNames(style.updateSection, 'update')}>
                     <button onClick={(event) => {
-                        submiteUpdates(event)
-                        email !== '' && setActiveModal(true)
+                        email !== '' ? setActiveModal(true) : submiteUpdates(event)
                         }} className={classNames(style.btnUpdate)}>Update</button>
                 </div>
             </div>
-            <Modal promptForCredentials={promptForCredentials} activeModal={activeModal} setActiveModal={setActiveModal} passwodModal={passwodModal} setPasswordModal={setPasswordModal}></Modal>
+            <Modal submiteUpdates={submiteUpdates} activeModal={activeModal} setActiveModal={setActiveModal} passwodModal={passwodModal} setPasswordModal={setPasswordModal}></Modal>
         </section>
     )
 }

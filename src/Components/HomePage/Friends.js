@@ -34,7 +34,7 @@ export function Friends() {
 
 
     const searchUsers = async () =>{
-        if(text !== myInfo.name){//change to id
+        //if(text !== myInfo.name){//change to id
             const q = query(collection(db, "users"), where('name', '==', text));
 
             try{
@@ -50,7 +50,7 @@ export function Friends() {
             }catch (error){
                 console.log(error)
             }
-        }
+        //}
         
         
     }
@@ -133,7 +133,7 @@ export function Friends() {
     const sortState = [...friendList]
 
     //console.log(friendList, sortState)
-    //console.log(sortState)
+    console.log(sortState)
     return (
         <>
             <Search user={user} handleSubmit={taskAddFriend} text={text} setText={setText} handleEvent={handleEvent} />

@@ -3,7 +3,6 @@ import { Layout } from "../Layout/Layout"
 import { useAuth } from "../../hooks/useAuth";
 
 
-//const Layout = lazy(() => import("../Layout/Layout"))
 
 export const ProtecteedRoute = () =>{
     const location = useLocation()

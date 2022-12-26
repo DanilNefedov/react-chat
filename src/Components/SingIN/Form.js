@@ -8,7 +8,7 @@ import style from './SingIn.module.css';
 export function Form({ formProps, handleClick }) {
     const { nameForm, nameButton, link, nameLink } = formProps
 
-    //const auth = useAuth()
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [nameUser, setNameUser] = useState('')

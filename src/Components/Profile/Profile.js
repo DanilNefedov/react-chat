@@ -6,7 +6,7 @@ import { useState } from "react"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { EmailAuthProvider, getAuth, reauthenticateWithCredential, updateEmail, updateProfile } from "firebase/auth";
 import { updateUser } from "../../store/authSlice"
-import { doc, enableNetwork, getFirestore, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore"
+import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore"
 import { useEffect } from "react"
 import { Modal } from "../Modal/Modal"
 

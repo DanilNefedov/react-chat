@@ -6,11 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import { SingIn } from './Components/SingIN/SingIn';
 import { ProtecteedRoute } from './Components/SingIN/ProtectedRoute';
 import {Registration} from './Components/SingIN/Registration';
-import { lazy, Suspense } from 'react';
-import { Loader } from './Components/Loader/Loader';
 import { Profile } from './Components/Profile/Profile';
-
-//const ProtecteedRoute = lazy(() => import('./Components/SingIN/ProtectedRoute'))
 
 
 function App() {

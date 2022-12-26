@@ -1,13 +1,13 @@
 import style from './FriendsList.module.css';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import img from '../../../img/user-M.png'
 
 
 
 export function FriendsList({friend}) {
 
     const {id, name, lastMessages, date, photo} = friend
-    //const datePush = Object.fromEntries(friend.date)
     //console.log(friend)
 
     return (
@@ -15,7 +15,7 @@ export function FriendsList({friend}) {
         <Link to={id} className={classNames(style.list, 'list-content')}>
             <div className={style.message}>
                 <div className={classNames(style.user, 'user-mess')}>
-                    <img src={photo} alt="User" />
+                    <img src={photo !== null ? photo : img} alt="User" />
                 </div>
                 <div className={style.userMess}>
                     <p className={classNames(style.name, 'head-name')}>{name}</p>

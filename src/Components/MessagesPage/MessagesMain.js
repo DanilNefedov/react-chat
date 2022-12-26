@@ -9,6 +9,7 @@ import { SendMessages } from './SendMessages';
 import { MessagesFieldMe } from './MessagesFieldMe';
 import { arrayUnion, doc, getFirestore, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
+import img from '../../img/user-M.png'
 
 
 export function MessagesMain() {
@@ -23,7 +24,7 @@ export function MessagesMain() {
     const infoChat = friend.find(el => el.id === link)
 
 
-    //console.log(messagesState)
+    //console.log(infoChat)
 
     //console.log(infoChat)
 
@@ -78,8 +79,7 @@ export function MessagesMain() {
                 <header className={style.header}>
                     <div className={style.user}>
                         <div className={style.userImg}>
-                            <img src='/' alt="User" />
-                            {/* {friendInfo.userImg} */}
+                            <img src={infoChat.photo !== null ? infoChat.photo : img} alt="User" />
                         </div>
                         <div className={style.about}>
                             <h2 className={style.name}>

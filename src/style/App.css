@@ -117,6 +117,7 @@ h6 {
     justify-content: space-between;
     padding: 2.4%;
     /* flex-wrap: wrap; */
+    min-height: 100vh;
 }
 
 .section-main{
@@ -195,12 +196,18 @@ h6 {
 
 .modal{
     display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
     
 }
 
 .active-modal{
-    width: 300px;
-    height: 50px;
+    width: 100%;
+    height: 100%;
     display: block;
-    background-color: bisque;
+    background-color:rgba(255, 255, 255);
+    /*filter: blur(3px); */
+    opacity: 1;
+    border-radius: 20px;
 }

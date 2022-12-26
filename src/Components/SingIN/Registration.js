@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import {setUser} from '../../store/authSlice'
 import { useNavigate } from "react-router-dom";
 import { getFirestore } from "firebase/firestore";
-import img from '../../img/user-M.png'
+
 
 
 
@@ -19,7 +19,6 @@ export function Registration () {
 
     const db = getFirestore()
 
-    //const user2 = useSelector(state => state.user)
 
 
     const handleRegister = async (nameUser, email, password) =>{

@@ -1,8 +1,5 @@
-import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import img from '../../img/user-M.png'
-import { updateUser } from '../../store/authSlice';
 import style from './SideBar.module.css'
 
 export function User() {

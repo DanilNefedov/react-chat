@@ -60,7 +60,6 @@ export function MessagesFieldMe({ infoChat }) {
     }, [infoChat.id])
 
     //console.log(messagesState)
-    //messagesState.length > 0 ? console.log(findChat.messages.map(el => el)) : (console.log('do'))
 
     return (
 

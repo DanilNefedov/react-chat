@@ -31,7 +31,6 @@ import { createSlice } from "@reduxjs/toolkit";
                     //console.log('new')
                     state.messages.push({
                         chatId: action.payload.chatId,
-                        //photoUser: action.payload.friendInfo.img,
                         messages:[
                             {
                                 userId: action.payload.userId,
@@ -44,13 +43,7 @@ import { createSlice } from "@reduxjs/toolkit";
                 }
                 
             }
-            // addMessagesOldFriend(state, action){
-            //     console.log('old')
-            //     const oldFriend = state.messages.find(el => el.chatId === action.payload.chatId)
-            //     //console.log(action.payload.chatId)
-                
-                
-            // }
+
         }
     })
 

@@ -4,12 +4,12 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { FriendsList } from "./FriendsList/FriendsList";
 import { Search } from '../Search/Search'
-import { addFrined, addLastMessage, updateName, updatePhoto, updatePhotoName } from '../../store/friendSlice'
+import { addFrined, addLastMessage, updatePhotoName } from '../../store/friendSlice'
 import { useState } from 'react';
 import { getFirestore, collection, query, where, getDocs, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
-import { updateUser } from '../../store/authSlice';
-//import { redirect } from 'react-router-dom';
+
+
 
 
 export function Friends() {
@@ -34,24 +34,23 @@ export function Friends() {
 
 
     const searchUsers = async () =>{
-        //if(text !== myInfo.name){//change to id
-            const q = query(collection(db, "users"), where('name', '==', text));
+        const q = query(collection(db, "users"), where('name', '==', text));
 
-            try{
-                const querySnapshot = await getDocs(q);
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data()
-                    console.log(data)
-                    setUser(data)
+        try{
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                const data = doc.data()
+                //console.log(data)
+                setUser(data)
 
 
-                });
+            });
 
-            }catch (error){
-                console.log(error)
-            }
-        //}
-        
+        }catch (error){
+            console.error(error)
+        }
+
+    
         
     }
 
@@ -63,10 +62,9 @@ export function Friends() {
         
     } 
     const friendList = useSelector(state => state.friend.friend)
-    console.log(friendList)
+    //console.log(friendList)
     const day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
-    // const [dateState, useDateState] = useState('')
 
     // console.log(dateState)
     useEffect(()=>{
@@ -75,7 +73,7 @@ export function Friends() {
             if(doc.data()){
                
                 const data = Object.entries(doc.data())
-                console.log(data)
+                //console.log(data)
                 data.map(el => {
                     //console.log(friendList)
                     const combinedId = el[0]
@@ -92,7 +90,6 @@ export function Friends() {
                         minute = `0${minute}`
                     }
                     const date = `${dayMess} ${hoursMess}:${minute}`
-                    //useDateState(el[1].date)
                     //console.log(minute,timePublic)
                     const find = friendList.find(el => el.id === combinedId)
                     //console.log(find, friendList)
@@ -108,7 +105,7 @@ export function Friends() {
                         
                     }else if(find.name !== name || find.photo !== photo){
                         const friendInfo = combinedId
-                        console.log(photo)//update when new photo and name
+                        //console.log(photo)//update when new photo and name
                         dispatch(updatePhotoName({friendInfo, photo, name}))
                     }
                     
@@ -125,7 +122,7 @@ export function Friends() {
             //unsubPhoto()
             unsub() 
         }
-    },[myInfo.id, friendList.map(el => el.timePublic), friendList.map(el => el.name), friendList.map(el => el.photo)]) //update friend avatar \ name \ 
+    },[myInfo.id, friendList.map(el => el)]) //update friend without static variables (error in npm)
 
 
  
@@ -133,7 +130,7 @@ export function Friends() {
     const sortState = [...friendList]
 
     //console.log(friendList, sortState)
-    console.log(sortState)
+    //console.log(sortState)
     return (
         <>
             <Search user={user} handleSubmit={taskAddFriend} text={text} setText={setText} handleEvent={handleEvent} />

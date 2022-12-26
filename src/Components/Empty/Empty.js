@@ -1,5 +1,4 @@
-export function Empty ({setLink}){
-    //setLink(true)
+export function Empty (){
 
     return(
         <div className="">Search list is empty</div>

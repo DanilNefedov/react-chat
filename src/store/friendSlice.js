@@ -34,10 +34,6 @@ const friendSlice = createSlice({
             friend.name = action.payload.name
             
         }
-        // updateName(state,action){
-        //     const friend = state.friend.find(el => el.id === action.payload.friendInfo)
-           
-        // }
     }
 })
 

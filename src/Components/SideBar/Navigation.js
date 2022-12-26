@@ -1,7 +1,7 @@
 import style from './SideBar.module.css';
 import home from '../../img/home.svg';
-import notification from '../../img/notification.svg';
-import settings from '../../img/settings.svg';
+// import notification from '../../img/notification.svg';
+// import settings from '../../img/settings.svg';
 import profile from '../../img/profile.svg'
 import { NavLink } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ export function Navigation(){
                     <img src={profile} alt="Profile" className={style.img} />
                 </NavLink>
             </div>
-            <div className={style.notification}>
+            {/* <div className={style.notification}>
                 <NavLink href="#" className={style.link}>
                     <img src={notification} alt="Notification" className={style.img} />
                 </NavLink>
@@ -28,7 +28,7 @@ export function Navigation(){
                 <NavLink href="#" className={style.link}>
                     <img src={settings} alt="Settings" className={style.img} />
                 </NavLink>
-            </div>
+            </div> */}
         </nav>
     );
 }

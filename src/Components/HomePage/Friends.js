@@ -77,7 +77,7 @@ export function Friends() {
                 data.map(el => {
                     //console.log(friendList)
                     const combinedId = el[0]
-                    const friendId = el[1].userInfo.id
+                    const friendId = el[1].userInfo.id// err in page gh
                     const name = el[1].userInfo.displayName
                     const photo = el[1].userInfo.photo
                     const lastMessages = el[1].lastMessage ? el[1].lastMessage.messageText : 'No messages'
@@ -122,7 +122,7 @@ export function Friends() {
             //unsubPhoto()
             unsub() 
         }
-    },[myInfo.id, friendList.map(el => el)]) //update friend without static variables (error in npm)
+    },[myInfo.id, friendList.map(el => el)]) //update friend without static variables (error in npm) 
 
 
  

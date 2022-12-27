@@ -21,18 +21,28 @@
     display: none;
 }
 
-.downloadImg{
+.downloadImg, .deleteBtn, .btnDelete{
     display: block;
     cursor: pointer;
     background-color: var(--main-blue);
     padding: 15px 25px;
     border-radius: 10px;
     color: var(--white);
-    margin-top: 20px;
+   
 }
-
+.deleteBtn, .btnDelete{
+    font-size: 14px;
+    background-color: #FF0000;
+    margin-left: 20px;
+}
 .userPhoto img{
     width: 200px;
+    
+}
+.editPhoto{ 
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
 }
 
 .editAbout, .editField{

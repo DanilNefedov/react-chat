@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { SendMessages } from './SendMessages';
 import { MessagesFieldMe } from './MessagesFieldMe';
-import { arrayUnion, doc, getFirestore, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
+import { arrayUnion, doc, getDoc, getFirestore, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
 import img from '../../img/user-M.png'
 
@@ -52,14 +52,18 @@ export function MessagesMain() {
                 },
                 [infoChat.id + '.date']: serverTimestamp()
             })
-
-
-            await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
-                [infoChat.id + '.lastMessage']: {
-                    messageText
-                },
-                [infoChat.id + '.date']: serverTimestamp()
-            })
+            
+            const res = await getDoc(doc(db, 'chatsList', infoChat.friendId))
+            
+            if(res.exists()){
+                await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
+                    [infoChat.id + '.lastMessage']: {
+                        messageText
+                    },
+                    [infoChat.id + '.date']: serverTimestamp()
+                })
+            }
+            
 
         }
         

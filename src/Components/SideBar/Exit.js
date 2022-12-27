@@ -1,7 +1,7 @@
 import { getAuth, signOut } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import exit from '../../img/exit.svg'
-import { setUser } from '../../store/authSlice';
+import { removeUser, setUser } from '../../store/authSlice';
 import style from './SideBar.module.css'
 
 export function Exit() {
@@ -11,12 +11,7 @@ export function Exit() {
 
     const clickOut = () => {
         signOut(auth).then(() => {
-           dispatch(setUser({
-                name:null,
-                email:null,
-                id:null,
-                token:null
-           }))
+           dispatch(removeUser())
         }).catch((error) => {
             console.error(error)
         });

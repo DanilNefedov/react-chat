@@ -6,9 +6,11 @@ import { useState } from "react"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { deleteUser, EmailAuthProvider, getAuth, reauthenticateWithCredential, signOut, updateEmail, updateProfile } from "firebase/auth";
 import { removePhoto, removeUser, setUser, updateUser } from "../../store/authSlice"
-import { deleteDoc, doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore"
+import { deleteDoc, deleteField, doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore"
 import { useEffect } from "react"
 import { Modal } from "../Modal/Modal"
+import { removeFrined } from "../../store/friendSlice"
+import { removeMessage } from "../../store/messagesSlice"
 
 
 
@@ -211,10 +213,10 @@ export function Profile() {
         }
 
     }
-
+    console.log(friend)
 
     const deleteAccount = (e) => {
-        e.preventDefault()//проверить с дефол поведением 
+        e.preventDefault()
 
         const user = auth.currentUser;
         //console.log(user)
@@ -225,13 +227,47 @@ export function Profile() {
 
         reauthenticateWithCredential(user, credential).then(() => {//указать для друга, что аккаунт был удален // ошибка при удалении аккаунта а после создании нового с той же почтой возможно увидеть старные сообщения + в бд не удаляется док "chats"
             deleteUser(user).then(async () => {
+                console.log(user)
 
                 await deleteDoc(doc(db, "users", user.uid));
-                await deleteDoc(doc(db, "chatsList", user.uid));
-                await deleteDoc(doc(db, "chats", user.uid));
+
+
+                friend.map( async el => {
+                    //console.log(el.id.reverse())
+                    await updateDoc(doc(db, 'chatsList',  user.uid), {
+                        [el.id]: deleteField(),
+                        // lastMessage: deleteField(),
+                        // userInfo: deleteField(),
+                        //photoURL: deleteField(),
+                        acc: 'deleted'
+                    });
+                })
+
+                
+                friend.map( async el => {
+                    //console.log(el.id.reverse())
+                    await updateDoc(doc(db, 'chatsList',  el.friendId), {
+                        //[el.id]: deleteField(),
+                        [el.id + '.userInfo']: {
+                            photo:null,
+                            displayName:'Deleted',
+                            acc: 'deleted'
+                        },
+                        
+                    });
+                })
+
+                
+                //await deleteDoc(doc(db, "chatsList", user.uid));
+                // friend.map( async el => {
+                //     await deleteDoc(doc(db, "chats", el.id));//not uid\ need combined id
+                // })
+                
 
                 signOut(auth).then(() => {
                     dispatch(removeUser())
+                    dispatch(removeFrined())
+                    dispatch(removeMessage())
                 }).catch((error) => {
                     console.error(error)
                 });
@@ -244,6 +280,8 @@ export function Profile() {
         }).catch((error) => {
             console.error(error)
         });
+        // location.reload();
+        
 
     }
 

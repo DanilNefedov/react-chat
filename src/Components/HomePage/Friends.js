@@ -66,7 +66,7 @@ export function Friends() {
     const day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 
-    // console.log(dateState)
+    console.log(user)
     useEffect(()=>{
         
         const unsub = onSnapshot(doc(db, "chatsList", myInfo.id), (doc) => {
@@ -75,39 +75,43 @@ export function Friends() {
                 const data = Object.entries(doc.data())
                 //console.log(data)
                 data.map(el => {
-                    //console.log(friendList)
+                    console.log(data, friendList)
                     const combinedId = el[0]
-                    const friendId = el[1].userInfo.id// err in page gh
-                    const name = el[1].userInfo.displayName
-                    const photo = el[1].userInfo.photo
-                    const lastMessages = el[1].lastMessage ? el[1].lastMessage.messageText : 'No messages'
-                    //console.log(lastMessages)
-                    const timePublic = el[1].date.toDate().getTime() ? el[1].date.toDate().getTime() : '--:--'
-                    const dayMess = day[el[1].date.toDate().getDay()]//
-                    const hoursMess = el[1].date.toDate().getHours()//
-                    let minute = el[1].date.toDate().getMinutes().toString()
-                    if(minute.length === 1){
-                        minute = `0${minute}`
+                    if(combinedId){
+                        const friendId = el[1].userInfo.id// err in page gh
+                        const name = el[1].userInfo.displayName
+                        console.log(name)
+                        const photo = el[1].userInfo.photo
+                        const lastMessages = el[1].lastMessage ? el[1].lastMessage.messageText : 'No messages'
+                        //console.log(lastMessages)
+                        const timePublic = el[1].date.toDate().getTime() ? el[1].date.toDate().getTime() : '--:--'
+                        const dayMess = day[el[1].date.toDate().getDay()]//
+                        const hoursMess = el[1].date.toDate().getHours()//
+                        let minute = el[1].date.toDate().getMinutes().toString()
+                        if(minute.length === 1){
+                            minute = `0${minute}`
+                        }
+                        const date = `${dayMess} ${hoursMess}:${minute}`
+                        //console.log(minute,timePublic)
+                        const find = friendList.find(el => el.id === combinedId)
+                        //console.log(find, friendList)
+                        if (!find) {
+                            //console.log('new')
+                            dispatch(addFrined({ combinedId, name, date, friendId, timePublic, lastMessages, photo }))
+                        }else if(find.timePublic !== timePublic){
+                            const friendInfo = combinedId
+                            const messageText = lastMessages
+                            const datePush = date
+                            //console.log(timePublic)
+                            dispatch(addLastMessage({friendInfo, messageText, datePush, timePublic}))
+                            
+                        }else if(find.name !== name || find.photo !== photo){
+                            const friendInfo = combinedId
+                            //console.log(photo)//update when new photo and name
+                            dispatch(updatePhotoName({friendInfo, photo, name}))
+                        }
                     }
-                    const date = `${dayMess} ${hoursMess}:${minute}`
-                    //console.log(minute,timePublic)
-                    const find = friendList.find(el => el.id === combinedId)
-                    //console.log(find, friendList)
-                    if (!find) {
-                        //console.log('new')
-                        dispatch(addFrined({ combinedId, name, date, friendId, timePublic, lastMessages, photo }))
-                    }else if(find.timePublic !== timePublic){
-                        const friendInfo = combinedId
-                        const messageText = lastMessages
-                        const datePush = date
-                        //console.log(timePublic)
-                        dispatch(addLastMessage({friendInfo, messageText, datePush, timePublic}))
-                        
-                    }else if(find.name !== name || find.photo !== photo){
-                        const friendInfo = combinedId
-                        //console.log(photo)//update when new photo and name
-                        dispatch(updatePhotoName({friendInfo, photo, name}))
-                    }
+                    
                     
                 })
             }else{

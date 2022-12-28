@@ -7,15 +7,16 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { SendMessages } from './SendMessages';
 import { MessagesFieldMe } from './MessagesFieldMe';
-import { arrayUnion, doc, getDoc, getFirestore, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
+import { arrayUnion, doc, getDoc, getFirestore, onSnapshot, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
 import img from '../../img/user-M.png'
+import { useEffect } from 'react';
 
 
 export function MessagesMain() {
     const friend = useSelector(state => state.friend.friend)
     const user = useSelector(state => state.user)
-    //console.log(friend)
+    console.log(friend)
 
 
     const db = getFirestore()
@@ -24,7 +25,7 @@ export function MessagesMain() {
     const infoChat = friend.find(el => el.id === link)
 
 
-    //console.log(infoChat)
+    console.log(infoChat)
 
     //console.log(infoChat)
 
@@ -76,6 +77,25 @@ export function MessagesMain() {
             sendMess()
         }
     }
+
+
+    useEffect(()=>{
+        const unsub = onSnapshot(doc(db, "chatsList", infoChat.id), (doc) => {
+            console.log('w');
+            // const data = doc.data()
+            // if (data) {
+            //     //console.log(data)
+            //     const name = data.name 
+            //     const photo = data.photoURL 
+            //     const email = data.email 
+            //     dispatch(updateUser({ name, photo, email }))
+            // }
+
+        });
+        return () => {
+            unsub()
+        }
+    },[friend.map(el => el)])
 
     return (
         <section className={styleFriends.friends}>

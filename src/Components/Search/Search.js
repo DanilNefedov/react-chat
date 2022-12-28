@@ -4,8 +4,9 @@ import style from './Search.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { addFrined } from '../../store/friendSlice';
 import { SearchList } from './SearchList'
-import { doc, getDoc, getFirestore, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, getFirestore, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 import { Empty } from '../Empty/Empty';
+import { useEffect } from 'react';
 
 
 
@@ -73,8 +74,24 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
             console.error(error)
         }
     }
+    // console.log(friend)
+    // useEffect(()=>{
+    //     if(friend.id){
+    //         const unsub = onSnapshot(doc(db, "chatsList", friend.id), (doc) => {
+    //             const data = doc.data()
+    //             if(data){
+    //                 console.log(data)
+    //             }
+                
+    //         })
+        
+    //         return(()=>{
+    //             unsub()
+    //         })
+    //     }
+        
 
-
+    // },[friend])
 
     return (
         <>

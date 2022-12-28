@@ -42,6 +42,9 @@ import { createSlice } from "@reduxjs/toolkit";
                     })
                 }
                 
+            },
+            removeMessage(state){
+                state.messages = []
             }
 
         }
@@ -49,6 +52,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 
-    export const {addMessage, addMessagesOldFriend} = messagesSlice.actions;
+    export const {addMessage, addMessagesOldFriend, removeMessage} = messagesSlice.actions;
 
     export default messagesSlice.reducer;

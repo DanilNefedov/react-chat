@@ -33,11 +33,14 @@ const friendSlice = createSlice({
             friend.photo = action.payload.photo 
             friend.name = action.payload.name
             
+        },
+        removeFrined(state){
+            state.friend = []
         }
     }
 })
 
 
-export const {addFrined, addLastMessage, updatePhoto, updatePhotoName} = friendSlice.actions;
+export const {addFrined, addLastMessage, updatePhoto, updatePhotoName, removeFrined} = friendSlice.actions;
 
 export default friendSlice.reducer;

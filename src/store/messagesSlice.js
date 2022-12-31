@@ -31,6 +31,8 @@ import { createSlice } from "@reduxjs/toolkit";
                     //console.log('new')
                     state.messages.push({
                         chatId: action.payload.chatId,
+                        // name: action.payload.name,
+                        // photo:action.payload.photo,
                         messages:[
                             {
                                 userId: action.payload.userId,

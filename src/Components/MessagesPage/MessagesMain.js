@@ -3,7 +3,7 @@ import style from './MessagesMain.module.css';
 import styleFriends from '../HomePage/Friends.module.css';
 import classNames from 'classnames';
 import dots from '../../img/dots.svg';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { SendMessages } from './SendMessages';
 import { MessagesFieldMe } from './MessagesFieldMe';
@@ -11,6 +11,8 @@ import { arrayUnion, doc, getDoc, getFirestore, onSnapshot, serverTimestamp, Tim
 import { v4 as uuid } from 'uuid';
 import img from '../../img/user-M.png'
 import { useEffect } from 'react';
+import { updatePhotoName } from '../../store/friendSlice';
+import { addMessage } from '../../store/messagesSlice';
 
 
 export function MessagesMain() {
@@ -24,6 +26,8 @@ export function MessagesMain() {
     const [link] = Object.values(useParams())
     const infoChat = friend.find(el => el.id === link)
 
+
+    const dispatch = useDispatch()
 
     console.log(infoChat)
 
@@ -80,22 +84,28 @@ export function MessagesMain() {
 
 
     useEffect(()=>{
-        const unsub = onSnapshot(doc(db, "chatsList", infoChat.id), (doc) => {
+        const unsub = onSnapshot(doc(db, "chatsList", user.id), (doc) => {
             console.log('w');
-            // const data = doc.data()
-            // if (data) {
-            //     //console.log(data)
-            //     const name = data.name 
-            //     const photo = data.photoURL 
-            //     const email = data.email 
-            //     dispatch(updateUser({ name, photo, email }))
-            // }
+            const data = Object.entries(doc.data())
+            //console.log(data)
+            if (data) {
+                const findChat = data.find(el => el[0] === infoChat.id)
+                
+                console.log(findChat[1])
+                const friendInfo = infoChat.id
+                const name = findChat[1].userInfo.displayName
+                const photo = findChat[1].userInfo.photo 
+                console.log(friendInfo)
+                dispatch(updatePhotoName({ name, photo, friendInfo }))
+            
+            
+            }
 
         });
         return () => {
             unsub()
         }
-    },[friend.map(el => el)])
+    },[friend.name, friend.photo, friend.email])
 
     return (
         <section className={styleFriends.friends}>

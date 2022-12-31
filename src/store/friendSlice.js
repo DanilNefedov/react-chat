@@ -30,7 +30,9 @@ const friendSlice = createSlice({
         },
         updatePhotoName(state,action){
             const friend = state.friend.find(el => el.id === action.payload.friendInfo)
-            friend.photo = action.payload.photo 
+            // const photoU  = action.payload.photo !== null ? action.payload.photo : ''
+            //console.log(friend)
+            friend.photo = action.payload.photo
             friend.name = action.payload.name
             
         },

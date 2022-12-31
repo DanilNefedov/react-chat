@@ -7,6 +7,7 @@ import { SearchList } from './SearchList'
 import { doc, getDoc, getFirestore, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 import { Empty } from '../Empty/Empty';
 import { useEffect } from 'react';
+import { addMessage } from '../../store/messagesSlice';
 
 
 
@@ -47,6 +48,10 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
             
 
             if (!res.exists()) {
+                //console.log(friend)
+                // const [name, photo] = friend[0]
+                // const chatId = id
+                // dispatch(addMessage({name, photo, chatId}))
                 await setDoc(doc(db, 'chats', combinedId), { messages: [] })
 
                 await updateDoc(doc(db, 'chatsList', myInfo.id), {

@@ -29,6 +29,8 @@ export function MessagesMain() {
 
     const dispatch = useDispatch()
 
+    const [deletedAcc, setDeletedAcc] = useState(false)
+
     console.log(infoChat)
 
     //console.log(infoChat)
@@ -91,12 +93,29 @@ export function MessagesMain() {
             if (data) {
                 const findChat = data.find(el => el[0] === infoChat.id)
                 
-                console.log(findChat[1])
-                const friendInfo = infoChat.id
-                const name = findChat[1].userInfo.displayName
-                const photo = findChat[1].userInfo.photo 
-                console.log(friendInfo)
-                dispatch(updatePhotoName({ name, photo, friendInfo }))
+                console.log(findChat)
+                if(findChat){
+                    const friendInfo = infoChat.id
+                    const name = findChat[1].userInfo.displayName ? findChat[1].userInfo.displayName : ''
+                    const photo = findChat[1].userInfo.photo 
+                    console.log(findChat)
+                    
+
+                    if(findChat[1].userInfo.acc === 'deleted'){
+                        //console.log('ss')
+                        dispatch(updatePhotoName({ name, photo, friendInfo }))
+                        setDeletedAcc(true)
+                        return
+                    }else{
+                        // const friendInfo = infoChat.id
+                        // const name = findChat[1].userInfo.displayName ? findChat[1].userInfo.displayName : ''
+                        // const photo = findChat[1].userInfo.photo 
+                        // console.log(findChat)
+                        dispatch(updatePhotoName({ name, photo, friendInfo }))
+                        setDeletedAcc(false)
+                    }
+                    
+                }
             
             
             }
@@ -133,8 +152,8 @@ export function MessagesMain() {
                     <MessagesFieldMe infoChat={infoChat}></MessagesFieldMe>
 
                 </section>
-
-                <SendMessages handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />
+                {deletedAcc ? <div>Account has been deleted</div> : <SendMessages handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />}
+                
             </div>
         </section>
     );

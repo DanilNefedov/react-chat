@@ -1,71 +1,74 @@
 .sidebar{
-    /* width: 186px; */
-    background-color: var(--main-blue);
-    border-radius: 20px;
-    max-width: 11%;
-    max-height: 1200px;
+    background-color: var(--main-bg);
+    border-width: 0 1px 0 0;
+    border-color: var(--main-border);
+    border-style: solid;
+    width: 90px;
 }
+
 .nav{
-    padding: 47% 0 92% 0;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
+
+.logo{
+    display: flex;
+    justify-content: center;
+    padding: 20px 0 ;
+    border-width: 0 0 1px 0;
+    border-color: var(--main-border);
+    border-style: solid;
+}
+
+.logoImg{
+    display: block;
+}
+
 .container{
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
-.messages,
-.notification,
-.search,
-.settings{
-    padding-top: 43px;
-}
-
-
-
-.user{
-    padding: 38px 43px 0 43px;
+.profile, .exit{
+    padding: 15px 0;
 }
 
 .img{
-    padding: 20px 0 25px 20px;
-    margin-left: 25px;
-    /* max-width: 90px; */
+    width: 35px;
+    height: 35px;
+}
+
+.home{
+    padding: 30px 0 15px;
 }
 
 .link{
-    margin-left: 25px;
-    display: block;
-    position: relative;
-    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.link:hover{
-    background-color: var(--dark-blue-hover);
-    border-radius: 20px 0px 0px 20px;
-}
-
-.active{
-    background-color: var(--dark-blue-hover);
-    border-radius: 20px 0px 0px 20px;
-}
-
-.active::after{
-    content: '';
+.imgDark, .imgWhite{
     position: absolute;
     top:0;
-    right: 0;
-    width: 8px;
-    height: 100%;
-    background-color: var(--yellow-bnt);
-    border-radius:25px 0px 0px 25px;
+    left: 0;
+    width: 35px;
+    height: 35px;
 }
 
-.exitLink img{
-    margin: 0 auto;
-    padding-left: 10px;
+.imgWhite{
+    opacity: 0;
 }
 
-.exit{
-    padding-bottom: 30px;
+.imgCont{
+    position: relative;
+    width: 35px;
+    height: 35px;
+}
+
+.nameNav{
+    color:var(--main-gray)
 }

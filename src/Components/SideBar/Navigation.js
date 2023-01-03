@@ -1,34 +1,60 @@
 import style from './SideBar.module.css';
-import home from '../../img/home.svg';
-// import notification from '../../img/notification.svg';
-// import settings from '../../img/settings.svg';
-import profile from '../../img/profile.svg'
+import homeDark from '../../img/home-dark.svg';
+import homeWhite from '../../img/home-white.svg';
+import profileDark from '../../img/profile-dark.svg'
+import profileWhite from '../../img/profile-white.svg'
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { getAuth, signOut } from 'firebase/auth';
+import { removeUser } from '../../store/authSlice';
+import exitDark from '../../img/exit-dark.svg'
+import exitWhite from '../../img/exit-white.svg'
+import classNames from "classnames";
 
 
 export function Navigation(){
+
+    const dispatch = useDispatch()
+
+    const auth = getAuth();
+
+    const clickOut = () => {
+        signOut(auth).then(() => {
+           dispatch(removeUser())
+        }).catch((error) => {
+            console.error(error)
+        });
+    } 
+
     return (
         <nav className={style.nav}>
             <div className={style.home}>
-                <NavLink to='/' className={`${style.active} ${style.link}`}>
-                    <img src={home} alt="Home" className={style.img} />
+                <NavLink to='/' className={style.link}>
+                    <div className={style.imgCont}>
+                        <img src={homeDark} alt="Home" className={classNames(style.img, style.imgDark)} />
+                        <img src={homeWhite} alt="Home" className={classNames(style.img, style.imgWhite, 'img-white')} />
+                    </div>
+                    <p className={classNames(style.nameNav, 'name-nav')}>Home</p>
                 </NavLink>
             </div>
-            <div className={style.search}>
+            <div className={style.profile}>
                 <NavLink to="/profile" className={style.link}>
-                    <img src={profile} alt="Profile" className={style.img} />
+                    <div className={style.imgCont}>
+                        <img src={profileDark} alt="Profile" className={classNames(style.img, style.imgDark)} />
+                        <img src={profileWhite} alt="Profile" className={classNames(style.img, style.imgWhite, 'img-white')} />
+                    </div>
+                    <p className={classNames(style.nameNav, 'name-nav')}>Profile</p>
                 </NavLink>
             </div>
-            {/* <div className={style.notification}>
-                <NavLink href="#" className={style.link}>
-                    <img src={notification} alt="Notification" className={style.img} />
+            <div className={style.exit}>
+                <NavLink to="/login" className={classNames(style.exitLink , style.link)}>
+                    <div className={style.imgCont}>
+                        <img onClick={()=>clickOut()} src={exitDark}  alt="Exit" className={classNames(style.img, style.imgDark)}/>
+                        <img onClick={()=>clickOut()} src={exitWhite}  alt="Exit" className={classNames(style.img, style.imgWhite, 'img-white')} />
+                    </div>
+                    <p className={classNames(style.nameNav, 'name-nav')}>Exit</p>
                 </NavLink>
             </div>
-            <div className={style.settings}>
-                <NavLink href="#" className={style.link}>
-                    <img src={settings} alt="Settings" className={style.img} />
-                </NavLink>
-            </div> */}
         </nav>
     );
 }

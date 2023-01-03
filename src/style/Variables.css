@@ -1,6 +1,9 @@
 :root {
     --main-blue: #1A66FF;
-    --main-bg:#EAEAEA;
+    --main-bg:#171821;/*+*/
+    --main-border:#2C2D35;/*+*/
+    --main-violet:#9068FE;/*+*/
+    --main-gray:#5C5E6F;/*+*/
     --yellow-bnt:#FFE81A;
     --text-mess:rgba(77,77,77, 0.75);
     --text-date:rgba(0,0,0, 0.5);

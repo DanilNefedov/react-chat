@@ -9,8 +9,8 @@ import {Registration} from './Components/SingIN/Registration';
 import { Profile } from './Components/Profile/Profile';
 
 
-function App() {
 
+function App() {
 
   return (
     <div className="wrapper">

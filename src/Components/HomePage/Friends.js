@@ -132,32 +132,39 @@ export function Friends() {
  
     
     const sortState = [...friendList]
-
+    const over = () =>{
+        //console.log(e.target)
+        const target = document.getElementById('container-frineds').offsetHeight
+        const heightMain = document.getElementById('friends-scroll').offsetHeight
+        console.log(target, heightMain)
+    }
     //console.log(friendList, sortState)
     //console.log(sortState)
     return (
-        <>
+        <div  className={classNames(style.searchFriends, "search-friends")}>
             <Search user={user} handleSubmit={taskAddFriend} text={text} setText={setText} handleEvent={handleEvent} />
-            <section className={style.friends}>
+            <section onWheel={over} className={style.friends} id='friends-scroll'>
 
                 <div className={classNames(style.container, 'container')}>
                     <div className={classNames(style.head, 'head')}>
                         <h2 className={classNames(style.header, 'header')}>
                             Friends
                         </h2>
-                        <div className={classNames(style.dots, 'search-dots')}><img src={dots} alt="Search" /></div>
                     </div>
-
-                    { (friendList.length > 0 ) ? (
-                        sortState.sort((a,b) => b.timePublic - a.timePublic).map((friend) => ( 
-                            <FriendsList key={friend.id} friend={friend}></FriendsList>
-                        ))
-                    ):(
-                        <div>Friend list is empty</div>
-                    )}
+                    <div id="container-frineds">
+                        { (friendList.length > 0 ) ? (
+                            sortState.sort((a,b) => b.timePublic - a.timePublic).map((friend) => ( 
+                                <FriendsList key={friend.id} friend={friend}></FriendsList>
+                            ))
+                        ):(
+                            <div>Friend list is empty</div>
+                        )}
+                    </div>
+                    
 
                 </div>
             </section>
-        </>
+        </div>
+      
     );
 }

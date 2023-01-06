@@ -1,4 +1,4 @@
-import { User } from "./User";
+import { User } from "../UserNavigation/User";
 import style from './SideBar.module.css'
 import { Navigation } from "./Navigation";
 import classNames from "classnames";

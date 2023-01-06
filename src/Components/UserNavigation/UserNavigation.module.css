@@ -1,0 +1,48 @@
+.userNav{
+    width: 100%;
+    padding: 21px 21px;
+    border-width: 0 0 1px;
+    border-color: var(--main-border);
+    border-style: solid;
+}
+.user{
+    display: flex;
+    align-items: center;
+}
+.container{
+    display: flex;
+    justify-content: flex-end;
+}
+.photoUser{
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin-left: 21px;
+}
+.nameUser{
+    color: var(--white);
+}
+/* .search{
+    width: 28.5%;
+}
+#searchIcon, .searchList{
+    width: 100%; 
+    height: 48px;
+    border-radius: 7px;
+    /* color: var(--second-main);
+    padding: 0 10px 0 42px;
+    background-color: var(--second-main);
+}
+
+#searchIcon::placeholder{
+    color:var(--desactive-text);
+}
+.cont{
+    position: relative;
+}
+.loupe{
+    position: absolute;
+    left: 10px;
+    top:calc(50% - 11px);
+    background-color: var(--second-main);
+}  */

@@ -1,18 +1,16 @@
 import search from '../../img/search.svg';
 import dots from '../../img/dots.svg';
-import style from './Search.module.css'
+import style from './UserNavigation.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { addFrined } from '../../store/friendSlice';
-import { SearchList } from './SearchList'
+// import { SearchList } from './SearchList'
 import { doc, getDoc, getFirestore, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 import { Empty } from '../Empty/Empty';
 import { useEffect } from 'react';
 import { addMessage } from '../../store/messagesSlice';
+import { SearchList } from '../Search/SearchList';
 
-
-
-export function Search({ user, handleSubmit, text, setText, handleEvent }) {
-
+export function Search({ user, handleSubmit, text, setText, handleEvent }){
     const name = user.name;
     const id = user.id;
     const photo = user.photoURL
@@ -86,24 +84,24 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
         <>
             <section className={style.search}>
                 <div className={style.cont}>
-                    <input onKeyDown={handleEvent} value={text} onChange={(e) => setText(e.target.value)} type="text" id={style.searchIcon} placeholder="Find friend" />
-                    <button type='submit' onClick={handleSubmit} className={style.loupe} htmlFor="search-icon"><img src={search} alt="Search" /></button>
-
+                    <input onKeyDown={handleEvent} value={text} onChange={(e) => setText(e.target.value)} type="text" id={style.searchIcon} placeholder="Find Person" />
+                    <button onClick={handleSubmit} className={style.loupe} htmlFor="search-icon"><img src={search} alt="Search" /></button>
                 </div>
 
             </section>
+
+            {/* <SearchList friendList={{ user, myInfo, id, photo, name, combinedId, bindChat}}/>
             <section className={style.searchList}>
-                {/* <div className={style.searchCont}> */}
-                    {/* <h2 className='header'>Search List</h2> */}
-                    {(!user || id === myInfo.id) ? (
-                        <Empty />
-                    ) : (
-                        <SearchList photo={photo} userName={name} userId={combinedId} clickChat={bindChat} />
-                    )}
-                {/* </div> */}
-            </section>
+                <div className={style.searchCont}> 
+                    <h2 className='header'>Search List</h2>*/}
+            {/* {(!user || id === myInfo.id) ? (
+                <Empty />
+            ) : (
+                <SearchList photo={photo} userName={name} userId={combinedId} clickChat={bindChat} />
+            )}  */}
+                {/* </div>
+            </section> */}
         </>
 
     );
-
 }

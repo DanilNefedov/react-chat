@@ -1,16 +1,21 @@
 #searchIcon, .searchList{
     width: 100%; 
     height: 59px;
-    border-radius: 29px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    color: var(--text-head);
-    padding: 0 10px 0 78px;
+    /* border-radius: 29px; */
+    /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
+    color: var(--desactive-text);
+    padding: 0 10px 0 63px;
+    background-color: var(--second-main);
 }
 
 #searchIcon::placeholder{
-    color:rgba(61,61,61, .3);
+    color: var(--desactive-text);
 }
-
+/* #searchIcon{
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: var(--main-border);
+} */
 .cont{
     position: relative;
 }
@@ -18,30 +23,31 @@
     position: absolute;
     left: 23px;
     top:18px;
-    background-color: var(--white);
-}
-.dots{
-    position: absolute;
-    right: 23px;
-    top:18px;
+    background-color: var(--second-main);
 }
 
 .search{
     width: 100%;
-    margin-bottom: 30px;
+    /* margin-bottom: 10px; */
 }
 
-
+#searchIcon, .searchList{
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: var(--main-border);
+}
 .searchList{
-    background-color: white;
-    margin-bottom: 30px;
-    min-height: 100px;
-    padding-left: 0px;
+    background-color: var(--second-main);
+    /* margin-bottom: 30px; */
+    max-height: 100px;
+    padding: 21px;
+    /* padding-right: 0; */
+    height: auto;
 }
 
-.searchCont{
+/* .searchCont{
     padding: 13px 28px 21px 22px;
-}
+} */
 
 .list-content{
     padding-bottom: 20px;
@@ -50,5 +56,15 @@
 .list{
     display: flex;
     align-items: center;
-    padding: 13px 0 ;
+    /* padding: 13px 0 ; */
+}
+.user img{
+    width: 48px;
+}
+.name{
+    margin-left: 15px;
+    color: var(--white);
+}
+.searchListName{
+    max-height: 100px;
 }

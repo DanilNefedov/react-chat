@@ -10,12 +10,19 @@
     justify-content: center;
     /* overflow: auto; */
 }
-
+.form input:-webkit-autofill,
+.form input:-webkit-autofill:hover, 
+.form input:-webkit-autofill:focus, 
+.form input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px var(--main-bg) inset !important;
+    -webkit-text-fill-color:var(--white)!important;
+}
 .form{
-    background-color: var(--white);
+    background-color: var(--second-main);
     padding: 50px 40px 30px 40px;
-    border-radius: 20px;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border: 1px solid var(--main-border)
+    /* border-radius: 20px; */
+    /* filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); */
 }
 
 .header{
@@ -40,6 +47,7 @@
 }
 .headerEmail, .headerPass, .headerName{
     font-size: 15px;
+    
 }
 
 .email, .pass, .name{
@@ -47,25 +55,38 @@
 }
 .email input, .pass input, .name input{
     background-color: var(--main-bg);
+    color:var(--white);
     width: 100%;
     margin-left: 10px;
-    border-radius: 10px;
-    padding: 3px 5px;
+    border-radius: 5px;
+    padding: 3px 7px;
 }
 .regBnt{
     margin: 0 auto;
     display: block;
-    background-color: var(--main-blue);
+    background-color: var(--desactive-violet);
     margin-top: 20px;
-    padding: 13px 25px;
+    padding: 11px 20px;
     border-radius: 10px;
     color: var(--white);
     font-size: 18px;
+    transition: 0.2s;
+}
+.regBnt:hover{
+    background-color: var(--main-violet);
 }
 
 .linkReg{
+    /* align-items: center; */
     text-align: center;
+    margin: 0 auto;
     padding-top: 20px;
     font-size: 13px;
     display: block;
+    color: var(--desactive-text);
+    transition: 0.3s;
+    max-width: 130px;
+}
+.linkReg:hover{
+    color: var(--white)
 }

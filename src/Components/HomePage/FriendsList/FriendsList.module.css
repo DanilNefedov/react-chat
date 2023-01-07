@@ -39,5 +39,11 @@
 }
 .list{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; 
+    padding-right: 28px;
+    padding-left: 22px;
+}
+.list:hover{
+    background-color: #252632;
+   
 }

@@ -5,7 +5,9 @@
     --main-violet:#9068FE;/*+*/
     --main-gray:#5C5E6F;/*+*/
     --second-main:#1C1D26;/*+*/
-    --desactive-text:#9396AD;/**/
+    --desactive-text:#9396AD;/*+*/
+    --desactive-violet:#4D3788;/*+*/
+    --main-red:#FE6868;/*+*/
     --yellow-bnt:#FFE81A;
     --text-mess:rgba(77,77,77, 0.75);
     --text-date:rgba(0,0,0, 0.5);

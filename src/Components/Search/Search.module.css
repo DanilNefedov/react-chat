@@ -10,6 +10,14 @@
 
 #searchIcon::placeholder{
     color: var(--desactive-text);
+    /* background-color: var(--second-main); */
+}
+.search input:-webkit-autofill,
+.search input:-webkit-autofill:hover, 
+.search input:-webkit-autofill:focus, 
+.search input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px var(--second-main) inset !important;
+    -webkit-text-fill-color:var(--white)!important;
 }
 /* #searchIcon{
     border-width: 0 0 1px 0;

@@ -50,7 +50,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* transition: 0.3s; */
 }
+
+.link:hover .nameNav{
+    color: var(--white);
+}
+.link:hover .imgWhite{
+    opacity: 1;
+}
+
 
 .imgDark, .imgWhite{
     position: absolute;
@@ -61,6 +70,7 @@
 }
 
 .imgWhite{
+    transition: 0.3s;
     opacity: 0;
 }
 
@@ -71,5 +81,6 @@
 }
 
 .nameNav{
+    transition: 0.2s;
     color:var(--main-gray)
 }

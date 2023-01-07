@@ -135,7 +135,7 @@ export function Friends() {
     const over = () =>{
         //console.log(e.target)
         const target = document.getElementById('container-frineds').offsetHeight
-        const heightMain = document.getElementById('friends-scroll').offsetHeight
+        const heightMain = document.getElementById('friends-scroll').scrollHeight
         console.log(target, heightMain)
     }
     //console.log(friendList, sortState)

@@ -171,6 +171,22 @@ input:-webkit-autofill:active{
     color: var(--white);
     text-align: center;
 }
+.modal{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+}
+
+.active-modal{
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color:var(--second-main); 
+}
+
+
 /* .header{
     font-weight: 600;
     font-size: 20px;

@@ -1,27 +1,100 @@
 .profile{
-    background-color: var(--white);
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-    border-radius: 20px;
+    background-color: var(--second-main);
+    /* filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border-radius: 20px; */
     height: 100%;    
     position: relative;
 }
 .container{
-    padding: 25px 50px;
+    height: 100%;
+    display: flex;
 }
-
+.nameEmail{
+    /* padding-left: 21px; */
+    align-items: center;
+    /* margin: 0 auto; */
+    /* width: auto; */
+}
+.userInfo{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 20%;
+    padding: 21px ;
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    border-color: var(--main-border);
+}
 .photoSection{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-bottom: 55px;
+    /* align-items: center; */
+    margin-bottom: 25px;
 
 }
 
 #loadPhoto{
     display: none;
+    
 }
-
-.downloadImg, .deleteBtn, .btnDelete{
+.containerBtn{
+    display: flex;
+    margin-left: -5px;
+    margin-top: 30px;
+}
+.btnDelete{
+    background-color: transparent;
+    color:var(--desactive-text);
+    font-size: 16px;
+    /* margin-left: 10px; */
+    transition: 0.2s;
+}
+.btnDelete:hover{
+    color:var(--white);
+}
+.editPhoto{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.iconBtn{
+    margin-right:9px;
+    width: 27px;
+    height: 27px;
+}
+.editUserInfo{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 30%;
+    padding: 21px;
+}
+.downloadImg, .nameSection, .emailSection, .deletePhoto{
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    color: var(--desactive-text);
+    transition: 0.2s;
+}
+.nameSection, .emailSection, .deletePhoto{
+    cursor: auto;
+}
+.downloadImg:hover{
+    color:var(--white);
+}
+.deletePhoto{
+    margin-bottom: 20px;
+}
+/* .deleteBtn{
+    background-color: transparent;
+} */
+.editName, .editEmail{
+    padding: 3px 15px;
+    border-radius: 3px;
+    background-color: var(--main-bg);
+    color:var(--white);
+}
+/* .downloadImg, .deleteBtn, .btnDelete{
     display: block;
     cursor: pointer;
     background-color: var(--main-blue);
@@ -33,40 +106,47 @@
 .deleteBtn, .btnDelete{
     font-size: 14px;
     background-color: #FF0000;
-    margin-left: 20px;
-}
+    margin-left: 20px; 
+} */
 .userPhoto img{
-    width: 200px;
-    
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
 }
-.editPhoto{ 
+/* .editPhoto{ 
     margin-top: 20px;
     display: flex;
     align-items: center;
-}
+} */
 
 .editAbout, .editField{
-    opacity: 0.6;
+    color: var(--desactive-text);
 }
 .editField, .editAbout{
     margin-right: 20px;
 }
 
 .emailSection{
-    margin: 35px 0;
+    margin: 20px 0;
 }
 .nameUser, .emailUser{
     margin-bottom: 15px;
+    /* text-align: center; */
 }
 
 .btnUpdate{
-    background-color: var(--main-blue);
-    padding: 15px 25px;
-    border-radius: 10px;
+    background-color: var(--desactive-violet);
+    padding: 10px 20px;
+    border-radius: 3px;
     color:var(--white);
     line-height: 21px;
     font-size: 14px;
     font-weight: 500;
+    transition: 0.2s;
+}
+.btnUpdate:hover{
+    color:var(--white);
+    background-color: var(--main-violet);
 }
 
 .updateSection{

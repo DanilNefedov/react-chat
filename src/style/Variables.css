@@ -1,5 +1,4 @@
 :root {
-    --main-blue: #1A66FF;
     --main-bg:#171821;/*+*/
     --main-border:#2C2D35;/*+*/
     --main-violet:#9068FE;/*+*/
@@ -8,13 +7,5 @@
     --desactive-text:#9396AD;/*+*/
     --desactive-violet:#4D3788;/*+*/
     --main-red:#FE6868;/*+*/
-    --yellow-bnt:#FFE81A;
-    --text-mess:rgba(77,77,77, 0.75);
-    --text-date:rgba(0,0,0, 0.5);
-    --text-head:#000000;
-    --green-online:#00FF75;
     --white:#E2FFFF;
-    --light-blue:#00D0FF;
-    --gray-not-read:#A4A4A4;
-    --dark-blue-hover:#004BE1;
 }

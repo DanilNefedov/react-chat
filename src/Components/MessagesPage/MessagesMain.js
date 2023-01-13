@@ -1,10 +1,10 @@
-import { useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 import style from './MessagesMain.module.css';
 import styleFriends from '../HomePage/Friends.module.css';
 import classNames from 'classnames';
 import dots from '../../img/dots.svg';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { SendMessages } from './SendMessages';
 import { MessagesFieldMe } from './MessagesFieldMe';
 import { arrayUnion, doc, getDoc, getFirestore, onSnapshot, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
@@ -18,8 +18,12 @@ import { addMessage } from '../../store/messagesSlice';
 export function MessagesMain() {
     const friend = useSelector(state => state.friend.friend)
     const user = useSelector(state => state.user)
-    console.log(friend)
+    //console.log(friend)
 
+    const infoSection = useOutletContext()
+    const nameRef = useRef();
+    const scrollRef = useRef();
+    const footerRef = useRef();
 
     const db = getFirestore()
 
@@ -31,9 +35,6 @@ export function MessagesMain() {
 
     const [deletedAcc, setDeletedAcc] = useState(false)
 
-    console.log(infoChat)
-
-    //console.log(infoChat)
 
     const [text, setMessageText] = useState('');
     const sendMess = async () => {
@@ -87,18 +88,18 @@ export function MessagesMain() {
 
     useEffect(()=>{
         const unsub = onSnapshot(doc(db, "chatsList", user.id), (doc) => {
-            console.log('w');
+            //console.log('w');
             const data = Object.entries(doc.data())
             //console.log(data)
             if (data) {
                 const findChat = data.find(el => el[0] === infoChat.id)
                 
-                console.log(findChat)
+                //console.log(findChat)
                 if(findChat){
                     const friendInfo = infoChat.id
                     const name = findChat[1].userInfo.displayName ? findChat[1].userInfo.displayName : ''
                     const photo = findChat[1].userInfo.photo 
-                    console.log(findChat)
+                    //console.log(findChat)
                     
 
                     if(findChat[1].userInfo.acc === 'deleted'){
@@ -126,10 +127,35 @@ export function MessagesMain() {
         }
     },[friend.name, friend.photo, friend.email])
 
+    // console.log(infoSection.current.offsetHeight)
+    const reloadMess = () => {
+        const headerHeight = infoSection.current.offsetHeight
+        const scrollHeight = scrollRef.current.offsetHeight
+        const nameHeight = nameRef.current.offsetHeight
+        const footerHeight = footerRef.current.offsetHeight 
+        const windowHeight = window.innerHeight
+
+        const sum = headerHeight + scrollHeight + nameHeight + footerHeight
+
+        const res = windowHeight - sum
+
+        const newHeight = scrollHeight - (-res)
+
+        scrollRef.current.style.height = `${newHeight}px`
+        
+        // console.log(headerHeight, scrollHeight, nameHeight, footerHeight, windowHeight)
+    } 
+
+    // useEffect(()=>{
+    //     window.addEventListener("onload", reload);
+    //     reload()
+    //     return () => window.addEventListener("resize", reload);        
+    // },[])
+
     return (
-        <section className={styleFriends.friends}>
+        <section className={style.messagesSec}>
             <div className={classNames(style.container, 'container')}>
-                <header className={style.header}>
+                <header className={style.header} ref={nameRef}>
                     <div className={style.user}>
                         <div className={style.userImg}>
                             <img src={infoChat.photo !== null ? infoChat.photo : img} alt="User" />
@@ -138,21 +164,22 @@ export function MessagesMain() {
                             <h2 className={style.name}>
                                 {infoChat.name}
                             </h2>
-                            <div className={style.online}>Online</div>
+                            {/* <div className={style.online}>Online</div> */}
                         </div>
 
                     </div>
-                    <div className={classNames(style.dots, 'search-dots')}>
-                        <img src={dots} alt="Dots" />
-                    </div>
                 </header>
 
-                <section id='scroll' className={style.messages}>
+                <section ref={scrollRef} id='scroll' className={style.messages}>
 
-                    <MessagesFieldMe infoChat={infoChat}></MessagesFieldMe>
+                    <MessagesFieldMe reloadMess={reloadMess} scrollRef={scrollRef} infoChat={infoChat}></MessagesFieldMe>
 
                 </section>
-                {deletedAcc ? <div>Account has been deleted</div> : <SendMessages handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />}
+                {deletedAcc 
+                ? 
+                <div ref={footerRef} className={classNames(style.deletedInput)}>Account has been deleted</div> 
+                : 
+                <SendMessages innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />}
                 
             </div>
         </section>

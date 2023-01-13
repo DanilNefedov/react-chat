@@ -11,7 +11,7 @@ import { addMessage } from '../../store/messagesSlice';
 
 
 
-export function Search({ user, handleSubmit, text, setText, handleEvent }) {
+export function Search({ user, handleSubmit, text, setText, handleEvent, searchListRef, searchRef }) {
 
     const name = user.name;
     const id = user.id;
@@ -84,7 +84,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
    
     return (
         <>
-            <section className={style.search}>
+            <section ref={searchRef} className={style.search} id="search">
                 <div className={style.cont}>
                     <input onKeyDown={handleEvent} value={text} onChange={(e) => setText(e.target.value)} type="text" id={style.searchIcon} placeholder="Find friend" />
                     <button type='submit' onClick={handleSubmit} className={style.loupe} htmlFor="search-icon"><img src={search} alt="Search" /></button>
@@ -92,7 +92,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }) {
                 </div>
 
             </section>
-            <section className={style.searchList}>
+            <section ref={searchListRef} className={style.searchList} id="search-list">
                 {/* <div className={style.searchCont}> */}
                     {/* <h2 className='header'>Search List</h2> */}
                     {(!user || id === myInfo.id) ? (

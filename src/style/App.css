@@ -108,10 +108,10 @@ h6 {
     font-size: inherit;
 }
 
-/* .wrapper {
-    overflow: hidden;
+.wrapper {
+    /* overflow: hidden; */
 }
- */
+
 
 /* input:-webkit-autofill,
 input:-webkit-autofill:hover, 
@@ -133,6 +133,7 @@ input:-webkit-autofill:active{
     width: 100%;
     height: 100%;
     flex-direction: column;
+    padding-bottom: 30px;
 }
 .header-main{
     display: flex;
@@ -187,86 +188,24 @@ input:-webkit-autofill:active{
 }
 
 
-/* .header{
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 30px;
-}
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: none;
+    scrollbar-color: #5C5E6F transparent;
+  }
 
-.list-content{
-    display: flex;
-    align-items: center;
-    border-width: 0 0 1px 0;
-    border-style: solid;
-    border-color: rgba(0, 0, 0, 0.25);
-    padding: 13px 0;
-}
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 7px;
+  }
 
-.head-name{
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 27px;
-}
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
-
-.user-mess{
-    margin-right: 14px;
-}
-
-.list-content:last-child {
-    border: none;
-    padding-bottom: 0;
-} */
-
-.list-date-check{
-    /* display: flex; */
-    /* flex-direction: column; ERROR */
-    /* align-items: end; */
-}
-
-/* .list-date{
-    padding: 16px 0 14px;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 18px;
-    color: var(--text-date)
-}
-
-.recents-list__check-img{
-    margin-right: 5px;
-}
-
-.second-column{
-    padding: 0 22px 0 42px; 
-}
-
-.head{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.edit-field{
-    background-color: rgba(77,77,77, 0.25);
-    padding: 15px 25px;
-    border-radius: 10px;
-}
-
-
-.modal{
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    
-}
-
-.active-modal{
-    width: 100%;
-    height: 100%;
-    display: block;
-    background-color:rgba(255, 255, 255); */
-    /*filter: blur(3px); */
-    /* opacity: 1;
-    border-radius: 20px;
-} */
+  *::-webkit-scrollbar-thumb {
+    background-color: #5C5E6F;
+    border-radius: 7px;
+    border: 3px solid transparent;
+  }

@@ -2,6 +2,7 @@ import style from './FriendsList.module.css';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import img from '../../../img/user-M.png'
+import { useEffect } from 'react';
 
 
 
@@ -14,7 +15,7 @@ export function FriendsList({friend}) {
 
         <Link to={id} className={classNames(style.list, 'list-content')}>
             <div className={style.message}>
-                <div className={classNames(style.user, 'user-mess')}>
+                <div className={classNames(style.userPhoto, 'user-mess')}>
                     <img src={photo !== null ? photo : img} alt="User" />
                 </div>
                 <div className={style.userMess}>

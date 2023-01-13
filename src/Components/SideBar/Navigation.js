@@ -10,6 +10,8 @@ import { removeUser } from '../../store/authSlice';
 import exitDark from '../../img/exit-dark.svg'
 import exitWhite from '../../img/exit-white.svg'
 import classNames from "classnames";
+import { removeFrined } from '../../store/friendSlice';
+import { removeMessage } from '../../store/messagesSlice';
 
 
 export function Navigation(){
@@ -21,6 +23,8 @@ export function Navigation(){
     const clickOut = () => {
         signOut(auth).then(() => {
            dispatch(removeUser())
+           dispatch(removeFrined())
+           dispatch(removeMessage())
         }).catch((error) => {
             console.error(error)
         });

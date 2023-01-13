@@ -1,11 +1,14 @@
+.messagesSec{
+    height: 100%;
+}
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-width: 0 0 1px 0;
     border-style: solid;
-    border-color: rgba(0,0,0, 0.25);
-    padding-bottom: 25px;
+    border-color: var(--main-border);
+    padding: 21px;
 }
 
 .user {
@@ -22,7 +25,7 @@
 
 .name {
     font-weight: 600;
-    font-size: 24px;
+    font-size: 20px;
     line-height: 36px;
 }
 
@@ -38,71 +41,90 @@
     position: static;
 }
 
-.container{    
-    margin: 0 auto;
-    padding: 25px 26px 34px 51px;
+.container{
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: space-between;
+    height: 100%;
+    /* margin: 0 auto; */
+    /* padding: 21px; */
 }
 
 
 .input{
-    background-color: #E0E0E0;
-    border-radius: 10px;
+    background-color: var(--second-main);
+    border-radius: 3px;
     margin-right: 20px;
     padding: 10px 20px;
     width: 100%;
     resize: none;
+    color: var(--white);
 }
 
 .send{
     padding: 5px 5px;
     width: 40px;
-    background-color: var(--main-blue);
+    background-color: var(--main-violet);
     border-radius: 10px;
 }
 
 .textArea{
     display: flex;
     width: 100%;
-    padding-top: 35px;
-    border-width: 2px 0 0 0;
-    border-color: rgba(0, 0, 0, 0.25);
+    padding: 21px;
+    border-width: 1px 0 0 0;
+    border-color: var(--main-border);
     border-style: solid;
 }
 
 .messages{
-    height: 787px;
-    overflow-y: scroll;
-    padding: 10px 10px 0 0;
+    height: 100%;
+    margin-right: 3px;
+
+    overflow-y: auto;
+    padding: 7px;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: end; */
 }
 
+.empty{
+    text-align: center;
+}
 
 .messagesMe{
     justify-content: end;
-    background-color:var(--main-blue);
+    background-color:var(--main-violet);
     color: var(--white);
     margin-right: 7px;
     word-break: break-word;
 }
 
 .messagesFriend{
-    background-color:#CFCFCF ;
+    background-color:var(--second-main) ;
     margin-left: 10px;
+    border: 1px solid var(--main-border);
 }
 
 
-
+.userImg img{
+    width: 55px;
+    height:  55px;
+    border-radius: 50%;
+}
 .messagesMe, .messagesFriend{
     display: flex;
-    padding: 13px 27px 20px;
+    padding: 13px 27px 15px;
     max-width: 48%;
-    border-radius: 10px;
+    border-radius: 8px;
     position: relative;
 }
 
 .messageContainerMe, .messageContainerFriend{
     display: flex;
     margin-bottom: 55px;
-    position: relative;
+    /* position: relative; */
 }
 .messageContainerMe{
     justify-content: end;
@@ -112,31 +134,35 @@
     justify-content: start;
 }
 
-
-.messagesMe::after, .messagesFriend::after{
-    content: '';
-    position: absolute;
-    /* background: url(../../img/triangle-messages.svg) 100% 100% no-repeat; */
-    width: 20px;
-    height: 28px;
-    /* right: -7px; */
-    bottom: 0;
+.messagesMe{
+    border-top-right-radius: 0;
 }
-.messagesMe::after{
-    background: url(../../img/triangle-messages.svg) 100% 100% no-repeat;
-    right: -7px;
-}
-.messagesFriend::after{
-    background: url(../../img/triangle-messages-gray.svg) 100% 100% no-repeat;
-    left: -21px;
-    margin-left: 10px;
+.messagesFriend{
+    border-top-left-radius: 0;
 }
 
+.dateMe{
+    right: 0px;
+    text-align: end;
+}
+
+.dateFriend{
+    left: 0;
+}
 .dateMessages{
     position: absolute;
     bottom: -20px;
     font-weight: 500;
     font-size: 12px;
     line-height: 18px;
-    color:rgba(0,0,0, 0.25);
+    color:var(--desactive-text);
+    width: 150px;
+}
+
+.deletedInput{
+    text-align: center;
+    padding: 21px;
+    border-width: 1px 0 0 0;
+    border-style: solid;
+    border-color: var(--main-border);
 }

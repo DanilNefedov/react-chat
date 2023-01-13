@@ -5,14 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FriendsList } from "./FriendsList/FriendsList";
 import { Search } from '../Search/Search'
 import { addFrined, addLastMessage, updatePhotoName } from '../../store/friendSlice'
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { getFirestore, collection, query, where, getDocs, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
+import { useLocation, useOutletContext } from 'react-router-dom';
 
 
 
 
 export function Friends() {
+    const navigationRef = useOutletContext()
+    const containerFrineds = useRef()
+    const friendsScroll = useRef()  
 
     const [text, setText] = useState('')
 
@@ -66,7 +70,7 @@ export function Friends() {
     const day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 
-    console.log(user)
+    // console.log(user)
     useEffect(()=>{
         
         const unsub = onSnapshot(doc(db, "chatsList", myInfo.id), (doc) => {
@@ -75,12 +79,12 @@ export function Friends() {
                 const data = Object.entries(doc.data())
                 //console.log(data)
                 data.map(el => {
-                    console.log(data, friendList)
+                    //console.log(data, friendList)
                     const combinedId = el[0]
                     if(combinedId){
                         const friendId = el[1].userInfo.id// err in page gh
                         const name = el[1].userInfo.displayName
-                        console.log(name)
+                        //console.log(name)
                         const photo = el[1].userInfo.photo
                         const lastMessages = el[1].lastMessage ? el[1].lastMessage.messageText : 'No messages'
                         //console.log(lastMessages)
@@ -119,9 +123,6 @@ export function Friends() {
             }
             
         });
-
-       
-    
         return () => {
             //unsubPhoto()
             unsub() 
@@ -129,36 +130,64 @@ export function Friends() {
     },[myInfo.id, friendList.map(el => el)]) //update friend without static variables (error in npm) 
 
 
- 
-    
     const sortState = [...friendList]
-    const over = () =>{
-        //console.log(e.target)
-        const target = document.getElementById('container-frineds').offsetHeight
-        const heightMain = document.getElementById('friends-scroll').scrollHeight
-        console.log(target, heightMain)
+
+    const headRef = useRef()
+    const searchRef = useRef();
+    const searchListRef = useRef();
+
+
+    function resize(){
+
+        const containerFrinedsHeight = containerFrineds.current.offsetHeight
+        //console.log(containerFrinedsHeight)
+        const headRefHeight = headRef.current.offsetHeight
+        const navigationRefHeight = navigationRef.current.offsetHeight
+        const searchRefHeight = searchRef.current.offsetHeight
+        const searchListRefHeight = searchListRef.current.offsetHeight
+
+        const windowHeight = window.innerHeight
+
+        const sum = containerFrinedsHeight + headRefHeight + navigationRefHeight + searchRefHeight + searchListRefHeight
+        
+        const res = windowHeight - sum
+
+        const newHeight = containerFrinedsHeight - (-res)
+
+        containerFrineds.current.style.height = `${newHeight}px`
+    
     }
-    //console.log(friendList, sortState)
-    //console.log(sortState)
+
+
+    useEffect(()=>{
+        window.addEventListener("onload", resize);
+        resize()
+        return () => window.addEventListener("resize", resize);        
+    },[friendList])
+
+ 
     return (
         <div  className={classNames(style.searchFriends, "search-friends")}>
-            <Search user={user} handleSubmit={taskAddFriend} text={text} setText={setText} handleEvent={handleEvent} />
-            <section onWheel={over} className={style.friends} id='friends-scroll'>
+            <Search searchListRef={searchListRef} searchRef={searchRef} user={user} handleSubmit={taskAddFriend} text={text} setText={setText} handleEvent={handleEvent} />
+            <section className={style.friends} ref={friendsScroll}>
 
                 <div className={classNames(style.container, 'container')}>
-                    <div className={classNames(style.head, 'head')}>
+                    <div ref={headRef} className={classNames(style.head, 'head')}>
                         <h2 className={classNames(style.header, 'header')}>
                             Friends
                         </h2>
                     </div>
-                    <div id="container-frineds">
-                        { (friendList.length > 0 ) ? (
-                            sortState.sort((a,b) => b.timePublic - a.timePublic).map((friend) => ( 
-                                <FriendsList key={friend.id} friend={friend}></FriendsList>
-                            ))
-                        ):(
-                            <div>Friend list is empty</div>
-                        )}
+                    <div ref={containerFrineds} className={style.scrollMessages}>
+                        <div className={classNames(style.containerFriendsList)}>
+                            { (friendList.length > 0 ) ? (
+                                sortState.sort((a,b) => b.timePublic - a.timePublic).map((friend) => ( 
+                                    <FriendsList key={friend.id} friend={friend}></FriendsList>
+                                ))
+                            ):(
+                                <div>Friend list is empty</div>
+                            )}
+                        </div>
+                        
                     </div>
                     
 

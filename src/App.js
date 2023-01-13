@@ -11,11 +11,12 @@ import { Profile } from './Components/Profile/Profile';
 
 
 function App() {
+  
 
   return (
-    <div className="wrapper">
+    <div  className="wrapper">
       <Routes>
-        <Route element={<ProtecteedRoute/>}>
+        <Route  element={<ProtecteedRoute/>}>
           <Route index element={<Friends />} />
           <Route path='/:userId' element={<MessagesMain />} />
           <Route path='/profile' element={<Profile/>}/>

@@ -1,21 +1,30 @@
 import classNames from "classnames"
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
+import { useRef } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useOutletContext } from "react-router-dom";
 import { addMessage } from "../../store/messagesSlice";
 import style from './MessagesMain.module.css'
 
 
-export function MessagesFieldMe({ infoChat }) {
+export function MessagesFieldMe({infoChat, scrollRef, reloadMess}) {
   
     const messagesState = useSelector(state => state.message.messages)
     const user = useSelector(state => state.user)
     const findChat = messagesState.find(el => el.chatId === infoChat.id)
 
+
     useEffect(() => {
-        const scroll = document.getElementById("scroll");
-        scroll.scrollTop = scroll.scrollHeight;
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }, [messagesState])
+
+    
+    useEffect(()=>{
+        window.addEventListener("onload", reloadMess);
+        reloadMess()
+        return () => window.addEventListener("resize", reloadMess);        
+    },[messagesState])
 
 
     const db = getFirestore()
@@ -69,19 +78,21 @@ export function MessagesFieldMe({ infoChat }) {
                 <div key={el.messageId} className={style.messageContainerMe}>
                     <span className={classNames("message", style.messagesMe)}>
                         {el.text}
+                        <span className={classNames(style.dateMessages, style.dateMe)}>{el.date}</span>
                     </span>
-                    <span className={style.dateMessages}>{el.date}</span>
+                    
                 </div>
             ):(
                 <div key={el.messageId} className={style.messageContainerFriend}>
                     <span className={classNames("message", style.messagesFriend)}>
                         {el.text}
+                        <span className={classNames(style.dateMessages, style.dateFriend)}>{el.date}</span>
                     </span>
-                    <span className={style.dateMessages}>{el.date}</span>
+                    
                 </div>
             )
         ))) : (
-            <div>No Messages</div>
+            <div className={classNames(style.empty)}>No Messages</div>
         ))
     );
 }

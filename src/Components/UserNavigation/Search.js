@@ -82,7 +82,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent }){
    
     return (
         <>
-            <section className={style.search}>
+            <section className={style.search} id="search">
                 <div className={style.cont}>
                     <input onKeyDown={handleEvent} value={text} onChange={(e) => setText(e.target.value)} type="text" id={style.searchIcon} placeholder="Find Person" />
                     <button onClick={handleSubmit} className={style.loupe} htmlFor="search-icon"><img src={search} alt="Search" /></button>

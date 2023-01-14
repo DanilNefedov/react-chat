@@ -8,7 +8,7 @@ import { useRef, useState } from 'react';
 import { SendMessages } from './SendMessages';
 import { MessagesFieldMe } from './MessagesFieldMe';
 import { arrayUnion, doc, getDoc, getFirestore, onSnapshot, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
-import { v4 as uuid } from 'uuid';
+import { NIL, v4 as uuid } from 'uuid';
 import img from '../../img/user-M.png'
 import { useEffect } from 'react';
 import { updatePhotoName } from '../../store/friendSlice';
@@ -129,28 +129,25 @@ export function MessagesMain() {
 
     // console.log(infoSection.current.offsetHeight)
     const reloadMess = () => {
-        const headerHeight = infoSection.current.offsetHeight
-        const scrollHeight = scrollRef.current.offsetHeight
-        const nameHeight = nameRef.current.offsetHeight
-        const footerHeight = footerRef.current.offsetHeight 
-        const windowHeight = window.innerHeight
+        if(scrollRef.current !== null){
+            const headerHeight = infoSection.current.offsetHeight
+            const scrollHeight = scrollRef.current.offsetHeight
+            const nameHeight = nameRef.current.offsetHeight
+            const footerHeight = footerRef.current.offsetHeight
+            const windowHeight = window.innerHeight
+            
+            const sum = headerHeight + scrollHeight + nameHeight + footerHeight
 
-        const sum = headerHeight + scrollHeight + nameHeight + footerHeight
+            const res = windowHeight - sum
 
-        const res = windowHeight - sum
+            const newHeight = scrollHeight - (-res)
 
-        const newHeight = scrollHeight - (-res)
-
-        scrollRef.current.style.height = `${newHeight}px`
-        
-        // console.log(headerHeight, scrollHeight, nameHeight, footerHeight, windowHeight)
+            scrollRef.current.style.height = `${newHeight}px`
+        }
+        //console.log(headerHeight, scrollHeight, nameHeight, footerHeight, windowHeight)
     } 
 
-    // useEffect(()=>{
-    //     window.addEventListener("onload", reload);
-    //     reload()
-    //     return () => window.addEventListener("resize", reload);        
-    // },[])
+   
 
     return (
         <section className={style.messagesSec}>

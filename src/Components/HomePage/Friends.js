@@ -138,23 +138,24 @@ export function Friends() {
 
 
     function resize(){
+        if(containerFrineds.current !== null){
+            const containerFrinedsHeight = containerFrineds.current.offsetHeight 
+            const headRefHeight = headRef.current.offsetHeight
+            const navigationRefHeight = navigationRef.current.offsetHeight
+            const searchRefHeight = searchRef.current.offsetHeight
+            const searchListRefHeight = searchListRef.current.offsetHeight
 
-        const containerFrinedsHeight = containerFrineds.current.offsetHeight
-        //console.log(containerFrinedsHeight)
-        const headRefHeight = headRef.current.offsetHeight
-        const navigationRefHeight = navigationRef.current.offsetHeight
-        const searchRefHeight = searchRef.current.offsetHeight
-        const searchListRefHeight = searchListRef.current.offsetHeight
+            const windowHeight = window.innerHeight
 
-        const windowHeight = window.innerHeight
+            const sum = containerFrinedsHeight + headRefHeight + navigationRefHeight + searchRefHeight + searchListRefHeight
+            
+            const res = windowHeight - sum
 
-        const sum = containerFrinedsHeight + headRefHeight + navigationRefHeight + searchRefHeight + searchListRefHeight
+            const newHeight = containerFrinedsHeight - (-res)
+
+            containerFrineds.current.style.height = `${newHeight}px`
+        }
         
-        const res = windowHeight - sum
-
-        const newHeight = containerFrinedsHeight - (-res)
-
-        containerFrineds.current.style.height = `${newHeight}px`
     
     }
 

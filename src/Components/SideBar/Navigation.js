@@ -3,7 +3,7 @@ import homeDark from '../../img/home-dark.svg';
 import homeWhite from '../../img/home-white.svg';
 import profileDark from '../../img/profile-dark.svg'
 import profileWhite from '../../img/profile-white.svg'
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getAuth, signOut } from 'firebase/auth';
 import { removeUser } from '../../store/authSlice';
@@ -12,6 +12,7 @@ import exitWhite from '../../img/exit-white.svg'
 import classNames from "classnames";
 import { removeFrined } from '../../store/friendSlice';
 import { removeMessage } from '../../store/messagesSlice';
+import { useState } from 'react';
 
 
 export function Navigation(){
@@ -30,19 +31,34 @@ export function Navigation(){
         });
     } 
 
+    const location = useLocation()
+    console.log(location)
+
+
     return (
         <nav className={style.nav}>
             <div className={style.home}>
-                <NavLink to='/' className={style.link}>
-                    <div className={style.imgCont}>
-                        <img src={homeDark} alt="Home" className={classNames(style.img, style.imgDark)} />
-                        <img src={homeWhite} alt="Home" className={classNames(style.img, style.imgWhite, 'img-white')} />
-                    </div>
-                    <p className={classNames(style.nameNav, 'name-nav')}>Home</p>
-                </NavLink>
+                {location.pathname === '/profile' ?  
+                    <NavLink to='/' exact='true' end  >
+                        <div className={style.imgCont}>
+                            <img src={homeDark} alt="Home" className={classNames(style.img, style.imgDark)} />
+                            <img src={homeWhite} alt="Home" className={classNames(style.img, style.imgWhite, 'img-white')} />
+                        </div>
+                        <p className={classNames(style.nameNav, 'name-nav')}>Home</p>
+                    </NavLink>
+                : 
+                    <NavLink to='/' exact='true' >
+                        <div className={style.imgCont}>
+                            <img src={homeDark} alt="Home" className={classNames(style.img, style.imgDark)} />
+                            <img src={homeWhite} alt="Home" className={classNames(style.img, style.imgWhite, 'img-white')} />
+                        </div>
+                        <p className={classNames(style.nameNav, 'name-nav')}>Home</p>
+                    </NavLink>
+                }
+                 
             </div>
             <div className={style.profile}>
-                <NavLink to="/profile" className={style.link}>
+                <NavLink to="/profile"  end>
                     <div className={style.imgCont}>
                         <img src={profileDark} alt="Profile" className={classNames(style.img, style.imgDark)} />
                         <img src={profileWhite} alt="Profile" className={classNames(style.img, style.imgWhite, 'img-white')} />
@@ -51,7 +67,7 @@ export function Navigation(){
                 </NavLink>
             </div>
             <div className={style.exit}>
-                <NavLink to="/login" className={classNames(style.exitLink , style.link)}>
+                <NavLink to="/login" >
                     <div className={style.imgCont}>
                         <img onClick={()=>clickOut()} src={exitDark}  alt="Exit" className={classNames(style.img, style.imgDark)}/>
                         <img onClick={()=>clickOut()} src={exitWhite}  alt="Exit" className={classNames(style.img, style.imgWhite, 'img-white')} />

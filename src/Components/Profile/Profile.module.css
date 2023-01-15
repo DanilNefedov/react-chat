@@ -154,3 +154,15 @@
     align-items: center;
     justify-content: center;
 }
+
+.nameSection{
+    position: relative;
+    margin-bottom: 40px;
+}
+.infoSize{
+    display: block;
+    font-size: 10px;
+    position: absolute;
+    bottom: -22px;
+    letter-spacing: 1px;
+}

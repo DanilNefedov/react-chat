@@ -9,6 +9,7 @@
     border-style: solid;
     border-color: var(--main-border);
     padding: 21px;
+    background-color: var(--second-main);
 }
 
 .user {

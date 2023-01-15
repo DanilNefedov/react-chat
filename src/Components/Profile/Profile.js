@@ -114,6 +114,10 @@ export function Profile() {
             }
 
 
+            if(name.length > 20){
+                console.log('length name')
+                return
+            }
 
 
             await updateProfile(auth.currentUser, {
@@ -132,16 +136,21 @@ export function Profile() {
                 email: email !== '' ? email : user.email,
                 photoURL: user.photo
             })
-            //console.log(friend, user)
+            //console.log(friend)
             friend.map(async (el) => {
-
-                await updateDoc(doc(db, 'chatsList', el.friendId), {
-                    [el.id + '.userInfo']: {
-                        id: user.id,
-                        displayName: name !== '' ? name : user.name,
-                        photo: user.photo
-                    }
-                })
+                if(el.friendId){
+                    await updateDoc(doc(db, 'chatsList', el.friendId), {
+                        [el.id + '.userInfo']: {
+                            id: user.id,
+                            displayName: name !== '' ? name : user.name,
+                            photo: user.photo
+                        }
+                    })
+                }
+                if(el.friendId === undefined){
+                    return
+                }
+                //console.log(el)
             })
 
 
@@ -218,7 +227,7 @@ export function Profile() {
         }
 
     }
-    console.log(friend)
+    //console.log(friend)
 
     const deleteAccount = (e) => {
         e.preventDefault()
@@ -232,7 +241,7 @@ export function Profile() {
 
         reauthenticateWithCredential(user, credential).then(() => {//указать для друга, что аккаунт был удален // ошибка при удалении аккаунта а после создании нового с той же почтой возможно увидеть старные сообщения + в бд не удаляется док "chats"
             deleteUser(user).then(async () => {
-                console.log(user)
+                //console.log(user)
 
                 await deleteDoc(doc(db, "users", user.uid));
 
@@ -375,6 +384,7 @@ export function Profile() {
                             <img className={classNames(style.iconBtn)} src={edit} alt="edit" />
                             <span className={classNames(style.editField, 'head-name')}>Edit Name: </span>
                             <input value={name} onChange={(e) => setName(e.target.value)} placeholder="enter name" type="text" className={classNames('edit-field', style.editName)} />
+                            <span className={style.infoSize}>*name length no more than 20 characters</span>
                         </div>
 
                         <div className={classNames(style.emailSection, "email")}>

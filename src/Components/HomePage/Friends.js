@@ -16,7 +16,7 @@ import { useLocation, useOutletContext } from 'react-router-dom';
 export function Friends() {
     const navigationRef = useOutletContext()
     const containerFrineds = useRef()
-    const friendsScroll = useRef()  
+    const friendsScroll = useRef()
 
     const [text, setText] = useState('')
 
@@ -37,10 +37,10 @@ export function Friends() {
 
 
 
-    const searchUsers = async () =>{
+    const searchUsers = async () => {
         const q = query(collection(db, "users"), where('name', '==', text));
 
-        try{
+        try {
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
                 const data = doc.data()
@@ -50,38 +50,38 @@ export function Friends() {
 
             });
 
-        }catch (error){
+        } catch (error) {
             console.error(error)
         }
 
-    
-        
+
+
     }
 
     const handleEvent = (e) => {
-        if(e.code === 'Enter'){
-            searchUsers() 
+        if (e.code === 'Enter') {
+            searchUsers()
             setText('')
-        } 
-        
-    } 
+        }
+
+    }
     const friendList = useSelector(state => state.friend.friend)
     //console.log(friendList)
     const day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 
     // console.log(user)
-    useEffect(()=>{
-        
+    useEffect(() => {
+
         const unsub = onSnapshot(doc(db, "chatsList", myInfo.id), (doc) => {
-            if(doc.data()){
-               
+            if (doc.data()) {
+
                 const data = Object.entries(doc.data())
                 //console.log(data)
                 data.map(el => {
                     //console.log(data, friendList)
                     const combinedId = el[0]
-                    if(combinedId){
+                    if (combinedId) {
                         const friendId = el[1].userInfo.id// err in page gh
                         const name = el[1].userInfo.displayName
                         //console.log(name)
@@ -92,7 +92,7 @@ export function Friends() {
                         const dayMess = day[el[1].date.toDate().getDay()]//
                         const hoursMess = el[1].date.toDate().getHours()//
                         let minute = el[1].date.toDate().getMinutes().toString()
-                        if(minute.length === 1){
+                        if (minute.length === 1) {
                             minute = `0${minute}`
                         }
                         const date = `${dayMess} ${hoursMess}:${minute}`
@@ -102,32 +102,32 @@ export function Friends() {
                         if (!find) {
                             //console.log('new')
                             dispatch(addFrined({ combinedId, name, date, friendId, timePublic, lastMessages, photo }))
-                        }else if(find.timePublic !== timePublic){
+                        } else if (find.timePublic !== timePublic) {
                             const friendInfo = combinedId
                             const messageText = lastMessages
                             const datePush = date
                             //console.log(timePublic)
-                            dispatch(addLastMessage({friendInfo, messageText, datePush, timePublic}))
-                            
-                        }else if(find.name !== name || find.photo !== photo){
+                            dispatch(addLastMessage({ friendInfo, messageText, datePush, timePublic }))
+
+                        } else if (find.name !== name || find.photo !== photo) {
                             const friendInfo = combinedId
                             //console.log(photo)//update when new photo and name
-                            dispatch(updatePhotoName({friendInfo, photo, name}))
+                            dispatch(updatePhotoName({ friendInfo, photo, name }))
                         }
                     }
-                    
-                    
+
+
                 })
-            }else{
+            } else {
                 return false
             }
-            
+
         });
         return () => {
             //unsubPhoto()
-            unsub() 
+            unsub()
         }
-    },[myInfo.id, friendList.map(el => el)]) //update friend without static variables (error in npm) 
+    }, [myInfo.id, friendList.map(el => el)]) //update friend without static variables (error in npm) 
 
 
     const sortState = [...friendList]
@@ -137,39 +137,41 @@ export function Friends() {
     const searchListRef = useRef();
 
 
-    function resize(){
-        if(containerFrineds.current !== null){
-            const containerFrinedsHeight = containerFrineds.current.offsetHeight 
+    function resize() {
+        if (containerFrineds.current !== null) {
+            const containerFrinedsHeight = containerFrineds.current.offsetHeight
             const headRefHeight = headRef.current.offsetHeight
             const navigationRefHeight = navigationRef.current.offsetHeight
-            const searchRefHeight = searchRef.current.offsetHeight
-            const searchListRefHeight = searchListRef.current.offsetHeight
+            // const searchRefHeight = searchRef.current.offsetHeight
+            // const searchListRefHeight = searchListRef.current.offsetHeight
 
             const windowHeight = window.innerHeight
 
-            const sum = containerFrinedsHeight + headRefHeight + navigationRefHeight + searchRefHeight + searchListRefHeight
-            
+            const sum = containerFrinedsHeight + headRefHeight + navigationRefHeight
+
             const res = windowHeight - sum
 
             const newHeight = containerFrinedsHeight - (-res)
 
             containerFrineds.current.style.height = `${newHeight}px`
         }
-        
-    
+
+
     }
 
 
-    useEffect(()=>{
+    useEffect(() => {
         window.addEventListener("onload", resize);
         resize()
-        return () => window.addEventListener("resize", resize);        
-    },[friendList])
+        return () => window.addEventListener("resize", resize);
+    }, [friendList])
 
- 
+
     return (
-        <div  className={classNames(style.searchFriends, "search-friends")}>
-            <Search searchListRef={searchListRef} searchRef={searchRef} user={user} handleSubmit={taskAddFriend} text={text} setText={setText} handleEvent={handleEvent} />
+        <section className="home">
+            <div  className={classNames(style.searchFriends, "search-friends")}>
+                <Search searchListRef={searchListRef} searchRef={searchRef} user={user} handleSubmit={taskAddFriend} text={text} setText={setText} handleEvent={handleEvent} />
+            </div> 
             <section className={style.friends} ref={friendsScroll}>
 
                 <div className={classNames(style.container, 'container')}>
@@ -190,11 +192,8 @@ export function Friends() {
                         </div>
                         
                     </div>
-                    
-
                 </div>
             </section>
-        </div>
-      
+        </section>
     );
 }

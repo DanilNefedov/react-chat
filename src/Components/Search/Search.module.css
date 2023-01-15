@@ -27,6 +27,7 @@
 .cont{
     position: relative;
 }
+
 .loupe{
     position: absolute;
     left: 23px;
@@ -47,10 +48,10 @@
 .searchList{
     background-color: var(--second-main);
     /* margin-bottom: 30px; */
-    max-height: 100px;
+    /* max-height: 100px; */
     padding: 21px;
     /* padding-right: 0; */
-    height: auto;
+    height: 100%;
 }
 
 /* .searchCont{

@@ -6,8 +6,9 @@
 .message{
     display: flex;
     align-items: center;
-    max-width: 90%;
+    max-width: 80%;
 }
+
 .userPhoto img{
     border-radius: 50%;
 }
@@ -18,7 +19,7 @@
 }
 .userMess{
     font-size: 12px;
-    max-width: 85%;
+    max-width: 62%;
 }
 .name{
     font-size: 14px;

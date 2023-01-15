@@ -84,3 +84,31 @@
     transition: 0.2s;
     color:var(--main-gray)
 }
+
+
+@media screen and (max-width: 770px) {
+    .logo{
+        padding: 13px 13px;
+    }
+    .logoImg{
+        width: 30px;
+        height: 30px;
+    }
+    .home{
+        padding: 15px 7px 0;
+    }
+    .profile, .exit{
+        padding: 7px 7px;
+    }
+    .imgCont{
+        width: 25px;
+        height: 25px;
+    }
+    .imgCont img{
+        width: 25px;
+        height: 25px;
+    }
+    .nameNav{
+        font-size: 10px;
+    }
+}

@@ -77,3 +77,22 @@
 .searchListName{
     max-height: 100px;
 }
+
+
+@media screen and (max-width:770px){
+    #searchIcon{
+        height: 45px;
+        font-size: 12px;
+        padding-left: 55px;
+    }
+    .loupe{
+        top:calc(50% - 10px)
+    }
+    .loupe img{
+        width: 17px;
+        height: 17px;
+    }
+    .searchList{
+        padding: 14px;
+    }
+}

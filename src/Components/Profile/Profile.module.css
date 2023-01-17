@@ -55,7 +55,8 @@
 .editPhoto{
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    position: relative;
 }
 .iconBtn{
     margin-right:9px;
@@ -165,4 +166,48 @@
     position: absolute;
     bottom: -22px;
     letter-spacing: 1px;
+    color:var(--desactive-text)
+}
+
+
+@media screen and (max-width: 870px) {
+    .profile{
+        overflow-y: auto;
+        display: flex;
+        justify-content: center;
+        
+        /* min-height: 100vh; */
+    }
+    .container{
+        /* background-color: var(--main-bg); */
+        display: block;
+        /* flex-direction: column;
+        align-items: center; */
+        /* width: 100%; */
+        height: 100vh;
+        /* flex:1; */
+        max-width: 391px;
+        /* border-width: 0 1px;
+        border-color: var(--main-border);
+        border-style: solid; */
+    }
+    .userInfo{
+        width: 100%;
+        display: block;
+        border:none;
+        /* height: 100%; */
+    }
+    .editUserInfo{
+        display: block;
+        width: 100%;
+        height: 400px;
+    }
+    .containerEditUser, .containerUserInfo{
+        width: 100%;
+        
+    }
+    .userPhoto{
+        display: flex;
+        justify-content: center;
+    }
 }

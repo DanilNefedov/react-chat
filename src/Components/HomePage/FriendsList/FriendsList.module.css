@@ -54,3 +54,30 @@
    
 }
 
+
+@media screen and (max-width: 770px) {
+    .list{
+        padding: 7px 14px 6.5px 11px;
+    }
+    .userPhoto{
+        width: 30px;
+        height: 30px;
+        margin-right: 11px;
+    }
+    .userPhoto img{
+        width: 30px;
+        height: 30px;
+    }
+    .name{
+        font-size: 12px;
+        padding-bottom: 0;
+        line-height: 18px;
+    }
+    .headMess{
+        font-size: 11px;
+        line-height: 18px;
+    }
+    .date{
+        font-size: 9px;
+    }
+}

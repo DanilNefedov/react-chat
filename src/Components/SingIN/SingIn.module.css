@@ -52,6 +52,7 @@
 
 .email, .pass, .name{
     display: flex;
+    align-items: center;
 }
 .email input, .pass input, .name input{
     background-color: var(--main-bg);
@@ -62,10 +63,10 @@
     padding: 3px 7px;
 }
 .regBnt{
-    margin: 0 auto;
+    margin: 20px auto 0;
     display: block;
     background-color: var(--desactive-violet);
-    margin-top: 20px;
+    /* margin-top: 20px; */
     padding: 11px 20px;
     border-radius: 10px;
     color: var(--white);
@@ -89,4 +90,34 @@
 }
 .linkReg:hover{
     color: var(--white)
+}
+
+@media screen and (max-width: 770px) {
+    .form{
+        padding: 40px 30px 20px 30px;
+    }
+
+    .header{
+        font-size: 30px;
+        margin-bottom: 30px;
+    }
+    .headerForm{
+        font-size: 20px;
+    }
+    .headerEmail, .headerPass, .headerName{
+        font-size: 13px;
+    }
+
+    .email input, .pass input, .name input{
+        font-size: 12px;
+    }
+
+    .regBnt{
+        padding: 9px 12px;
+        font-size: 13px;
+    }
+    .linkReg{
+        padding-top: 10px;
+        font-size: 11px;
+    }
 }

@@ -365,6 +365,7 @@ export function Profile() {
                                 <img className={classNames(style.iconBtn)} src={download} alt="download" />
                                 <label className={style.downloadImg} htmlFor={style.loadPhoto}>Edit Photo</label>
                                 <input id={style.loadPhoto} type="file" onChange={(e) => setPhoto(e.target.files[0])} accept='image/*, .png, .jpg, .web' /> 
+                                <span className={style.infoSize}>*.png, .jpg, .web</span>
                             </div> 
                             <div className={classNames(style.deletePhoto, "delete-photo")}>
                                 <img className={classNames(style.iconBtn)} src={deleteAcc} alt="delete" />
@@ -377,6 +378,7 @@ export function Profile() {
                             <img className={classNames(style.iconBtn)} src={addPhoto} alt="add" />
                             <label className={style.downloadImg} htmlFor={style.loadPhoto}>Download Photo</label>
                             <input id={style.loadPhoto} type="file" onChange={(e) => setPhoto(e.target.files[0])} accept='image/*, .png, .jpg, .web' />
+                            <span className={style.infoSize}>*.png, .jpg, .web</span>
                         </div>
                         }
 

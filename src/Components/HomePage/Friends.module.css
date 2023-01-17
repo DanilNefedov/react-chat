@@ -54,3 +54,13 @@
     height: 100vh;
     margin-right: 3px;
 }
+
+@media screen and (max-width: 770px) {
+    .head{
+        height: 45px;
+        
+    }
+    .header{
+        font-size: 12px;
+    }
+}

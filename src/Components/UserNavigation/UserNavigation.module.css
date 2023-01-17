@@ -4,6 +4,7 @@
     border-width: 0 0 1px;
     border-color: var(--main-border);
     border-style: solid;
+    max-height: 90px;
 }
 .user{
     display: flex;

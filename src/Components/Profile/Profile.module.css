@@ -19,7 +19,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    width: 20%;
+    max-width: 550px;
     padding: 21px ;
     border-width: 0 1px 0 0;
     border-style: solid;
@@ -166,8 +166,14 @@
     position: absolute;
     bottom: -22px;
     letter-spacing: 1px;
-    color:var(--desactive-text)
+    color:var(--desactive-text);
+    left: 5px;
 }
+.containerBtn{
+    margin-left: -2px;
+}
+
+
 
 
 @media screen and (max-width: 870px) {
@@ -184,7 +190,7 @@
         /* flex-direction: column;
         align-items: center; */
         /* width: 100%; */
-        height: 100vh;
+        height: calc(100vh - 90px);
         /* flex:1; */
         max-width: 391px;
         /* border-width: 0 1px;
@@ -195,12 +201,14 @@
         width: 100%;
         display: block;
         border:none;
+        padding: 20px 20px 20px 21px;
         /* height: 100%; */
     }
     .editUserInfo{
         display: block;
         width: 100%;
-        height: 400px;
+        padding: 0 20px 20px;
+        /* height: 400px; */
     }
     .containerEditUser, .containerUserInfo{
         width: 100%;
@@ -209,5 +217,68 @@
     .userPhoto{
         display: flex;
         justify-content: center;
+    }
+    .containerBtn{
+        margin-top: 22px;
+    }
+}
+
+@media screen and (max-width: 770px){
+    .container{
+        height: calc(100vh - 57px);
+    }
+    .userPhoto img{
+        width: 80px;
+        height: 80px;
+    }
+    .btnDelete{
+        font-size: 12px;
+    }
+    .iconBtn{
+        width: 20px;
+        height: 20px;
+        margin-right: 4px;
+    }
+    .editField, .editAbout{
+        margin-right: 10px;
+    }
+    .editPhoto{
+        margin-bottom: 30px;
+    }
+    .infoSize{
+        font-size: 8.5px;
+        bottom: -19px;
+    }
+    .userInfo{
+        padding-bottom: 15px;
+    }
+    .containerBtn{
+        margin-top: 15px;
+    }
+    .nameSection{
+        margin-bottom: 30px;
+    }
+    .deletePhoto{
+        margin-bottom: 15px;
+    }
+    .btnUpdate{
+        font-size: 12px;
+        padding: 7px 15px;
+    }
+    .editEmail, .editName{
+        font-size: 11px;
+    }
+}
+
+@media screen and (max-width:375px) {
+    .userInfo, .editUserInfo{
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .userInfo{
+        padding-left: 6px;
+    }
+    .editEmail, .editName{
+       padding: 3px 5px;
     }
 }

@@ -227,7 +227,6 @@ export function Profile() {
         }
 
     }
-    //console.log(friend)
 
     const deleteAccount = (e) => {
         e.preventDefault()

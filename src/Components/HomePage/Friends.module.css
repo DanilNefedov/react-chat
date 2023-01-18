@@ -64,3 +64,13 @@
         font-size: 12px;
     }
 }
+
+@media screen and (max-width: 600px) {
+    .searchFriends{
+        display: none;
+    }
+
+    .friends{
+        width: 100%;
+    }
+}

@@ -17,7 +17,7 @@
     z-index: 20;
     border-radius: 3px;
     width: 300px;
-    top: calc(50% - 25px);
+    top: calc(50% - 120px);
     left: calc(50% - 150px);
     padding: 20px;
     display: flex;
@@ -46,4 +46,29 @@
 
 .btn:hover{
     background-color: var(--main-violet);
+}
+
+.exitBtn{
+    width: 35px;
+    height: 35px;
+    position: relative;
+    margin: 15px;
+    background-color: var(--second-main);
+    cursor: pointer;
+}
+
+.exitImg{
+    position: absolute;
+    top:0;
+    width: 35px;
+    height: 35px;
+}
+
+@media screen and (max-width:770px) {
+    .containerModal{
+        padding: 20px 10px;
+    }
+    .btn{
+        font-size: 12px;
+    }
 }

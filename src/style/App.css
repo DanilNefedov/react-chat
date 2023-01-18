@@ -174,7 +174,7 @@ input:-webkit-autofill:active{
 }
 .modal{
     display: none;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     

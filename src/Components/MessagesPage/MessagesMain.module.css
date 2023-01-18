@@ -167,3 +167,46 @@
     border-style: solid;
     border-color: var(--main-border);
 }
+
+@media screen and (max-width:770px) {
+    .header{
+        padding: 10px;
+    }
+    .userImg{
+        width: 40px;
+        height: 40px;
+        margin-right: 15px;
+    }
+    .userImg img{
+        width: 40px;
+        height: 40px;
+    }
+    .name{
+        font-size: 14px;
+    }
+
+    .textArea{
+        padding: 10px;
+    }
+    .input{
+        padding: 9px 15px 7px;
+        font-size: 11px;
+    }
+    .send{
+        width: 34px;
+        border-radius: 6px;
+    }
+
+    .messageContainerFriend, .messageContainerMe{
+        margin-bottom: 25px;
+    }
+
+    .messagesFriend, .messagesMe{
+        padding: 4px 10px;
+        font-size: 11px;
+    }
+
+    .dateMessages{
+        font-size: 9px;
+    }
+}

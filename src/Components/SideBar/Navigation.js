@@ -15,7 +15,7 @@ import { removeMessage } from '../../store/messagesSlice';
 import { useState } from 'react';
 
 
-export function Navigation(){
+export function Navigation({infoClick}){
 
     const dispatch = useDispatch()
 
@@ -32,14 +32,16 @@ export function Navigation(){
     } 
 
     const location = useLocation()
-    console.log(location)
+    const setActiveModal = infoClick.setModal
+    const activeModal = infoClick.modal
+
 
 
     return (
         <nav className={style.nav}>
             <div className={style.home}>
                 {location.pathname === '/profile' ?  
-                    <NavLink to='/' exact='true' end  >
+                    <NavLink to='/' exact='true' end  onClick={() => {if(activeModal){setActiveModal(false)}}}>
                         <div className={style.imgCont}>
                             <img src={homeDark} alt="Home" className={classNames(style.img, style.imgDark)} />
                             <img src={homeWhite} alt="Home" className={classNames(style.img, style.imgWhite, 'img-white')} />
@@ -47,7 +49,7 @@ export function Navigation(){
                         <p className={classNames(style.nameNav, 'name-nav')}>Home</p>
                     </NavLink>
                 : 
-                    <NavLink to='/' exact='true' >
+                    <NavLink to='/' exact='true' onClick={() => {if(activeModal){setActiveModal(false)}}}>
                         <div className={style.imgCont}>
                             <img src={homeDark} alt="Home" className={classNames(style.img, style.imgDark)} />
                             <img src={homeWhite} alt="Home" className={classNames(style.img, style.imgWhite, 'img-white')} />
@@ -58,7 +60,7 @@ export function Navigation(){
                  
             </div>
             <div className={style.profile}>
-                <NavLink to="/profile"  end>
+                <NavLink to="/profile" onClick={() => {if(activeModal){setActiveModal(false)}}} end>
                     <div className={style.imgCont}>
                         <img src={profileDark} alt="Profile" className={classNames(style.img, style.imgDark)} />
                         <img src={profileWhite} alt="Profile" className={classNames(style.img, style.imgWhite, 'img-white')} />
@@ -67,7 +69,7 @@ export function Navigation(){
                 </NavLink>
             </div>
             <div className={style.exit}>
-                <NavLink to="/login" >
+                <NavLink to="/login" onClick={() => {if(activeModal){setActiveModal(false)}}} >
                     <div className={style.imgCont}>
                         <img onClick={()=>clickOut()} src={exitDark}  alt="Exit" className={classNames(style.img, style.imgDark)}/>
                         <img onClick={()=>clickOut()} src={exitWhite}  alt="Exit" className={classNames(style.img, style.imgWhite, 'img-white')} />

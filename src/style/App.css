@@ -233,3 +233,18 @@ border: 3px solid transparent;
         border-width: 2px ;
     }
 }
+
+@media screen and (max-width: 600px) {
+    .home{
+        position: relative;
+    }
+    .home .active-modal-search{
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top:0;
+        right: 0;
+        border-width: 0;
+    }
+}

@@ -4,14 +4,14 @@ import { Navigation } from "./Navigation";
 import classNames from "classnames";
 import { Logo } from "./Logo";
 
-export function SideBarMain() {
+export function SideBarMain({infoClick}) {
     
     return (
         <section className={style.sidebar}>
             <div className={classNames(style.container,"container")}>
                 <Logo/>
                 {/* <User /> */}
-                <Navigation/>
+                <Navigation infoClick={infoClick}/>
                 {/* <Exit /> */}
             </div>
         </section>

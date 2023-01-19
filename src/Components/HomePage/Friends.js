@@ -14,7 +14,7 @@ import { useLocation, useOutletContext } from 'react-router-dom';
 
 
 export function Friends() {
-    const navigationRef = useOutletContext()
+    const context = useOutletContext()
     const containerFrineds = useRef()
     const friendsScroll = useRef()
 
@@ -168,12 +168,15 @@ export function Friends() {
     const searchRef = useRef();
     const searchListRef = useRef();
 
+    
+
 
     function resize() {
         if (containerFrineds.current !== null) {
+            // console.log(navigationRef)
             const containerFrinedsHeight = containerFrineds.current.offsetHeight
             const headRefHeight = headRef.current.offsetHeight
-            const navigationRefHeight = navigationRef.current.offsetHeight
+            const navigationRefHeight = context.navRef.current.offsetHeight
             // const searchRefHeight = searchRef.current.offsetHeight
             // const searchListRefHeight = searchListRef.current.offsetHeight
 
@@ -199,9 +202,41 @@ export function Friends() {
     }, [friendList])
 
 
+    const activeModal = context.modal
+    const setModalActive = context.setModal
+    const searchRefActive = context.searchRef
+    // const a = activeModal = 's'
+
+    // const [click, setClick] = useState(true)
+
+    const refSearch = useRef(null)
+
+    useEffect(()=>{
+        const onClick = e => {
+            //console.log(searchRefActive.current.contains(e.target), refSearch.current.contains(e.target))
+            if(!refSearch.current.contains(e.target)){
+                if(!searchRefActive.current.contains(e.target)){
+
+                    setModalActive(false)
+                    //refSearch.current.classList.remove('active-modal-search')
+                    //setModalActive(false)
+                }
+                
+            } 
+        }
+
+        if(!activeModal){
+
+            document.addEventListener('click', onClick);
+        }
+         
+        return () => document.removeEventListener('click', onClick);
+    }, [])
+
+
     return (
         <section className="home">
-            <div  className={classNames(style.searchFriends, "search-friends")}>
+            <div ref={refSearch} className={activeModal ? classNames(style.searchFriends, "search-friends, active-modal-search") : classNames(style.searchFriends, "search-friends")}>
                 <Search searchListRef={searchListRef} searchRef={searchRef} user={user} handleSubmit={taskAddFriend} text={text} setText={setText} handleEvent={handleEvent} />
             </div> 
             <section className={style.friends} ref={friendsScroll}>

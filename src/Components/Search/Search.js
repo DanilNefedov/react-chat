@@ -8,10 +8,12 @@ import { doc, getDoc, getFirestore, onSnapshot, serverTimestamp, setDoc, updateD
 import { Empty } from '../Empty/Empty';
 import { useEffect } from 'react';
 import { addMessage } from '../../store/messagesSlice';
+import { useOutletContext } from 'react-router-dom';
 
 
 
 export function Search({ user, handleSubmit, text, setText, handleEvent, searchListRef, searchRef }) {
+
 
     const name = user.name;
     const id = user.id;

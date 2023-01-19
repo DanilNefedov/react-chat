@@ -130,7 +130,7 @@ export function MessagesMain() {
     // console.log(infoSection.current.offsetHeight)
     const reloadMess = () => {
         if(scrollRef.current !== null){
-            const headerHeight = infoSection.current.offsetHeight
+            const headerHeight = infoSection.navRef.current.offsetHeight
             const scrollHeight = scrollRef.current.offsetHeight
             const nameHeight = nameRef.current.offsetHeight
             const footerHeight = footerRef.current.offsetHeight

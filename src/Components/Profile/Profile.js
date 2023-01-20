@@ -16,6 +16,7 @@ import download from '../../img/download.svg'
 import edit from '../../img/edit.svg'
 import emailImg from '../../img/email.svg'
 import addPhoto from '../../img/add.svg'
+import { ModuleError } from "../ModuleError/ModuleError"
 
 
 
@@ -30,6 +31,8 @@ export function Profile() {
     const [photo, setPhoto] = useState(null)
 
     const [name, setName] = useState('')
+
+    const [moduleErr, setModuleErr] = useState(false)
 
     const [deleteUserState, setDeleteUserState] = useState(false)
 
@@ -410,6 +413,7 @@ export function Profile() {
 
 
             <Modal deleteAccount={deleteAccount} setDeleteUserState={setDeleteUserState} deleteUserState={deleteUserState} submiteUpdates={submiteUpdates} activeModal={activeModal} setActiveModal={setActiveModal} passwodModal={passwodModal} setPasswordModal={setPasswordModal}></Modal>
+            {moduleErr ? <ModuleError setModuleErr={setModuleErr}></ModuleError> : <></>}
         </section>
     )
 }

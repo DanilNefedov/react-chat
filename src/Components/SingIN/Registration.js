@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import {setUser} from '../../store/authSlice'
 import { useNavigate } from "react-router-dom";
 import { getFirestore } from "firebase/firestore";
+import { useState } from "react";
 
 
 
@@ -12,6 +13,8 @@ import { getFirestore } from "firebase/firestore";
 
 export function Registration () {
     const dispatch = useDispatch()
+    const [errorReg, setErrorReg] = useState(true)
+    const [moduleErr, setModuleErr] = useState(true)
 
     const navigate = useNavigate()
 
@@ -47,13 +50,18 @@ export function Registration () {
                     await setDoc(doc(db, 'chatsList', user.uid),{})
 
                   }).catch((error) => {
+                    setModuleErr(true)
                     console.error(error)
                 });
                 goBack()
             })
-            .catch(console.error)
-        }catch(err){
-            console.error(err)
+            .catch(()=>{
+                setErrorReg(false)
+                // console.error(err)
+            })
+        }catch(error){
+            setModuleErr(true)
+            console.error(error)
         }
         
     }   
@@ -63,10 +71,11 @@ export function Registration () {
         nameForm:'Registration',
         nameButton:'Register',
         link:'/login',//change to navigate
-        nameLink:'Back to login'
+        nameLink:'Back to login',
+        errorClass: errorReg ? '' : 'errorReg'
     }
 
     return (
-        <Form formProps={formProps}  handleClick={handleRegister}></Form>
+        <Form moduleErr={moduleErr} setModuleErr={setModuleErr} setErrorReg={setErrorReg} formProps={formProps}  handleClick={handleRegister}></Form>
     )
 }

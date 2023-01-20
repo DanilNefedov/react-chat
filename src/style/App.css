@@ -187,8 +187,9 @@ input:-webkit-autofill:active{
     background-color:var(--second-main); 
 }
 
-
-
+/* .section-main .module-err .module-err-btn{
+    right: 90px;
+} */
 
 * {
 scrollbar-width: none;

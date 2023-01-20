@@ -4,10 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {setUser} from '../../store/authSlice'
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useState } from "react";
 
 
 export function SingIn (){
     const userState = useSelector(state => state.user)
+    const [errorLog, setErrorLog] = useState(true)
     
     const dispatch = useDispatch();
 
@@ -21,10 +23,14 @@ export function SingIn (){
         const auth = getAuth();
         await signInWithEmailAndPassword(auth, email, password)
             .then(() => {
+                setErrorLog(true)
                 goBack()
-              
+                
             })
-            .catch(console.error)
+            .catch(()=>{
+                setErrorLog(false)
+                // console.error(error)
+            })
     }
     
 
@@ -56,10 +62,11 @@ export function SingIn (){
         nameForm:'Login',
         nameButton:'Log in',
         link:'/registration',
-        nameLink:'Create an account'
+        nameLink:'Create an account',
+        errorClass: errorLog ? '' : 'errorLog'
     }
     return(
-        <Form handleClick={handleLogin} formProps={formProps}></Form>
+        <Form errorLog={errorLog} handleClick={handleLogin} formProps={formProps}></Form>
 
     )
 }

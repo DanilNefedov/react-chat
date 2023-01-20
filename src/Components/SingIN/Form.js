@@ -1,13 +1,14 @@
 import classNames from "classnames";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ModuleError } from "../ModuleError/ModuleError";
 import style from './SingIn.module.css';
 
 
 
-export function Form({ formProps, handleClick }) {
-    const { nameForm, nameButton, link, nameLink } = formProps
-
+export function Form({ formProps, handleClick, setErrorReg, setModuleErr, moduleErr }) {
+    const { nameForm, nameButton, link, nameLink, errorClass } = formProps
+    //console.log(moduleErr)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -15,7 +16,11 @@ export function Form({ formProps, handleClick }) {
 
     //console.log(user)
     return (
-        <section className={style.sectionForm}>
+        <section className={ 
+            errorClass === 'errorLog'  
+            ? classNames(style.errorLog,style.sectionForm ) : errorClass === 'errorReg' 
+            ? classNames(style.errorReg,style.sectionForm ) : classNames( style.sectionForm)   
+        }>
             <form action="" className={style.form}>
                 <h1 className={style.header}>CHAT</h1>
                 <h2 className={classNames(style.headerForm, 'header')}>{nameForm}</h2>
@@ -37,7 +42,14 @@ export function Form({ formProps, handleClick }) {
                 {nameForm === 'Registration' ?
                 <button onClick={(e) => {
                     e.preventDefault()
-                    handleClick( nameUser, email, password)
+                    if(nameUser.length > 20){
+                        setErrorReg(false)
+                    }else{
+                        setErrorReg(true)
+                        setModuleErr(false)
+                        handleClick( nameUser, email, password)
+                    }
+                    
                 }}
                     className={style.regBnt}>{nameButton}</button>
                 :
@@ -52,6 +64,8 @@ export function Form({ formProps, handleClick }) {
                 <Link to={link} className={style.linkReg}>{nameLink}</Link>
 
             </form>
+            {nameForm === 'Registration' && moduleErr ? <ModuleError setModuleErr={setModuleErr}></ModuleError> : <></>}
+            
         </section>
     )
 }

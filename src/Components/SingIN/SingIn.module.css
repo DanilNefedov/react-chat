@@ -91,6 +91,25 @@
 .linkReg:hover{
     color: var(--white)
 }
+.email input, 
+.pass input{
+    border:1px solid transparent;
+}
+
+.errorLog .email input, 
+.errorLog .pass input{
+    border:1px solid #fe5d5d;
+}
+
+.errorReg .email input, 
+.errorReg .pass input, 
+.errorReg .name input{
+    border:1px solid #fe5d5d;
+}
+
+/* .sectionForm{
+    position: relative;
+} */
 
 @media screen and (max-width: 770px) {
     .form{

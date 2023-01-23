@@ -6,20 +6,23 @@ import { addFrined } from '../../store/friendSlice';
 import { SearchList } from './SearchList'
 import { doc, getDoc, getFirestore, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 import { Empty } from '../Empty/Empty';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { addMessage } from '../../store/messagesSlice';
 import { useOutletContext } from 'react-router-dom';
+import { ModuleError } from '../ModuleError/ModuleError';
 
 
 
 export function Search({ user, handleSubmit, text, setText, handleEvent, searchListRef, searchRef }) {
 
 
-    const name = user.name;
-    const id = user.id;
-    const photo = user.photoURL
+    // const name = user.name;
+    // const id = user.id;
+    // const photo = user.photoURL
+    console.log(user)
 
-    
+    const [propsErr, setPropsErr] = useState('')
+    const [moduleErr, setModuleErr] = useState(false)
 
     const dispatch = useDispatch()
     const db = getFirestore()
@@ -31,10 +34,13 @@ export function Search({ user, handleSubmit, text, setText, handleEvent, searchL
     const myInfo = useSelector(state => state.user)
     //console.log(name, id,photo, friend, myInfo)
 
-    const combinedId = myInfo.id > id ? myInfo.id + id : id + myInfo.id
     
-    const bindChat = async () => {
-        
+    const bindChat = async (el) => {
+        console.log(el)
+        const name = el.name;
+        const id = el.id;
+        const photo = el.photoURL
+        const combinedId = myInfo.id > id ? myInfo.id + id : id + myInfo.id
         const find = friend.find(el => el.id === combinedId)
 
         //console.log(user)
@@ -67,7 +73,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent, searchL
                     [combinedId + '.date']: serverTimestamp()
                 })
 
-                await updateDoc(doc(db, 'chatsList', user.id), {
+                await updateDoc(doc(db, 'chatsList', el.id), {
                     [combinedId + '.userInfo']: {
                         id: myInfo.id,
                         displayName: myInfo.name,
@@ -78,8 +84,10 @@ export function Search({ user, handleSubmit, text, setText, handleEvent, searchL
             }
            
 
+            setModuleErr(false)
             
         } catch (error) {
+            setModuleErr(true)
             console.error(error)
         }
     }
@@ -96,14 +104,19 @@ export function Search({ user, handleSubmit, text, setText, handleEvent, searchL
             </section>
             <section ref={searchListRef} className={style.searchList} id="search-list">
                 {/* <div className={style.searchCont}> */}
-                    {/* <h2 className='header'>Search List</h2> */}
-                    {(!user || id === myInfo.id) ? (
+                    {/* <h2 className='header'>Search List</h2> || id === myInfo.id*/}
+                    {(user.length === 0 ) ? (
                         <Empty />
                     ) : (
-                        <SearchList photo={photo} userName={name} userId={combinedId} clickChat={bindChat} />
+                        // user.map(el => {
+                            //console.log(el)
+                            <SearchList user={user} clickChat={bindChat} />
+                        // })
+                        
                     )}
                 {/* </div> */}
             </section>
+            {moduleErr ? <ModuleError propsErr={propsErr} setModuleErr={setModuleErr}></ModuleError> : <></>}
         </>
 
     );

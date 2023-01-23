@@ -39,6 +39,9 @@ export function Profile() {
     const [email, setEmail] = useState('')
 
     const [activeModal, setActiveModal] = useState(false)
+    const [propsErr, setPropsErr] = useState('')
+    const [classErr, setClassErr] = useState('')
+
     const [passwodModal, setPasswordModal] = useState('')
 
 
@@ -56,15 +59,45 @@ export function Profile() {
                 const reUser = auth.currentUser;
 
                 await reauthenticateWithCredential(reUser, credential).then(async () => {
-                    await updateEmail(reUser, email).then(() => {
+                    await updateEmail(reUser, email).then(async () => {
+                        await updateProfile(auth.currentUser, {
+                            // displayName: name !== '' ? name : user.name,
+                            email: email !== '' ? email : user.email,
+                            // photoURL: user.photo // try to delete this line
+                        }).then(() => {
+                            setClassErr('')
+                        }).catch((error) => {
+                            setModuleErr(true)
+                            setPropsErr('Error in email update')
+                            
+                            console.error(error)
+                        });
+
+                        await updateDoc(doc(db, 'users', user.id), {
+                            // name: name !== '' ? name : user.name,
+                            email: email !== '' ? email : user.email,
+                            // photoURL: user.photo
+                        })
+                        setPropsErr('')
 
                     }).catch((err) => {
+                        setClassErr('error')
+                        // setModuleErr(true)
+                        // setPropsErr('Error in email update')
+                        //err with update email
                         console.error(err)
+                        
                     })
                 }).catch((error) => {
+                    setClassErr('error')
+                    //err with re-auth
+                    // setModuleErr(true)
+                    // setPropsErr('Error in re-authorization')
                     console.error(error)
+                    
                 });
                 // }
+
                 setEmail('')
                 setPasswordModal('')
             }
@@ -81,6 +114,8 @@ export function Profile() {
                         console.log(`Upload is ${progress} % done`);
                     },
                     (error) => {
+                        setModuleErr(true)
+                        setPropsErr('Error while downloading a file')
                         console.error(error)
                     },
                     () => {
@@ -91,6 +126,8 @@ export function Profile() {
                             }).then(() => {
 
                             }).catch((error) => {
+                                setModuleErr(true)
+                                setPropsErr('Error in photo update')
                                 console.error(error)
                             });
 
@@ -118,25 +155,29 @@ export function Profile() {
 
 
             if(name.length > 20){
-                console.log('length name')
+                setClassErr('error')
+                // console.log('length name')
                 return
             }
 
 
             await updateProfile(auth.currentUser, {
                 displayName: name !== '' ? name : user.name,
-                email: email !== '' ? email : user.email,
+                // email: email !== '' ? email : user.email,
                 photoURL: user.photo // try to delete this line
             }).then(() => {
-
+                setClassErr('')
             }).catch((error) => {
+                setClassErr('error')
+                // setModuleErr(true)
+                // setPropsErr('Error updating name or photo')
                 console.error(error)
             });
 
 
             await updateDoc(doc(db, 'users', user.id), {
                 name: name !== '' ? name : user.name,
-                email: email !== '' ? email : user.email,
+                // email: email !== '' ? email : user.email,
                 photoURL: user.photo
             })
             //console.log(friend)
@@ -158,11 +199,13 @@ export function Profile() {
 
 
         } catch (error) {
+            setModuleErr(true)
             console.error(error)
         }
-
-
+        setPropsErr('')
+        setModuleErr(false)
         setName('')
+        
     }
 
 
@@ -207,8 +250,12 @@ export function Profile() {
                 await updateProfile(auth.currentUser, {
                     photoURL: ''
                 }).then(() => {
+                    setPropsErr('')
+                    setModuleErr(false)
 
                 }).catch((error) => {
+                    setModuleErr(true)
+                    setPropsErr('Error during photo deletion')
                     console.error(error)
                 });
 
@@ -225,6 +272,8 @@ export function Profile() {
                 })
 
             }).catch((error) => {
+                setModuleErr(true)
+                setPropsErr('Error during photo deletion')
                 console.error(error)
             });
         }
@@ -278,23 +327,37 @@ export function Profile() {
                 // friend.map( async el => {
                 //     await deleteDoc(doc(db, "chats", el.id));//not uid\ need combined id
                 // })
-
+                setModuleErr(false)
+                setPropsErr('')
 
                 signOut(auth).then(() => {
                     dispatch(removeUser())
                     dispatch(removeFrined())
                     dispatch(removeMessage())
+                    setModuleErr(false)
+                    setPropsErr('')
                 }).catch((error) => {
+                    setModuleErr(true)
+                    setPropsErr('Error when logging out of your account')
                     console.error(error)
                 });
 
             }).catch((error) => {
+                setModuleErr(true)
+                setPropsErr('Error in time to delete the account')
                 console.error(error)
+                // console.log('22')
             });
 
 
         }).catch((error) => {
-            console.error(error)
+            setClassErr('error')
+            return
+            // setModuleErr(true)
+            // setPropsErr('Error during re-authentication')
+            // console.error(error)
+            // console.log('22')
+            
         });
         // location.reload();
 
@@ -384,17 +447,17 @@ export function Profile() {
                         </div>
                         }
 
-                        <div className={classNames(style.nameSection, 'name')}>
+                        <div className={ classNames(style.nameSection, 'name')}>
                             <img className={classNames(style.iconBtn)} src={edit} alt="edit" />
                             <span className={classNames(style.editField, 'head-name')}>Edit Name: </span>
-                            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="enter name" type="text" className={classNames('edit-field', style.editName)} />
+                            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter name" type="text" className={classErr === '' ? classNames('edit-field', style.editName) : classNames('edit-field', style.editName, style.err)} />
                             <span className={style.infoSize}>*name length no more than 20 characters</span>
                         </div>
 
-                        <div className={classNames(style.emailSection, "email")}>
+                        <div className={classErr === '' ? classNames(style.emailSection, "email") : classNames(style.emailSection, style.error, "email ") }>
                             <img className={classNames(style.iconBtn)} src={emailImg} alt="edit" />
                             <span className={classNames(style.editField, 'head-name')}>Edit Email: </span>
-                            <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="enter email" type="email" className={classNames('edit-field', style.editEmail)} />
+                            <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" type="email" className={classNames('edit-field', style.editEmail)} />
                         </div>
                         <div className={classNames(style.updateSection, 'update')}>
                             <button onClick={(event) => {
@@ -412,8 +475,19 @@ export function Profile() {
             </div>
 
 
-            <Modal deleteAccount={deleteAccount} setDeleteUserState={setDeleteUserState} deleteUserState={deleteUserState} submiteUpdates={submiteUpdates} activeModal={activeModal} setActiveModal={setActiveModal} passwodModal={passwodModal} setPasswordModal={setPasswordModal}></Modal>
-            {moduleErr ? <ModuleError setModuleErr={setModuleErr}></ModuleError> : <></>}
+            <Modal 
+                setClassErr= {setClassErr}
+                classErr={classErr} 
+                deleteAccount={deleteAccount} 
+                setDeleteUserState={setDeleteUserState} 
+                deleteUserState={deleteUserState} 
+                submiteUpdates={submiteUpdates} 
+                activeModal={activeModal} 
+                setActiveModal={setActiveModal} 
+                passwodModal={passwodModal} 
+                setPasswordModal={setPasswordModal}>
+            </Modal>
+            {moduleErr ? <ModuleError propsErr={propsErr} setModuleErr={setModuleErr}></ModuleError> : <></>}
         </section>
     )
 }

@@ -34,6 +34,7 @@
     margin-bottom: 10px;
     background-color: var(--second-main);
     color:var(--white);
+    border: 1px solid transparent;
 }
 .btn{
     padding: 7px 20px;
@@ -62,6 +63,9 @@
     top:0;
     width: 35px;
     height: 35px;
+}
+.err{
+    border-color: var(--red);
 }
 
 @media screen and (max-width:770px) {

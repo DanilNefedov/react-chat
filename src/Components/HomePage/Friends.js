@@ -9,6 +9,7 @@ import { useRef, useState } from 'react';
 import { getFirestore, collection, query, where, getDocs, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { useLocation, useOutletContext } from 'react-router-dom';
+import { ModuleError } from '../ModuleError/ModuleError';
 
 
 
@@ -20,7 +21,10 @@ export function Friends() {
 
     const [text, setText] = useState('')
 
-    const [user, setUser] = useState('')
+    const [user, setUser] = useState([])
+
+    const [moduleErr, setModuleErr] = useState(false)
+    const [propsErr, setPropsErr] = useState('')
 
     const myInfo = useSelector(state => state.user)
     //console.log(myInfo)
@@ -36,26 +40,29 @@ export function Friends() {
     }
 
 
-
+    //console.log(user)
+    // const a = []
+    //console.log(user)
     const searchUsers = async () => {
         const q = query(collection(db, "users"), where('name', '==', text));
 
         try {
             const querySnapshot = await getDocs(q);
+            const searchArr = []
             querySnapshot.forEach((doc) => {
                 const data = doc.data()
-                //console.log(data)
-                setUser(data)
 
+                setModuleErr(false)
 
+                searchArr.push(data)
+                setUser(searchArr)
             });
 
         } catch (error) {
+            setModuleErr(true)
+            // setPropsErr('')
             console.error(error)
         }
-
-
-
     }
 
     const handleEvent = (e) => {
@@ -67,7 +74,7 @@ export function Friends() {
     }
     const friendList = useSelector(state => state.friend.friend)
     //console.log(friendList)
-    const day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    // const day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 
     // console.log(user)
@@ -148,10 +155,13 @@ export function Friends() {
                         }
                     }
 
-
+                    
                 })
+                setModuleErr(false)
+
             } else {
-                return false
+                setModuleErr(true)
+                return 
             }
 
         });
@@ -261,6 +271,7 @@ export function Friends() {
                     </div>
                 </div>
             </section>
+            {moduleErr ? <ModuleError propsErr={propsErr} setModuleErr={setModuleErr}></ModuleError> : <></>}
         </section>
     );
 }

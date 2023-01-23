@@ -98,13 +98,13 @@
 
 .errorLog .email input, 
 .errorLog .pass input{
-    border:1px solid #fe5d5d;
+    border:1px solid var(--red);
 }
 
 .errorReg .email input, 
 .errorReg .pass input, 
 .errorReg .name input{
-    border:1px solid #fe5d5d;
+    border:1px solid var(--red);
 }
 
 /* .sectionForm{

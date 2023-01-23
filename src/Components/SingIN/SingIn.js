@@ -5,6 +5,7 @@ import {setUser} from '../../store/authSlice'
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
+import { ModuleError } from "../ModuleError/ModuleError";
 
 
 export function SingIn (){
@@ -67,7 +68,6 @@ export function SingIn (){
     }
     return(
         <Form errorLog={errorLog} handleClick={handleLogin} formProps={formProps}></Form>
-
     )
 }
 

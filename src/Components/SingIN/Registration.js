@@ -14,7 +14,7 @@ import { useState } from "react";
 export function Registration () {
     const dispatch = useDispatch()
     const [errorReg, setErrorReg] = useState(true)
-    const [moduleErr, setModuleErr] = useState(true)
+    const [moduleErr, setModuleErr] = useState(false)
 
     const navigate = useNavigate()
 
@@ -56,6 +56,7 @@ export function Registration () {
                 goBack()
             })
             .catch(()=>{
+                ///setModuleErr(true)
                 setErrorReg(false)
                 // console.error(err)
             })

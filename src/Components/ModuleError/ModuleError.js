@@ -3,12 +3,12 @@ import style from './ModuleError.module.css'
 import img from '../../img/close.svg'
 
 
-export function ModuleError ({setModuleErr}){
+export function ModuleError ({setModuleErr, propsErr}){
     // console.log(setModuleErr)
     return(
         <div className={classNames( style.err, 'module-err')}>
             <p>
-                Something's wrong. <br />
+                {propsErr !== '' && propsErr ? propsErr : "Something's wrong." }<br />
                 Reload the page or try again later
             </p>   
             <button onClick={(e) => {

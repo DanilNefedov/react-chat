@@ -42,24 +42,27 @@ export function Friends() {
 
     //console.log(user)
     // const a = []
-    //console.log(user)
+
     const searchUsers = async () => {
         const q = query(collection(db, "users"), where('name', '==', text));
-
+        
         try {
             const querySnapshot = await getDocs(q);
             const searchArr = []
+            setUser([])
             querySnapshot.forEach((doc) => {
                 const data = doc.data()
 
                 setModuleErr(false)
-
                 searchArr.push(data)
                 setUser(searchArr)
+
+
             });
 
         } catch (error) {
             setModuleErr(true)
+            console.log('ww')
             // setPropsErr('')
             console.error(error)
         }

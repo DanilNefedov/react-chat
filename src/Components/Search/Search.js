@@ -6,10 +6,11 @@ import { addFrined } from '../../store/friendSlice';
 import { SearchList } from './SearchList'
 import { doc, getDoc, getFirestore, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 import { Empty } from '../Empty/Empty';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { addMessage } from '../../store/messagesSlice';
 import { useOutletContext } from 'react-router-dom';
 import { ModuleError } from '../ModuleError/ModuleError';
+import classNames from 'classnames';
 
 
 
@@ -19,7 +20,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent, searchL
     // const name = user.name;
     // const id = user.id;
     // const photo = user.photoURL
-    console.log(user)
+    // console.log(user)
 
     const [propsErr, setPropsErr] = useState('')
     const [moduleErr, setModuleErr] = useState(false)
@@ -73,7 +74,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent, searchL
                     [combinedId + '.date']: serverTimestamp()
                 })
 
-                await updateDoc(doc(db, 'chatsList', el.id), {
+                await updateDoc(doc(db, 'chatsList', id), {
                     [combinedId + '.userInfo']: {
                         id: myInfo.id,
                         displayName: myInfo.name,
@@ -91,9 +92,44 @@ export function Search({ user, handleSubmit, text, setText, handleEvent, searchL
             console.error(error)
         }
     }
+
+    const context = useOutletContext()
+    // const searchRef = useRef()
+    // const searchListRef = useRef()
+    const containerSearch = useRef()
+    function resize() {
+        if (containerSearch.current !== null && containerSearch.current !== undefined) {
+            // console.log(navigationRef)
+            const searchHeight = searchRef.current.offsetHeight
+            const searchListHeight = searchListRef.current.offsetHeight
+            const navigationRefHeight = context.navRef.current.offsetHeight
+            // console.log(navigationRefHeight, searchHeight)
+            // const searchRefHeight = searchRef.current.offsetHeight
+            // const searchListRefHeight = searchListRef.current.offsetHeight
+
+            const windowHeight = window.innerHeight
+
+            const sum = searchHeight + navigationRefHeight
+
+            const res = windowHeight - sum
+
+            // const newHeight = containerSearch - (-res)
+            // console.log(windowHeight)
+            containerSearch.current.style.height = `${res}px`
+        }
+
+
+    }
+
+
+    useEffect(() => {
+        window.addEventListener("onload", resize);
+        resize()
+        return () => window.addEventListener("resize", resize);
+    }, [user])
    
     return (
-        <>
+        <div className={classNames(style.container, "container")}>
             <section ref={searchRef} className={style.search} id="search">
                 <div className={style.cont}>
                     <input onKeyDown={handleEvent} value={text} onChange={(e) => setText(e.target.value)} type="text" id={style.searchIcon} placeholder="Find friend" />
@@ -108,16 +144,15 @@ export function Search({ user, handleSubmit, text, setText, handleEvent, searchL
                     {(user.length === 0 ) ? (
                         <Empty />
                     ) : (
-                        // user.map(el => {
-                            //console.log(el)
+                        <div ref={containerSearch} className={classNames(style.containerSearchList, "container-search-list")}>
                             <SearchList user={user} clickChat={bindChat} />
-                        // })
-                        
+                        </div>
                     )}
                 {/* </div> */}
             </section>
             {moduleErr ? <ModuleError propsErr={propsErr} setModuleErr={setModuleErr}></ModuleError> : <></>}
-        </>
+        </div>
+            
 
     );
 

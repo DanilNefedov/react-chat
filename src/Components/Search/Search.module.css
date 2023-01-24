@@ -4,7 +4,7 @@
     /* border-radius: 29px; */
     /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
     color: var(--desactive-text);
-    padding: 0 10px 0 63px;
+    padding: 0 5px 0 63px;
     background-color: var(--second-main);
 }
 
@@ -49,8 +49,9 @@
     background-color: var(--second-main);
     /* margin-bottom: 30px; */
     /* max-height: 100px; */
-    padding: 21px;
+    /* padding:0 5px 15px 21px; */
     /* padding-right: 0; */
+    padding-left: 0;
     height: 100%;
 }
 
@@ -65,10 +66,19 @@
 .list{
     display: flex;
     align-items: center;
+    padding: 14px 5px 14px 21px;
     /* padding: 13px 0 ; */
 }
+
 .user img{
     width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+.user{
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
 }
 .name{
     margin-left: 15px;
@@ -76,8 +86,18 @@
 }
 .searchListName{
     max-height: 100px;
+    /* padding: 15px 0; */
 }
-
+.container{
+    height: 100%;
+}
+.containerSearchList{
+    overflow-y: auto;
+    padding-bottom: 30px;
+}
+.list:hover{
+    background-color: #252632;
+}
 
 @media screen and (max-width:770px){
     #searchIcon{
@@ -95,5 +115,21 @@
     .searchList{
         padding: 14px;
     }
+    .user{
+        width: 30px;
+        height: 30px;
+    }
+    .list{
+        padding:7px 14px 6.5px 11px;
+    }
+    .searchList{
+        padding: 0 3px 0 0 ;
+    }
+    .name{
+        font-size: 12px;
+    }
+    #searchIcon{
+        font-size: 12px;
+        color:var(--white);
+    }
 }
-

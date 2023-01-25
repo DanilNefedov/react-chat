@@ -41,6 +41,7 @@ export function Profile() {
     const [activeModal, setActiveModal] = useState(false)
     const [propsErr, setPropsErr] = useState('')
     const [classErr, setClassErr] = useState('')
+    const [classErrName, setClassErrName] = useState('')
 
     const [passwodModal, setPasswordModal] = useState('')
 
@@ -65,12 +66,14 @@ export function Profile() {
                             email: email !== '' ? email : user.email,
                             // photoURL: user.photo // try to delete this line
                         }).then(() => {
-                            setClassErr('')
-                        }).catch((error) => {
+                            setEmail('')
+                            setModuleErr(false)
+                            setPropsErr('')
+                        }).catch(() => {
                             setModuleErr(true)
                             setPropsErr('Error in email update')
-                            
-                            console.error(error)
+
+                            //console.error(error)
                         });
 
                         await updateDoc(doc(db, 'users', user.id), {
@@ -78,28 +81,35 @@ export function Profile() {
                             email: email !== '' ? email : user.email,
                             // photoURL: user.photo
                         })
-                        setPropsErr('')
-
-                    }).catch((err) => {
-                        setClassErr('error')
+                        // setPropsErr('')
+                        setEmail('')
+                        setClassErr('')
+                    }).catch(() => {
+                        setClassErr('errorEmail')
                         // setModuleErr(true)
                         // setPropsErr('Error in email update')
                         //err with update email
-                        console.error(err)
-                        
+                        // console.error(err)
+
                     })
-                }).catch((error) => {
-                    setClassErr('error')
+                    setModuleErr(false)
+                    setPropsErr('')
+                    setPasswordModal('')
+                    setEmail('')
+                    setActiveModal(false)
+                }).catch(() => {
+                    // setClassErr('errorEmail')
                     //err with re-auth
                     // setModuleErr(true)
-                    // setPropsErr('Error in re-authorization')
-                    console.error(error)
-                    
+                    // setEmail('')
+                    setPasswordModal('')
+                    setActiveModal(true)
+                    setPropsErr('Error in re-authorization')
+                    //console.error(error)
                 });
                 // }
+                // setEmail('')
 
-                setEmail('')
-                setPasswordModal('')
             }
 
 
@@ -112,11 +122,13 @@ export function Profile() {
                     (snapshot) => {
                         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                         console.log(`Upload is ${progress} % done`);
+                        setModuleErr(false)
+                        setPropsErr('')
                     },
-                    (error) => {
+                    () => {
                         setModuleErr(true)
                         setPropsErr('Error while downloading a file')
-                        console.error(error)
+                        // console.error(error)
                     },
                     () => {
                         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
@@ -124,11 +136,12 @@ export function Profile() {
                             await updateProfile(auth.currentUser, {
                                 photoURL: downloadURL
                             }).then(() => {
-
-                            }).catch((error) => {
+                                setModuleErr(false)
+                                setPropsErr('')
+                            }).catch(() => {
                                 setModuleErr(true)
                                 setPropsErr('Error in photo update')
-                                console.error(error)
+                                //console.error(error)
                             });
 
 
@@ -154,8 +167,8 @@ export function Profile() {
             }
 
 
-            if(name.length > 20){
-                setClassErr('error')
+            if (name.length > 20) {
+                setClassErrName('errorName')
                 // console.log('length name')
                 return
             }
@@ -166,11 +179,14 @@ export function Profile() {
                 // email: email !== '' ? email : user.email,
                 photoURL: user.photo // try to delete this line
             }).then(() => {
-                setClassErr('')
+                setClassErrName('')
+                setModuleErr(false)
+                setPropsErr('')
+                // setClassErr('')
             }).catch((error) => {
-                setClassErr('error')
-                // setModuleErr(true)
-                // setPropsErr('Error updating name or photo')
+                // setClassErr('error')
+                setModuleErr(true)
+                setPropsErr('Error updating name or photo')
                 console.error(error)
             });
 
@@ -182,7 +198,7 @@ export function Profile() {
             })
             //console.log(friend)
             friend.map(async (el) => {
-                if(el.friendId){
+                if (el.friendId) {
                     await updateDoc(doc(db, 'chatsList', el.friendId), {
                         [el.id + '.userInfo']: {
                             id: user.id,
@@ -191,21 +207,23 @@ export function Profile() {
                         }
                     })
                 }
-                if(el.friendId === undefined){
+                if (el.friendId === undefined) {
                     return
                 }
                 //console.log(el)
             })
 
-
+            // setPropsErr('')
+            setModuleErr(false)
+            setName('')
         } catch (error) {
             setModuleErr(true)
             console.error(error)
         }
-        setPropsErr('')
-        setModuleErr(false)
+        // setPropsErr('')
+        // setModuleErr(false)
         setName('')
-        
+
     }
 
 
@@ -253,10 +271,10 @@ export function Profile() {
                     setPropsErr('')
                     setModuleErr(false)
 
-                }).catch((error) => {
+                }).catch(() => {
                     setModuleErr(true)
                     setPropsErr('Error during photo deletion')
-                    console.error(error)
+                    //console.error(error)
                 });
 
 
@@ -270,99 +288,113 @@ export function Profile() {
                         }
                     })
                 })
-
-            }).catch((error) => {
+                setModuleErr(false)
+                setPropsErr('')
+            }).catch(() => {
                 setModuleErr(true)
                 setPropsErr('Error during photo deletion')
-                console.error(error)
+                //console.error(error)
             });
         }
 
     }
 
-    const deleteAccount = (e) => {
-        e.preventDefault()
-
+    const deleteAccount = () => {
+        // e.preventDefault()
+        setActiveModal(true)
+        // 
         const user = auth.currentUser;
         //console.log(user)
         const credential = EmailAuthProvider.credential(
             auth.currentUser.email,
             passwodModal// промт c паролем
         )
+        //
+        console.log(passwodModal)
+        if (passwodModal !== '') {
+            reauthenticateWithCredential(user, credential).then(() => {//указать для друга, что аккаунт был удален // ошибка при удалении аккаунта а после создании нового с той же почтой возможно увидеть старные сообщения + в бд не удаляется док "chats"
+                //if (passwodModal !== '') {
+                    setDeleteUserState(true)
+// console.log('w')
+                    deleteUser(user).then(async () => {
+                        //console.log(user)
 
-        reauthenticateWithCredential(user, credential).then(() => {//указать для друга, что аккаунт был удален // ошибка при удалении аккаунта а после создании нового с той же почтой возможно увидеть старные сообщения + в бд не удаляется док "chats"
-            deleteUser(user).then(async () => {
-                //console.log(user)
-
-                await deleteDoc(doc(db, "users", user.uid));
+                        await deleteDoc(doc(db, "users", user.uid));
 
 
-                friend.map(async el => {
-                    //console.log(el.id.reverse())
-                    await updateDoc(doc(db, 'chatsList', user.uid), {
-                        [el.id]: deleteField(),
-                        // lastMessage: deleteField(),
-                        // userInfo: deleteField(),
-                        //photoURL: deleteField(),
-                        acc: 'deleted'
+                        friend.map(async el => {
+                            //console.log(el.id.reverse())
+                            await updateDoc(doc(db, 'chatsList', user.uid), {
+                                [el.id]: deleteField(),
+                                // lastMessage: deleteField(),
+                                // userInfo: deleteField(),
+                                //photoURL: deleteField(),
+                                acc: 'deleted'
+                            });
+                        })
+
+
+                        friend.map(async el => {
+                            //console.log(el.id.reverse())
+                            await updateDoc(doc(db, 'chatsList', el.friendId), {
+                                //[el.id]: deleteField(),
+                                [el.id + '.userInfo']: {
+                                    photo: null,
+                                    displayName: 'Deleted',
+                                    acc: 'deleted'
+                                },
+
+                            });
+                        })
+
+
+                        //await deleteDoc(doc(db, "chatsList", user.uid));
+                        // friend.map( async el => {
+                        //     await deleteDoc(doc(db, "chats", el.id));//not uid\ need combined id
+                        // })
+
+
+                        signOut(auth).then(() => {
+                            dispatch(removeUser())
+                            dispatch(removeFrined())
+                            dispatch(removeMessage())
+                            setModuleErr(false)
+                            setPropsErr('')
+                        }).catch((error) => {
+                            setModuleErr(true)
+                            setPropsErr('Error when logging out of your account')
+                            console.error(error)
+                        });
+
+                        setModuleErr(false)
+                        setPropsErr('')
+
+                    }).catch(() => {
+                        setModuleErr(true)
+                        setPropsErr('Error in time to delete the account')
+                        //console.error(error)
+                        // console.log('22')
                     });
-                })
-
-
-                friend.map(async el => {
-                    //console.log(el.id.reverse())
-                    await updateDoc(doc(db, 'chatsList', el.friendId), {
-                        //[el.id]: deleteField(),
-                        [el.id + '.userInfo']: {
-                            photo: null,
-                            displayName: 'Deleted',
-                            acc: 'deleted'
-                        },
-
-                    });
-                })
-
-
-                //await deleteDoc(doc(db, "chatsList", user.uid));
-                // friend.map( async el => {
-                //     await deleteDoc(doc(db, "chats", el.id));//not uid\ need combined id
-                // })
-                setModuleErr(false)
-                setPropsErr('')
-
-                signOut(auth).then(() => {
-                    dispatch(removeUser())
-                    dispatch(removeFrined())
-                    dispatch(removeMessage())
                     setModuleErr(false)
                     setPropsErr('')
-                }).catch((error) => {
-                    setModuleErr(true)
-                    setPropsErr('Error when logging out of your account')
-                    console.error(error)
-                });
+                    setActiveModal(false)
+                //}
 
-            }).catch((error) => {
-                setModuleErr(true)
-                setPropsErr('Error in time to delete the account')
-                console.error(error)
-                // console.log('22')
+            }).catch((err) => {
+                console.log(err)
+                //setDeleteUserState(true)
+                //setPasswordModal('')
+                //setActiveModal(true)
+                // setModuleErr(true)
+                //setPropsErr('Error in re-authorization')
+                //return
+
             });
-
-
-        }).catch((error) => {
-            setClassErr('error')
-            return
-            // setModuleErr(true)
-            // setPropsErr('Error during re-authentication')
-            // console.error(error)
-            // console.log('22')
-            
-        });
-        // location.reload();
-
+        }
 
     }
+
+
 
     //console.log(user.photo)
 
@@ -411,11 +443,11 @@ export function Profile() {
                                 <img className={classNames(style.iconBtn)} src={deleteAcc} alt="delete" />
                                 <button onClick={(event) => {
                                     event.preventDefault()
-                                    setDeleteUserState(true)
-                                }} 
-                                className={classNames(style.btnDelete)}>Delete Account</button>
+                                    deleteAccount(true)
+                                }}
+                                    className={classNames(style.btnDelete)}>Delete Account</button>
                             </div>
-                            
+
                         </div>
                     </div>
 
@@ -424,40 +456,40 @@ export function Profile() {
 
                 <div className={classNames(style.editUserInfo, "edit-user-info")}>
                     <div className={classNames(style.containerEditUser, "container")}>
-                        {user.photo? 
-                        <>
+                        {user.photo ?
+                            <>
+                                <div className={classNames(style.editPhoto, "edit-photo")}>
+                                    <img className={classNames(style.iconBtn)} src={download} alt="download" />
+                                    <label className={style.downloadImg} htmlFor={style.loadPhoto}>Edit Photo</label>
+                                    <input id={style.loadPhoto} type="file" onChange={(e) => setPhoto(e.target.files[0])} accept='image/*, .png, .jpg, .web' />
+                                    <span className={style.infoSize}>*.png, .jpg, .web</span>
+                                </div>
+                                <div className={classNames(style.deletePhoto, "delete-photo")}>
+                                    <img className={classNames(style.iconBtn)} src={deleteAcc} alt="delete" />
+                                    <button onClick={e => deletePhoto(e)} className={classNames(style.btnDelete, "delete")}>Delete Photo</button>
+                                </div>
+                            </>
+
+                            :
                             <div className={classNames(style.editPhoto, "edit-photo")}>
-                                <img className={classNames(style.iconBtn)} src={download} alt="download" />
-                                <label className={style.downloadImg} htmlFor={style.loadPhoto}>Edit Photo</label>
-                                <input id={style.loadPhoto} type="file" onChange={(e) => setPhoto(e.target.files[0])} accept='image/*, .png, .jpg, .web' /> 
+                                <img className={classNames(style.iconBtn)} src={addPhoto} alt="add" />
+                                <label className={style.downloadImg} htmlFor={style.loadPhoto}>Download Photo</label>
+                                <input id={style.loadPhoto} type="file" onChange={(e) => setPhoto(e.target.files[0])} accept='image/*, .png, .jpg, .web' />
                                 <span className={style.infoSize}>*.png, .jpg, .web</span>
-                            </div> 
-                            <div className={classNames(style.deletePhoto, "delete-photo")}>
-                                <img className={classNames(style.iconBtn)} src={deleteAcc} alt="delete" />
-                                <button onClick={e => deletePhoto(e)} className={classNames(style.btnDelete, "delete")}>Delete Photo</button>
                             </div>
-                        </>
-                        
-                        :
-                        <div className={classNames(style.editPhoto, "edit-photo")}>
-                            <img className={classNames(style.iconBtn)} src={addPhoto} alt="add" />
-                            <label className={style.downloadImg} htmlFor={style.loadPhoto}>Download Photo</label>
-                            <input id={style.loadPhoto} type="file" onChange={(e) => setPhoto(e.target.files[0])} accept='image/*, .png, .jpg, .web' />
-                            <span className={style.infoSize}>*.png, .jpg, .web</span>
-                        </div>
                         }
 
-                        <div className={ classNames(style.nameSection, 'name')}>
+                        <div className={classNames(style.nameSection, 'name')}>
                             <img className={classNames(style.iconBtn)} src={edit} alt="edit" />
                             <span className={classNames(style.editField, 'head-name')}>Edit Name: </span>
-                            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter name" type="text" className={classErr === '' ? classNames('edit-field', style.editName) : classNames('edit-field', style.editName, style.err)} />
+                            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter name" type="text" className={classErrName === 'errorName' ? classNames('edit-field', style.editName, style.err) : classNames('edit-field', style.editName)} />
                             <span className={style.infoSize}>*name length no more than 20 characters</span>
                         </div>
 
-                        <div className={classErr === '' ? classNames(style.emailSection, "email") : classNames(style.emailSection, style.error, "email ") }>
+                        <div className={classNames(style.emailSection, "email")}>
                             <img className={classNames(style.iconBtn)} src={emailImg} alt="edit" />
                             <span className={classNames(style.editField, 'head-name')}>Edit Email: </span>
-                            <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" type="email" className={classNames('edit-field', style.editEmail)} />
+                            <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" type="email" className={classErr === 'errorEmail' ? classNames('edit-field', style.editEmail, style.err) : classNames('edit-field', style.editEmail)} />
                         </div>
                         <div className={classNames(style.updateSection, 'update')}>
                             <button onClick={(event) => {
@@ -475,16 +507,18 @@ export function Profile() {
             </div>
 
 
-            <Modal 
-                setClassErr= {setClassErr}
-                classErr={classErr} 
-                deleteAccount={deleteAccount} 
-                setDeleteUserState={setDeleteUserState} 
-                deleteUserState={deleteUserState} 
-                submiteUpdates={submiteUpdates} 
-                activeModal={activeModal} 
-                setActiveModal={setActiveModal} 
-                passwodModal={passwodModal} 
+            <Modal
+                propsErr={propsErr}
+                setPropsErr={setPropsErr}
+                // setClassErr= {setClassErr}
+                //classErr={classErr} 
+                deleteAccount={deleteAccount}
+                setDeleteUserState={setDeleteUserState}
+                deleteUserState={deleteUserState}
+                submiteUpdates={submiteUpdates}
+                activeModal={activeModal}
+                setActiveModal={setActiveModal}
+                passwodModal={passwodModal}
                 setPasswordModal={setPasswordModal}>
             </Modal>
             {moduleErr ? <ModuleError propsErr={propsErr} setModuleErr={setModuleErr}></ModuleError> : <></>}

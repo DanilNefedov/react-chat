@@ -19,13 +19,16 @@
     -webkit-box-shadow: 0 0 0 30px var(--second-main) inset !important;
     -webkit-text-fill-color:var(--white)!important;
 }
-/* #searchIcon{
+#searchIcon{
     border-width: 0 0 1px 0;
     border-style: solid;
     border-color: var(--main-border);
-} */
+}
 .cont{
-    position: relative;
+    position: relative;    
+    /* border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: var(--main-border); */
 }
 
 .loupe{
@@ -40,7 +43,7 @@
     /* margin-bottom: 10px; */
 }
 
-#searchIcon, .searchList{
+.searchList{
     border-width: 0 0 1px 0;
     border-style: solid;
     border-color: var(--main-border);
@@ -98,6 +101,13 @@
 .list:hover{
     background-color: #252632;
 }
+/* .inputSearch{
+    border: 1px solid transparent;
+}
+.err{
+    border:1px solid var(--red);
+} */
+
 
 @media screen and (max-width:770px){
     #searchIcon{

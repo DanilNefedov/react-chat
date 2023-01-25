@@ -50,6 +50,7 @@ export function Friends() {
             const querySnapshot = await getDocs(q);
             const searchArr = []
             setUser([])
+
             querySnapshot.forEach((doc) => {
                 const data = doc.data()
 

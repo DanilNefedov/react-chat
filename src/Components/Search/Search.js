@@ -11,10 +11,11 @@ import { addMessage } from '../../store/messagesSlice';
 import { useOutletContext } from 'react-router-dom';
 import { ModuleError } from '../ModuleError/ModuleError';
 import classNames from 'classnames';
+import { typeImplementation } from '@testing-library/user-event/dist/type/typeImplementation';
 
 
 
-export function Search({ user, handleSubmit, text, setText, handleEvent, searchListRef, searchRef }) {
+export function Search({ propsErr, user, handleSubmit, text, setText, handleEvent, searchListRef, searchRef }) {
 
 
     // const name = user.name;
@@ -22,7 +23,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent, searchL
     // const photo = user.photoURL
     // console.log(user)
 
-    const [propsErr, setPropsErr] = useState('')
+    // const [propsErr, setPropsErr] = useState('')
     const [moduleErr, setModuleErr] = useState(false)
 
     const dispatch = useDispatch()
@@ -132,7 +133,7 @@ export function Search({ user, handleSubmit, text, setText, handleEvent, searchL
         <div className={classNames(style.container, "container")}>
             <section ref={searchRef} className={style.search} id="search">
                 <div className={style.cont}>
-                    <input onKeyDown={handleEvent} value={text} onChange={(e) => setText(e.target.value)} type="text" id={style.searchIcon} placeholder="Find friend" />
+                    <input className={classNames(style.searchIcon)} onKeyDown={handleEvent} value={text} onChange={(e) => setText(e.target.value)} type="text" id={style.searchIcon} placeholder="Find friend" />
                     <button type='submit' onClick={handleSubmit} className={style.loupe} htmlFor="search-icon"><img src={search} alt="Search" /></button>
 
                 </div>

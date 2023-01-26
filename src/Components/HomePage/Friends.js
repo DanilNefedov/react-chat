@@ -1,4 +1,3 @@
-import dots from '../../img/dots.svg';
 import style from './Friends.module.css';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +7,7 @@ import { addFrined, addLastMessage, updatePhotoName } from '../../store/friendSl
 import { useRef, useState } from 'react';
 import { getFirestore, collection, query, where, getDocs, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
-import { useLocation, useOutletContext } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import { ModuleError } from '../ModuleError/ModuleError';
 
 
@@ -27,21 +26,29 @@ export function Friends() {
     const [propsErr, setPropsErr] = useState('')
 
     const myInfo = useSelector(state => state.user)
-    //console.log(myInfo)
 
     const db = getFirestore();
 
     const dispatch = useDispatch()
 
+    const friendList = useSelector(state => state.friend.friend)
+
+    const sortState = [...friendList]
+
+    const headRef = useRef()
+    const searchRef = useRef();
+    const searchListRef = useRef();       
+    const refSearch = useRef(null)
+
+    const activeModal = context.modal
+    const setModalActive = context.setModal
+    const searchRefActive = context.searchRef
+
     const taskAddFriend = (event) => {
         event.preventDefault();
-        setText('')//clear the entry text
+        setText('')
         searchUsers()
     }
-
-
-    //console.log(user)
-    // const a = []
 
     const searchUsers = async () => {
         const q = query(collection(db, "users"), where('name', '==', text));
@@ -53,18 +60,14 @@ export function Friends() {
 
             querySnapshot.forEach((doc) => {
                 const data = doc.data()
-
                 setModuleErr(false)
                 searchArr.push(data)
                 setUser(searchArr)
-
-
             });
 
         } catch (error) {
             setModuleErr(true)
-            console.log('ww')
-            // setPropsErr('')
+            setPropsErr('')
             console.error(error)
         }
     }
@@ -76,65 +79,49 @@ export function Friends() {
         }
 
     }
-    const friendList = useSelector(state => state.friend.friend)
-    //console.log(friendList)
-    // const day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 
-    // console.log(user)
     useEffect(() => {
-
         const unsub = onSnapshot(doc(db, "chatsList", myInfo.id), (doc) => {
             if (doc.data()) {
 
                 const data = Object.entries(doc.data())
-                //console.log(data)
+
                 data.map(el => {
-                    //console.log(data, friendList)
+
                     const combinedId = el[0]
                     if (combinedId) {
-                        const friendId = el[1].userInfo.id// err in page gh
-                        const name = el[1].userInfo.displayName
-                        //console.log(name)
-                        const photo = el[1].userInfo.photo
+                        const userInfo = el[1].userInfo
+                        const userDate = el[1].date.toDate()
+                        const friendId = userInfo.id
+                        const name = userInfo.displayName
+                        const photo = userInfo.photo
                         const lastMessages = el[1].lastMessage ? el[1].lastMessage.messageText : 'No messages'
-                        //console.log(lastMessages)
-                        const timePublic = el[1].date.toDate().getTime() ? el[1].date.toDate().getTime() : '--:--'
-                        // console.log(el[1].date.toDate().getDate())
-                        const dayMess = el[1].date.toDate().getDate()//day[el[1].date.toDate().getDay()]
-                        const monthMess = el[1].date.toDate().getMonth() + 1
-                        const yearMess = el[1].date.toDate().getFullYear()
-                        //const secMessBase = el[1].date.toMillis()
+                        const timePublic = userDate.getTime() ? userDate.getTime() : '--:--'
                         const dateUser = new Date()
-                        const hoursMess = el[1].date.toDate().getHours()//
-                        const findMyDayBase = `${dayMess}.${monthMess}.${yearMess}`
+                        const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth() + 1}.${userDate.getFullYear()}`
                         const findMyDayUser = `${dateUser.getDate()}.${dateUser.getMonth()+1}.${dateUser.getFullYear()}`
-                        let minute = el[1].date.toDate().getMinutes().toString()
+                        let minute = userDate.getMinutes().toString()
+
                         if (minute.length === 1) {
                             minute = `0${minute}`
                         }
+
                         const find = friendList.find(el => el.id === combinedId)
 
-                        
-
                         if(findMyDayBase === findMyDayUser){
-                            const date = `${hoursMess}:${minute}`
+                            const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
 
-                            
-                            //console.log(find, friendList)
                             if (!find) {
-                                //console.log('new')
                                 dispatch(addFrined({ combinedId, name, date, friendId, timePublic, lastMessages, photo }))
                             } else if (find.timePublic !== timePublic) {
                                 const friendInfo = combinedId
                                 const messageText = lastMessages
                                 const datePush = date
-                                //console.log(timePublic)
                                 dispatch(addLastMessage({ friendInfo, messageText, datePush, timePublic }))
 
                             }else if (find.name !== name || find.photo !== photo) {
                                 const friendInfo = combinedId
-                                //console.log(photo)//update when new photo and name
                                 dispatch(updatePhotoName({ friendInfo, photo, name }))
                             }
 
@@ -142,23 +129,19 @@ export function Friends() {
                             const date = findMyDayBase
 
                             if (!find) {
-                                //console.log('new')
                                 dispatch(addFrined({ combinedId, name, date, friendId, timePublic, lastMessages, photo }))
                             } else if (find.timePublic !== timePublic) {
                                 const friendInfo = combinedId
                                 const messageText = lastMessages
                                 const datePush = date
-                                //console.log(timePublic)
                                 dispatch(addLastMessage({ friendInfo, messageText, datePush, timePublic }))
 
                             }else if (find.name !== name || find.photo !== photo) {
                                 const friendInfo = combinedId
-                                //console.log(photo)//update when new photo and name
                                 dispatch(updatePhotoName({ friendInfo, photo, name }))
                             }
                         }
                     }
-
                     
                 })
                 setModuleErr(false)
@@ -170,29 +153,15 @@ export function Friends() {
 
         });
         return () => {
-            //unsubPhoto()
             unsub()
         }
-    }, [myInfo.id, friendList.map(el => el)]) //update friend without static variables (error in npm) 
-
-
-    const sortState = [...friendList]
-
-    const headRef = useRef()
-    const searchRef = useRef();
-    const searchListRef = useRef();
-
-    
-
+    }, [myInfo.id, friendList.map(el => el)]) 
 
     function resize() {
         if (containerFrineds.current !== null) {
-            // console.log(navigationRef)
             const containerFrinedsHeight = containerFrineds.current.offsetHeight
             const headRefHeight = headRef.current.offsetHeight
             const navigationRefHeight = context.navRef.current.offsetHeight
-            // const searchRefHeight = searchRef.current.offsetHeight
-            // const searchListRefHeight = searchListRef.current.offsetHeight
 
             const windowHeight = window.innerHeight
 
@@ -204,10 +173,7 @@ export function Friends() {
 
             containerFrineds.current.style.height = `${newHeight}px`
         }
-
-
     }
-
 
     useEffect(() => {
         window.addEventListener("onload", resize);
@@ -215,35 +181,18 @@ export function Friends() {
         return () => window.addEventListener("resize", resize);
     }, [friendList])
 
-
-    const activeModal = context.modal
-    const setModalActive = context.setModal
-    const searchRefActive = context.searchRef
-    // const a = activeModal = 's'
-
-    // const [click, setClick] = useState(true)
-
-    const refSearch = useRef(null)
-
     useEffect(()=>{
         const onClick = e => {
-            //console.log(searchRefActive.current.contains(e.target), refSearch.current.contains(e.target))
             if(!refSearch.current.contains(e.target)){
                 if(!searchRefActive.current.contains(e.target)){
-
                     setModalActive(false)
-                    //refSearch.current.classList.remove('active-modal-search')
-                    //setModalActive(false)
                 }
-                
             } 
         }
 
         if(!activeModal){
-
             document.addEventListener('click', onClick);
         }
-         
         return () => document.removeEventListener('click', onClick);
     }, [])
 

@@ -2,14 +2,11 @@ import style from './FriendsList.module.css';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import img from '../../../img/user-M.png'
-import { useEffect } from 'react';
 
 
 
 export function FriendsList({friend}) {
-
     const {id, name, lastMessages, date, photo} = friend
-    //console.log(friend)
 
     return (
 

@@ -8,13 +8,13 @@ import style from './SingIn.module.css';
 
 export function Form({ formProps, handleClick, setErrorReg, setModuleErr, moduleErr }) {
     const { nameForm, nameButton, link, nameLink, errorClass } = formProps
-    //console.log(moduleErr)
+
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [nameUser, setNameUser] = useState('')
 
-    //console.log(user)
+
     return (
         <section className={ 
             errorClass === 'errorLog'  

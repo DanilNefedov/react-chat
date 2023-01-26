@@ -1,12 +1,12 @@
 :root {
-    --main-bg:#171821;/*+*/
-    --main-border:#2C2D35;/*+*/
-    --main-violet:#9068FE;/*+*/
-    --main-gray:#5C5E6F;/*+*/
-    --second-main:#1C1D26;/*+*/
-    --desactive-text:#9396AD;/*+*/
-    --desactive-violet:#4D3788;/*+*/
-    --main-red:#FE6868;/*+*/
+    --main-bg:#171821;
+    --main-border:#2C2D35;
+    --main-violet:#9068FE;
+    --main-gray:#5C5E6F;
+    --second-main:#1C1D26;
+    --desactive-text:#9396AD;
+    --desactive-violet:#4D3788;
+    --main-red:#FE6868;
     --white:#E2FFFF;
     --red: #fe5d5d;
 }

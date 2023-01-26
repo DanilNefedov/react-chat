@@ -4,7 +4,6 @@ import img from '../../img/close.svg'
 
 
 export function ModuleError ({setModuleErr, propsErr}){
-    // console.log(setModuleErr)
     return(
         <div className={classNames( style.err, 'module-err')}>
             <p>

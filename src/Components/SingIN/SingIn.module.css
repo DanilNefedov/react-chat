@@ -8,7 +8,6 @@
     align-items: center;
     align-content: center;
     justify-content: center;
-    /* overflow: auto; */
 }
 .form input:-webkit-autofill,
 .form input:-webkit-autofill:hover, 
@@ -21,8 +20,6 @@
     background-color: var(--second-main);
     padding: 50px 40px 30px 40px;
     border: 1px solid var(--main-border)
-    /* border-radius: 20px; */
-    /* filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); */
 }
 
 .header{
@@ -47,7 +44,6 @@
 }
 .headerEmail, .headerPass, .headerName{
     font-size: 15px;
-    
 }
 
 .email, .pass, .name{
@@ -66,7 +62,6 @@
     margin: 20px auto 0;
     display: block;
     background-color: var(--desactive-violet);
-    /* margin-top: 20px; */
     padding: 11px 20px;
     border-radius: 10px;
     color: var(--white);
@@ -78,7 +73,6 @@
 }
 
 .linkReg{
-    /* align-items: center; */
     text-align: center;
     margin: 0 auto;
     padding-top: 20px;
@@ -106,10 +100,6 @@
 .errorReg .name input{
     border:1px solid var(--red);
 }
-
-/* .sectionForm{
-    position: relative;
-} */
 
 @media screen and (max-width: 770px) {
     .form{

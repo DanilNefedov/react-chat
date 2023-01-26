@@ -1,9 +1,7 @@
 import classNames from "classnames"
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
-import { useRef } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useOutletContext } from "react-router-dom";
 import { addMessage } from "../../store/messagesSlice";
 import style from './MessagesMain.module.css'
 
@@ -13,6 +11,10 @@ export function MessagesFieldMe({infoChat, scrollRef, reloadMess}) {
     const messagesState = useSelector(state => state.message.messages)
     const user = useSelector(state => state.user)
     const findChat = messagesState.find(el => el.chatId === infoChat.id)
+
+    const db = getFirestore()
+    const dispatch = useDispatch()
+    const dayArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 
     useEffect(() => {
@@ -27,24 +29,15 @@ export function MessagesFieldMe({infoChat, scrollRef, reloadMess}) {
     },[messagesState])
 
 
-    const db = getFirestore()
-    const dispatch = useDispatch()
-    const dayArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-
     useEffect(() => {
         const unsub = onSnapshot(doc(db, 'chats', infoChat.id), (doc) => {
-            //console.log(doc.data())
-            //console.log('ww')
             if (doc.data()) {
                 const data = doc.data()
                 const chatId = infoChat.id
-                //console.log(data)
-                data.messages.map(el => {
-                    //console.log(data.messages)
 
+                data.messages.map(el => {
                     const userId = el.userId
                     const messageText = el.messageText
-                    //const datePush = el.date
                     const messageId = el.id
                     const date = el.date
                     const dayMess = dayArr[date.toDate().getDay()]//
@@ -68,7 +61,7 @@ export function MessagesFieldMe({infoChat, scrollRef, reloadMess}) {
         }
     }, [infoChat.id])
 
-    //console.log(messagesState)
+
 
     return (
 

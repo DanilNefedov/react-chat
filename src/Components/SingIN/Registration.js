@@ -39,7 +39,6 @@ export function Registration () {
                         token:user.accessToken,
                         photo:null
                     }))
-                    //console.log(user, user2)
                     await setDoc(doc(db, 'users', user.uid),{
                         name:user.displayName,
                         email:user.email,
@@ -56,9 +55,7 @@ export function Registration () {
                 goBack()
             })
             .catch(()=>{
-                ///setModuleErr(true)
                 setErrorReg(false)
-                // console.error(err)
             })
         }catch(error){
             setModuleErr(true)
@@ -71,7 +68,7 @@ export function Registration () {
     const formProps = {
         nameForm:'Registration',
         nameButton:'Register',
-        link:'/login',//change to navigate
+        link:'/login',
         nameLink:'Back to login',
         errorClass: errorReg ? '' : 'errorReg'
     }

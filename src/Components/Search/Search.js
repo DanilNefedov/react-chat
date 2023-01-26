@@ -1,69 +1,54 @@
 import search from '../../img/search.svg';
-import dots from '../../img/dots.svg';
 import style from './Search.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { addFrined } from '../../store/friendSlice';
 import { SearchList } from './SearchList'
-import { doc, getDoc, getFirestore, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, getFirestore, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 import { Empty } from '../Empty/Empty';
 import { useEffect, useRef, useState } from 'react';
-import { addMessage } from '../../store/messagesSlice';
 import { useOutletContext } from 'react-router-dom';
 import { ModuleError } from '../ModuleError/ModuleError';
 import classNames from 'classnames';
-import { typeImplementation } from '@testing-library/user-event/dist/type/typeImplementation';
+
 
 
 
 export function Search({ propsErr, user, handleSubmit, text, setText, handleEvent, searchListRef, searchRef }) {
 
-
-    // const name = user.name;
-    // const id = user.id;
-    // const photo = user.photoURL
-    // console.log(user)
-
-    // const [propsErr, setPropsErr] = useState('')
     const [moduleErr, setModuleErr] = useState(false)
 
     const dispatch = useDispatch()
     const db = getFirestore()
-   
-
 
     const friend = useSelector(state => state.friend.friend)
-    //console.log(friend,name)
-    const myInfo = useSelector(state => state.user)
-    //console.log(name, id,photo, friend, myInfo)
 
-    
+    const myInfo = useSelector(state => state.user)
+
+
+
     const bindChat = async (el) => {
-        console.log(el)
+
         const name = el.name;
         const id = el.id;
         const photo = el.photoURL
         const combinedId = myInfo.id > id ? myInfo.id + id : id + myInfo.id
         const find = friend.find(el => el.id === combinedId)
 
-        //console.log(user)
 
         try {
-           
-            //console.log('n')
+
+
             if (!find) {
                 const friendId = id
                 dispatch(addFrined({ combinedId, name, friendId, photo }))
             }
-            
+
             const res = await getDoc(doc(db, 'chats', combinedId))
-            
-            
+
+
 
             if (!res.exists()) {
-                //console.log(friend)
-                // const [name, photo] = friend[0]
-                // const chatId = id
-                // dispatch(addMessage({name, photo, chatId}))
+
                 await setDoc(doc(db, 'chats', combinedId), { messages: [] })
 
                 await updateDoc(doc(db, 'chatsList', myInfo.id), {
@@ -84,10 +69,10 @@ export function Search({ propsErr, user, handleSubmit, text, setText, handleEven
                     [combinedId + '.date']: serverTimestamp()
                 })
             }
-           
+
 
             setModuleErr(false)
-            
+
         } catch (error) {
             setModuleErr(true)
             console.error(error)
@@ -95,27 +80,19 @@ export function Search({ propsErr, user, handleSubmit, text, setText, handleEven
     }
 
     const context = useOutletContext()
-    // const searchRef = useRef()
-    // const searchListRef = useRef()
+
     const containerSearch = useRef()
     function resize() {
         if (containerSearch.current !== null && containerSearch.current !== undefined) {
-            // console.log(navigationRef)
-            const searchHeight = searchRef.current.offsetHeight
-            const searchListHeight = searchListRef.current.offsetHeight
-            const navigationRefHeight = context.navRef.current.offsetHeight
-            // console.log(navigationRefHeight, searchHeight)
-            // const searchRefHeight = searchRef.current.offsetHeight
-            // const searchListRefHeight = searchListRef.current.offsetHeight
 
+            const searchHeight = searchRef.current.offsetHeight
+            const navigationRefHeight = context.navRef.current.offsetHeight
             const windowHeight = window.innerHeight
 
             const sum = searchHeight + navigationRefHeight
 
             const res = windowHeight - sum
 
-            // const newHeight = containerSearch - (-res)
-            // console.log(windowHeight)
             containerSearch.current.style.height = `${res}px`
         }
 
@@ -128,7 +105,7 @@ export function Search({ propsErr, user, handleSubmit, text, setText, handleEven
         resize()
         return () => window.addEventListener("resize", resize);
     }, [user])
-   
+
     return (
         <div className={classNames(style.container, "container")}>
             <section ref={searchRef} className={style.search} id="search">
@@ -140,20 +117,19 @@ export function Search({ propsErr, user, handleSubmit, text, setText, handleEven
 
             </section>
             <section ref={searchListRef} className={style.searchList} id="search-list">
-                {/* <div className={style.searchCont}> */}
-                    {/* <h2 className='header'>Search List</h2> || id === myInfo.id*/}
-                    {(user.length === 0 ) ? (
-                        <Empty />
-                    ) : (
-                        <div ref={containerSearch} className={classNames(style.containerSearchList, "container-search-list")}>
-                            <SearchList user={user} clickChat={bindChat} />
-                        </div>
-                    )}
-                {/* </div> */}
+
+                {(user.length === 0) ? (
+                    <Empty />
+                ) : (
+                    <div ref={containerSearch} className={classNames(style.containerSearchList, "container-search-list")}>
+                        <SearchList user={user} clickChat={bindChat} />
+                    </div>
+                )}
+
             </section>
             {moduleErr ? <ModuleError propsErr={propsErr} setModuleErr={setModuleErr}></ModuleError> : <></>}
         </div>
-            
+
 
     );
 

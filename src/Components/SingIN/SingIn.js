@@ -5,7 +5,6 @@ import {setUser} from '../../store/authSlice'
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
-import { ModuleError } from "../ModuleError/ModuleError";
 
 
 export function SingIn (){
@@ -30,7 +29,6 @@ export function SingIn (){
             })
             .catch(()=>{
                 setErrorLog(false)
-                // console.error(error)
             })
     }
     
@@ -40,7 +38,6 @@ export function SingIn (){
         const unsub = onAuthStateChanged(auth, (user)=>{
             
             if(user && location === '/login'){
-                //console.log(user)
                 dispatch(setUser({
                     name:user.displayName,
                     email:user.email,
@@ -58,7 +55,7 @@ export function SingIn (){
         }
     }, [userState.id])
     
-    //console.log(userState)
+
     const formProps = {
         nameForm:'Login',
         nameButton:'Log in',

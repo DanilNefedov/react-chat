@@ -3,7 +3,6 @@ import style from './MessagesMain.module.css';
 
 
 export function SendMessages({sendMess, text, setMessageText, handleEvent, innerRef}) {
-    //console.log(sendMess)
     return (
         <section className={style.textArea} ref={innerRef}>
 

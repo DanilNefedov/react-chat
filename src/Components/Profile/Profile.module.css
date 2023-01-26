@@ -1,20 +1,14 @@
 .profile{
     background-color: var(--second-main);
-    /* filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-    border-radius: 20px; */
     height: 100%;    
     position: relative;
 }
 .container{
     height: 100%;
     display: flex;
-    /* position: relative; */
 }
 .nameEmail{
-    /* padding-left: 21px; */
     align-items: center;
-    /* margin: 0 auto; */
-    /* width: auto; */
 }
 .userInfo{
     display: flex;
@@ -29,9 +23,7 @@
 .photoSection{
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
     margin-bottom: 25px;
-
 }
 
 #loadPhoto{
@@ -47,7 +39,6 @@
     background-color: transparent;
     color:var(--desactive-text);
     font-size: 16px;
-    /* margin-left: 10px; */
     transition: 0.2s;
 }
 .btnDelete:hover{
@@ -87,39 +78,19 @@
 .deletePhoto{
     margin-bottom: 20px;
 }
-/* .deleteBtn{
-    background-color: transparent;
-} */
+
 .editName, .editEmail{
     padding: 3px 15px;
     border-radius: 3px;
     background-color: var(--main-bg);
     color:var(--white);
 }
-/* .downloadImg, .deleteBtn, .btnDelete{
-    display: block;
-    cursor: pointer;
-    background-color: var(--main-blue);
-    padding: 15px 25px;
-    border-radius: 10px;
-    color: var(--white);
-   
-}
-.deleteBtn, .btnDelete{
-    font-size: 14px;
-    background-color: #FF0000;
-    margin-left: 20px; 
-} */
+
 .userPhoto img{
     width: 150px;
     height: 150px;
     border-radius: 50%;
 }
-/* .editPhoto{ 
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-} */
 
 .editAbout, .editField{
     color: var(--desactive-text);
@@ -133,7 +104,6 @@
 }
 .nameUser, .emailUser{
     margin-bottom: 15px;
-    /* text-align: center; */
 }
 
 .btnUpdate{
@@ -184,45 +154,30 @@
     border-color: var(--red);
 }
 
-
-
 @media screen and (max-width: 870px) {
     .profile{
         overflow-y: auto;
         display: flex;
         justify-content: center;
-        
-        /* min-height: 100vh; */
     }
     .container{
-        /* background-color: var(--main-bg); */
         display: block;
-        /* flex-direction: column;
-        align-items: center; */
-        /* width: 100%; */
         height: calc(100vh - 90px);
-        /* flex:1; */
         max-width: 391px;
-        /* border-width: 0 1px;
-        border-color: var(--main-border);
-        border-style: solid; */
     }
     .userInfo{
         width: 100%;
         display: block;
         border:none;
         padding: 20px 20px 20px 21px;
-        /* height: 100%; */
     }
     .editUserInfo{
         display: block;
         width: 100%;
         padding: 0 20px 20px;
-        /* height: 400px; */
     }
     .containerEditUser, .containerUserInfo{
         width: 100%;
-        
     }
     .userPhoto{
         display: flex;

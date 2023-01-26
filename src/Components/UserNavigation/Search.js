@@ -1,9 +1,7 @@
 import style from './UserNavigation.module.css'
 import searchImg from '../../img/search.svg'
 import classNames from "classnames";
-import { useLocation, useOutletContext } from 'react-router-dom';
-import { useRef } from 'react';
-import { useEffect } from 'react';
+
 
 export function Search({setModal, searchRef}){
 

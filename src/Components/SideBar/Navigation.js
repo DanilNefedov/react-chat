@@ -3,7 +3,7 @@ import homeDark from '../../img/home-dark.svg';
 import homeWhite from '../../img/home-white.svg';
 import profileDark from '../../img/profile-dark.svg'
 import profileWhite from '../../img/profile-white.svg'
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getAuth, signOut } from 'firebase/auth';
 import { removeUser } from '../../store/authSlice';
@@ -12,15 +12,18 @@ import exitWhite from '../../img/exit-white.svg'
 import classNames from "classnames";
 import { removeFrined } from '../../store/friendSlice';
 import { removeMessage } from '../../store/messagesSlice';
-import { useState } from 'react';
+
 
 
 export function Navigation({infoClick}){
 
     const dispatch = useDispatch()
-
+    const location = useLocation()
+    const setActiveModal = infoClick.setModal
+    const activeModal = infoClick.modal
     const auth = getAuth();
 
+    
     const clickOut = () => {
         signOut(auth).then(() => {
            dispatch(removeUser())
@@ -31,9 +34,7 @@ export function Navigation({infoClick}){
         });
     } 
 
-    const location = useLocation()
-    const setActiveModal = infoClick.setModal
-    const activeModal = infoClick.modal
+
 
 
 

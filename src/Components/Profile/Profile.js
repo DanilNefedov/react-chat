@@ -51,7 +51,7 @@ export function Profile() {
 
         try {
             if (email !== '') {
-                setActiveModal(true)
+                //setActiveModal(true)
                 //console.log(passwodModal)
                 const credential = EmailAuthProvider.credential(
                     auth.currentUser.email,
@@ -112,7 +112,7 @@ export function Profile() {
 
             }
 
-
+            //console.log(photo)
             if (photo) {
                 const storage = getStorage();
                 const storageRef = ref(storage, `avatar/${user.name}`);
@@ -161,57 +161,59 @@ export function Profile() {
                                 })
                             })
                         });
+                        setPhoto(null)
                     }
                 );
 
             }
 
 
-            if (name.length > 20) {
-                setClassErrName('errorName')
+            if (name.length <= 20 && name !== '') {
+                //setClassErrName('errorName')
                 // console.log('length name')
-                return
+                //return
+                await updateProfile(auth.currentUser, {
+                    displayName: name !== '' ? name : user.name,
+                    // email: email !== '' ? email : user.email,
+                    //photoURL: user.photo // try to delete this line
+                }).then(() => {
+                    setClassErrName('')
+                    setModuleErr(false)
+                    setPropsErr('')
+                    // setClassErr('')
+                }).catch((error) => {
+                    // setClassErr('error')
+                    setModuleErr(true)
+                    setPropsErr('Error updating name or photo')
+                    console.error(error)
+                });
+
+
+                await updateDoc(doc(db, 'users', user.id), {
+                    name: name !== '' ? name : user.name,
+                    // email: email !== '' ? email : user.email,
+                    //photoURL: user.photo
+                })
+                //console.log(friend)
+                friend.map(async (el) => {
+                    if (el.friendId) {
+                        await updateDoc(doc(db, 'chatsList', el.friendId), {
+                            [el.id + '.userInfo']: {
+                                id: user.id,
+                                displayName: name !== '' ? name : user.name,
+                                photo: user.photo
+                            }
+                        })
+                    }
+                    if (el.friendId === undefined) {
+                        return
+                    }
+                    //console.log(el)
+                })
             }
 
 
-            await updateProfile(auth.currentUser, {
-                displayName: name !== '' ? name : user.name,
-                // email: email !== '' ? email : user.email,
-                photoURL: user.photo // try to delete this line
-            }).then(() => {
-                setClassErrName('')
-                setModuleErr(false)
-                setPropsErr('')
-                // setClassErr('')
-            }).catch((error) => {
-                // setClassErr('error')
-                setModuleErr(true)
-                setPropsErr('Error updating name or photo')
-                console.error(error)
-            });
 
-
-            await updateDoc(doc(db, 'users', user.id), {
-                name: name !== '' ? name : user.name,
-                // email: email !== '' ? email : user.email,
-                photoURL: user.photo
-            })
-            //console.log(friend)
-            friend.map(async (el) => {
-                if (el.friendId) {
-                    await updateDoc(doc(db, 'chatsList', el.friendId), {
-                        [el.id + '.userInfo']: {
-                            id: user.id,
-                            displayName: name !== '' ? name : user.name,
-                            photo: user.photo
-                        }
-                    })
-                }
-                if (el.friendId === undefined) {
-                    return
-                }
-                //console.log(el)
-            })
 
             // setPropsErr('')
             setModuleErr(false)
@@ -299,9 +301,9 @@ export function Profile() {
 
     }
 
-    const deleteAccount = () => {
-        // e.preventDefault()
-        setActiveModal(true)
+    const deleteAccount = (event) => {
+        event.preventDefault()
+        // setActiveModal(true)
         // 
         const user = auth.currentUser;
         //console.log(user)
@@ -310,87 +312,88 @@ export function Profile() {
             passwodModal// промт c паролем
         )
         //
-        console.log(passwodModal)
-        if (passwodModal !== '') {
-            reauthenticateWithCredential(user, credential).then(() => {//указать для друга, что аккаунт был удален // ошибка при удалении аккаунта а после создании нового с той же почтой возможно увидеть старные сообщения + в бд не удаляется док "chats"
-                //if (passwodModal !== '') {
-                    setDeleteUserState(true)
-// console.log('w')
-                    deleteUser(user).then(async () => {
-                        //console.log(user)
+        // console.log(passwodModal)
+        // if (passwodModal !== '') {
+        reauthenticateWithCredential(user, credential).then(() => {//указать для друга, что аккаунт был удален // ошибка при удалении аккаунта а после создании нового с той же почтой возможно увидеть старные сообщения + в бд не удаляется док "chats"
+            //if (passwodModal !== '') {
+            setDeleteUserState(true)
+            // console.log('w')
+            deleteUser(user).then(async () => {
+                //console.log(user)
 
-                        await deleteDoc(doc(db, "users", user.uid));
-
-
-                        friend.map(async el => {
-                            //console.log(el.id.reverse())
-                            await updateDoc(doc(db, 'chatsList', user.uid), {
-                                [el.id]: deleteField(),
-                                // lastMessage: deleteField(),
-                                // userInfo: deleteField(),
-                                //photoURL: deleteField(),
-                                acc: 'deleted'
-                            });
-                        })
+                await deleteDoc(doc(db, "users", user.uid));
 
 
-                        friend.map(async el => {
-                            //console.log(el.id.reverse())
-                            await updateDoc(doc(db, 'chatsList', el.friendId), {
-                                //[el.id]: deleteField(),
-                                [el.id + '.userInfo']: {
-                                    photo: null,
-                                    displayName: 'Deleted',
-                                    acc: 'deleted'
-                                },
-
-                            });
-                        })
-
-
-                        //await deleteDoc(doc(db, "chatsList", user.uid));
-                        // friend.map( async el => {
-                        //     await deleteDoc(doc(db, "chats", el.id));//not uid\ need combined id
-                        // })
-
-
-                        signOut(auth).then(() => {
-                            dispatch(removeUser())
-                            dispatch(removeFrined())
-                            dispatch(removeMessage())
-                            setModuleErr(false)
-                            setPropsErr('')
-                        }).catch((error) => {
-                            setModuleErr(true)
-                            setPropsErr('Error when logging out of your account')
-                            console.error(error)
-                        });
-
-                        setModuleErr(false)
-                        setPropsErr('')
-
-                    }).catch(() => {
-                        setModuleErr(true)
-                        setPropsErr('Error in time to delete the account')
-                        //console.error(error)
-                        // console.log('22')
+                friend.map(async el => {
+                    //console.log(el.id.reverse())
+                    await updateDoc(doc(db, 'chatsList', user.uid), {
+                        [el.id]: deleteField(),
+                        // lastMessage: deleteField(),
+                        // userInfo: deleteField(),
+                        //photoURL: deleteField(),
+                        acc: 'deleted'
                     });
+                })
+
+
+                friend.map(async el => {
+                    //console.log(el.id.reverse())
+                    await updateDoc(doc(db, 'chatsList', el.friendId), {
+                        //[el.id]: deleteField(),
+                        [el.id + '.userInfo']: {
+                            photo: null,
+                            displayName: 'Deleted',
+                            acc: 'deleted'
+                        },
+
+                    });
+                })
+
+
+                //await deleteDoc(doc(db, "chatsList", user.uid));
+                // friend.map( async el => {
+                //     await deleteDoc(doc(db, "chats", el.id));//not uid\ need combined id
+                // })
+
+
+                signOut(auth).then(() => {
+                    dispatch(removeUser())
+                    dispatch(removeFrined())
+                    dispatch(removeMessage())
                     setModuleErr(false)
-                    setPropsErr('')
-                    setActiveModal(false)
-                //}
+                    //setPropsErr('')
+                }).catch(() => {
+                    //setModuleErr(true)
+                    //setPropsErr('Error when logging out of your account')
+                    //console.error(error)
+                });
 
-            }).catch((err) => {
-                console.log(err)
-                //setDeleteUserState(true)
-                //setPasswordModal('')
-                //setActiveModal(true)
-                // setModuleErr(true)
-                //setPropsErr('Error in re-authorization')
-                //return
+                //setModuleErr(false)
+                //setPropsErr('')
 
+            }).catch(() => {
+                //setModuleErr(true)
+                //setPropsErr('Error in time to delete the account')
+                //console.error(error)
+                // console.log('22')
             });
-        }
+            //setModuleErr(false)
+            //setPropsErr('')
+            //setActiveModal(false)
+            //setDeleteUserState(false)
+            //}
+
+        }).catch(() => {
+            //console.log(err)
+            setDeleteUserState(true)
+            setPasswordModal('')
+            //setActiveModal(true)
+            // setModuleErr(true)
+            setPropsErr('Error in re-authorization')
+            return
+
+        });
+        // }
 
     }
 
@@ -443,7 +446,8 @@ export function Profile() {
                                 <img className={classNames(style.iconBtn)} src={deleteAcc} alt="delete" />
                                 <button onClick={(event) => {
                                     event.preventDefault()
-                                    deleteAccount(true)
+                                    setActiveModal(true)
+                                    setDeleteUserState(true)
                                 }}
                                     className={classNames(style.btnDelete)}>Delete Account</button>
                             </div>

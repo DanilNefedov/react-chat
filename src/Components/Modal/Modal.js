@@ -4,14 +4,19 @@ import backDark from '../../img/back-dark.svg'
 import { useFetcher } from 'react-router-dom'
 
 export function Modal ({deleteUserState, setDeleteUserState, deleteAccount, submiteUpdates, setActiveModal, activeModal, passwodModal, setPasswordModal,propsErr, setPropsErr}){
-    //console.log(propsErr )
+    //console.log(deleteUserState, activeModal )
     return(
         <div className={activeModal || deleteUserState ? 'modal active-modal' : 'modal'} >
             <div onClick={(e) => {
                 e.preventDefault()
+                setPasswordModal('')
+                // setPropsErr('')
                 //setClassErr('')
                 setDeleteUserState(false)
                 setActiveModal(false)
+                if(propsErr === 'Error in re-authorization'){
+                    setPropsErr('')
+                }
                 }} 
             className={classNames(style.exitBtn)}>
                 <img className={classNames(style.exitImg)} src={backDark} alt="Back" />
@@ -24,18 +29,22 @@ export function Modal ({deleteUserState, setDeleteUserState, deleteAccount, subm
                     //     setPropsErr('')
                     // }
                     //if(propsErr !== 'Error in re-authorization'){
-                        if(deleteUserState && propsErr === ''){
+                        if(deleteUserState ){
+                            //console.log('ww')
                             //setPasswordModal()
-                            deleteAccount()
+                            deleteAccount(event)
                             // setDeleteUserState(false)
                             //setActiveModal(false)
                             // setClassErr('')
-                        }
-                        if(activeModal && propsErr === ''){
+                        }else{
+                            console.log('nn')
                             submiteUpdates(event)
+                        }
+                        //if(activeModal && propsErr === ''){
+                            
                             //setActiveModal(false)
                             // setClassErr('')
-                        }
+                        //}
                     //}
                     
                     

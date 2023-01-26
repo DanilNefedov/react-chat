@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/react-chat/static/css/main.0b7c72bf.css",
-    "main.js": "/react-chat/static/js/main.6292f061.js",
+    "main.css": "/react-chat/static/css/main.ed377ffb.css",
+    "main.js": "/react-chat/static/js/main.79aeba46.js",
     "static/js/787.28cb0dcd.chunk.js": "/react-chat/static/js/787.28cb0dcd.chunk.js",
     "static/media/Poppins-Medium.ttf": "/react-chat/static/media/Poppins-Medium.c8811e16c7cc3159fb7d.ttf",
     "static/media/Poppins-SemiBold.ttf": "/react-chat/static/media/Poppins-SemiBold.0763b5bba5e8c46bf86f.ttf",
@@ -9,21 +9,30 @@
     "static/media/Poppins-Medium.woff": "/react-chat/static/media/Poppins-Medium.7e588a26bdac2428f240.woff",
     "static/media/Poppins-SemiBold.woff2": "/react-chat/static/media/Poppins-SemiBold.3c3f3613b59d581739fc.woff2",
     "static/media/Poppins-Medium.woff2": "/react-chat/static/media/Poppins-Medium.563f976db73ca07d8fc3.woff2",
-    "static/media/profile.svg": "/react-chat/static/media/profile.909ba1ab87cd0eba373e90af0c6e817e.svg",
-    "static/media/exit.svg": "/react-chat/static/media/exit.b747e1e3ba9ab26a09b1240ed0b44f58.svg",
-    "static/media/home.svg": "/react-chat/static/media/home.16541ba726c60fbfed400ded76460053.svg",
-    "static/media/search.svg": "/react-chat/static/media/search.0c6a0cf11cabeb06095f57a352c619d4.svg",
+    "static/media/email.svg": "/react-chat/static/media/email.6810d75c8386a8ea7d241227a74ff391.svg",
+    "static/media/profile-dark.svg": "/react-chat/static/media/profile-dark.9eb04a0fe11c2d10e9722f48193128b4.svg",
+    "static/media/profile-white.svg": "/react-chat/static/media/profile-white.a834aeec7482ed4c4c8291762d7fc7d3.svg",
+    "static/media/download.svg": "/react-chat/static/media/download.a03a720eceda925bb61ccd9421ba3baf.svg",
+    "static/media/search.svg": "/react-chat/static/media/search.cb600653ee53ba5947deef8d6a1d7a02.svg",
     "static/media/dots.svg": "/react-chat/static/media/dots.fb95bcdbb1190555e91a5e0fb0cf9808.svg",
     "static/media/send.svg": "/react-chat/static/media/send.e6e41f470c70eedfe79bcc21222a7720.svg",
-    "static/media/triangle-messages-gray.svg": "/react-chat/static/media/triangle-messages-gray.fa6d4d0bd2adf72888f3.svg",
     "index.html": "/react-chat/index.html",
-    "static/media/triangle-messages.svg": "/react-chat/static/media/triangle-messages.9262385bbcf9e17df7fe.svg",
-    "main.0b7c72bf.css.map": "/react-chat/static/css/main.0b7c72bf.css.map",
-    "main.6292f061.js.map": "/react-chat/static/js/main.6292f061.js.map",
+    "static/media/home-dark.svg": "/react-chat/static/media/home-dark.6878f6bae50521a63f9d6754789d5883.svg",
+    "static/media/home-white.svg": "/react-chat/static/media/home-white.141830eccac06a7634ca62315f6120ac.svg",
+    "static/media/delete-acc.svg": "/react-chat/static/media/delete-acc.aacc3623367959073fcf172978d7e05c.svg",
+    "static/media/edit.svg": "/react-chat/static/media/edit.666b6fca3a40a0415e39054d202d0667.svg",
+    "static/media/exit-dark.svg": "/react-chat/static/media/exit-dark.10e5f1fb2543255555443410434a1fed.svg",
+    "static/media/exit-white.svg": "/react-chat/static/media/exit-white.3f7aab0e88cf0ff03242eb9fd65ef476.svg",
+    "static/media/close.svg": "/react-chat/static/media/close.c499e87291042c9c62e136f52459a782.svg",
+    "static/media/back-dark.svg": "/react-chat/static/media/back-dark.0645de5e8c6159eb4cd2606e1c4042ec.svg",
+    "static/media/logo.svg": "/react-chat/static/media/logo.a404c4b0ce14c566387dafe2c6850be8.svg",
+    "static/media/add.svg": "/react-chat/static/media/add.fcc2e62b8f34216f112ad5b485f24800.svg",
+    "main.ed377ffb.css.map": "/react-chat/static/css/main.ed377ffb.css.map",
+    "main.79aeba46.js.map": "/react-chat/static/js/main.79aeba46.js.map",
     "787.28cb0dcd.chunk.js.map": "/react-chat/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0b7c72bf.css",
-    "static/js/main.6292f061.js"
+    "static/css/main.ed377ffb.css",
+    "static/js/main.79aeba46.js"
   ]
 }

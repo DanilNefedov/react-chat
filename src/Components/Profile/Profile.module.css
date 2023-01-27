@@ -1,3 +1,20 @@
+.nameSection input:-webkit-autofill,
+.nameSection input:-webkit-autofill:hover, 
+.nameSection input:-webkit-autofill:focus, 
+.nameSection input:-webkit-autofill:active,
+.emailSection input:-webkit-autofill,
+.emailSection input:-webkit-autofill:hover, 
+.emailSection input:-webkit-autofill:focus, 
+.emailSection input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px var(--main-bg) inset !important;
+    -webkit-text-fill-color:var(--white)!important;
+}
+.nameSection input, .emailSection input {
+    outline:none!important;
+    border: transparent!important; 
+    outline-offset: 0!important;
+}
+
 .profile{
     background-color: var(--second-main);
     height: 100%;    
@@ -144,15 +161,10 @@
     margin-left: -2px;
 }
 
-.editEmail, .editName{
-    border: 1px solid transparent;
+.nameSection .err, .emailSection .err{
+    border:  1px solid var(--red)!important;
 }
-.nameSection .err{
-    border-color: var(--red);
-}
-.err{
-    border-color: var(--red);
-}
+
 
 @media screen and (max-width: 870px) {
     .profile{

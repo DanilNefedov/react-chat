@@ -1,24 +1,18 @@
 import classNames from "classnames"
 import { useDispatch, useSelector } from "react-redux"
 import style from './Profile.module.css'
-import img from '../../img/user-M.png'
 import { useState } from "react"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { deleteUser, EmailAuthProvider, getAuth, reauthenticateWithCredential, signOut, updateEmail, updateProfile } from "firebase/auth";
-import { removePhoto, removeUser, updateUser } from "../../store/authSlice"
-import { deleteDoc, deleteField, doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore"
-import { useEffect } from "react"
+import { removePhoto, removeUser } from "../../store/authSlice"
+import { deleteDoc, deleteField, doc, getFirestore, updateDoc } from "firebase/firestore"
 import { Modal } from "../Modal/Modal"
 import { removeFrined } from "../../store/friendSlice"
 import { removeMessage } from "../../store/messagesSlice"
-import deleteAcc from '../../img/delete-acc.svg'
-import download from '../../img/download.svg'
-import edit from '../../img/edit.svg'
-import emailImg from '../../img/email.svg'
-import addPhoto from '../../img/add.svg'
 import { ModuleError } from "../ModuleError/ModuleError"
 import { ProfilePhoto } from "./ProfilePhoto"
 import { DeleteProfile } from "./DeleteProfile"
+import { ChangeProfile } from "./ChangeProfile"
 
 export function Profile() {
     const user = useSelector(state => state.user)
@@ -77,6 +71,9 @@ export function Profile() {
                     }).catch(() => {
                         setClassErr('errorEmail')
                     })
+                    if(name === ''){
+                        setClassErrName('')
+                    }
                     setModuleErr(false)
                     setPropsErr('')
                     setPasswordModal('')
@@ -138,9 +135,20 @@ export function Profile() {
                         setPhoto(null)
                     }
                 );
-
+                if(email === ''){
+                    setClassErr('')
+                }
+                if(name === ''){
+                    setClassErrName('')
+                }
             }
 
+            if(name.length > 20){
+                setClassErrName('errorName')
+                if(email === ''){
+                    setClassErr('')
+                }
+            }
 
             if (name.length <= 20 && name !== '') {
                 await updateProfile(auth.currentUser, {
@@ -149,6 +157,7 @@ export function Profile() {
                     setClassErrName('')
                     setModuleErr(false)
                     setPropsErr('')
+                    
                 }).catch((error) => {
                     setModuleErr(true)
                     setPropsErr('Error updating name or photo')
@@ -173,7 +182,9 @@ export function Profile() {
                         return
                     }
                 })
+                setClassErr('')
             }
+            
             setModuleErr(false)
             setName('')
         } catch (error) {
@@ -182,24 +193,6 @@ export function Profile() {
         }
         setName('')
     }
-
-    useEffect(() => {
-        const unsub = onSnapshot(doc(db, "users", user.id), (doc) => {
-            const data = doc.data()
-            if (data) {
-                const name = data.name
-                const photo = data.photoURL
-                const email = data.email
-                dispatch(updateUser({ name, photo, email }))
-            }
-        });
-        return () => {
-            unsub()
-        }
-    }, [user.name, user.photoURL, user.email])
-
-
-
 
     const deletePhoto = (e) => {
         e.preventDefault()
@@ -239,6 +232,12 @@ export function Profile() {
                 setModuleErr(true)
                 setPropsErr('Error during photo deletion')
             });
+        }
+        if(email === ''){
+            setClassErr('')
+        }
+        if(name === ''){
+            setClassErrName('')
         }
     }
 
@@ -295,25 +294,15 @@ export function Profile() {
             return
         });
     }
+
     return (
         <section className={classNames(style.profile, 'profile')}>
             <div className={classNames(style.container, 'container')}>
                 <div className={classNames(style.userInfo, "user-info")}>
                     <div className={classNames(style.containerUserInfo, "container-userInfo")}>
-                        {/* {user.photo ?
-                            <div className={classNames(style.photoSection, 'photo')}>
-                                <div className={classNames(style.userPhoto, "user-photo")}>
-                                    <img src={user.photo} alt="user" />
-                                </div>
-                            </div>
-                            :
-                            <div className={classNames(style.photoSection, 'photo')}>
-                                <div className={classNames(style.userPhoto, "user-photo")}>
-                                    <img src={img} alt="user" />
-                                </div>
-                            </div>
-                        } */}
+
                         <ProfilePhoto></ProfilePhoto>
+
                         <div className={classNames(style.nameEmail, "name-email")}>
                             <p className={classNames(style.nameUser, "name-user")}>
                                 <span className={classNames(style.editAbout, "head-name")}>Name:</span>
@@ -323,54 +312,18 @@ export function Profile() {
                                 <span className={classNames(style.editAbout, "head-name")}> Email:</span>
                                 <span className="header">{user.email}</span>
                             </p>
-                            {/* <div className={classNames(style.containerBtn, "btn-delete")}>
-                                <img className={classNames(style.iconBtn)} src={deleteAcc} alt="delete" />
-                                <button onClick={(event) => {
-                                    event.preventDefault()
-                                    setActiveModal(true)
-                                    setDeleteUserState(true)
-                                }}
-                                    className={classNames(style.btnDelete)}>Delete Account</button>
-                            </div> */}
+
                             <DeleteProfile setActiveModal={setActiveModal} setDeleteUserState={setDeleteUserState}></DeleteProfile>
+
                         </div>
                     </div>
                 </div>
 
                 <div className={classNames(style.editUserInfo, "edit-user-info")}>
                     <div className={classNames(style.containerEditUser, "container")}>
-                        {user.photo ?
-                            <>
-                                <div className={classNames(style.editPhoto, "edit-photo")}>
-                                    <img className={classNames(style.iconBtn)} src={download} alt="download" />
-                                    <label className={style.downloadImg} htmlFor={style.loadPhoto}>Edit Photo</label>
-                                    <input id={style.loadPhoto} type="file" onChange={(e) => setPhoto(e.target.files[0])} accept='image/*, .png, .jpg, .web' />
-                                    <span className={style.infoSize}>*.png, .jpg, .web</span>
-                                </div>
-                                <div className={classNames(style.deletePhoto, "delete-photo")}>
-                                    <img className={classNames(style.iconBtn)} src={deleteAcc} alt="delete" />
-                                    <button onClick={e => deletePhoto(e)} className={classNames(style.btnDelete, "delete")}>Delete Photo</button>
-                                </div>
-                            </>
-                            :
-                            <div className={classNames(style.editPhoto, "edit-photo")}>
-                                <img className={classNames(style.iconBtn)} src={addPhoto} alt="add" />
-                                <label className={style.downloadImg} htmlFor={style.loadPhoto}>Download Photo</label>
-                                <input id={style.loadPhoto} type="file" onChange={(e) => setPhoto(e.target.files[0])} accept='image/*, .png, .jpg, .web' />
-                                <span className={style.infoSize}>*.png, .jpg, .web</span>
-                            </div>
-                        }
-                        <div className={classNames(style.nameSection, 'name')}>
-                            <img className={classNames(style.iconBtn)} src={edit} alt="edit" />
-                            <span className={classNames(style.editField, 'head-name')}>Edit Name: </span>
-                            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter name" type="text" className={classErrName === 'errorName' ? classNames('edit-field', style.editName, style.err) : classNames('edit-field', style.editName)} />
-                            <span className={style.infoSize}>*name length no more than 20 characters</span>
-                        </div>
-                        <div className={classNames(style.emailSection, "email")}>
-                            <img className={classNames(style.iconBtn)} src={emailImg} alt="edit" />
-                            <span className={classNames(style.editField, 'head-name')}>Edit Email: </span>
-                            <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" type="email" className={classErr === 'errorEmail' ? classNames('edit-field', style.editEmail, style.err) : classNames('edit-field', style.editEmail)} />
-                        </div>
+                
+                        <ChangeProfile email={email} classErr={classErr} classErrName={classErrName} name={name} setPhoto={setPhoto} deletePhoto={deletePhoto} setName={setName} setEmail={setEmail}></ChangeProfile>
+
                         <div className={classNames(style.updateSection, 'update')}>
                             <button onClick={(event) => {
                                 email !== '' ? setActiveModal(true) : submiteUpdates(event)

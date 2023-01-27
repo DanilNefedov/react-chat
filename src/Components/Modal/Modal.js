@@ -27,7 +27,6 @@ export function Modal({ deleteUserState, setDeleteUserState, deleteAccount, subm
                     if (deleteUserState) {
                         deleteAccount(event)
                     } else {
-                        console.log('nn')
                         submiteUpdates(event)
                     }
 

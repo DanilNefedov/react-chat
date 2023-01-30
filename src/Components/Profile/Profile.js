@@ -14,7 +14,7 @@ import { ProfilePhoto } from "./ProfilePhoto"
 import { DeleteProfile } from "./DeleteProfile"
 import { ChangeProfile } from "./ChangeProfile"
 
-export function Profile() {
+export default function Profile() {
     const user = useSelector(state => state.user)
     const friend = useSelector(state => state.friend.friend)
     const auth = getAuth();

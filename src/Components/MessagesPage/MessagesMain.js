@@ -13,7 +13,7 @@ import { updatePhotoName } from '../../store/friendSlice';
 
 
 
-export function MessagesMain() {
+export default function MessagesMain() {
     const friend = useSelector(state => state.friend.friend)
     const user = useSelector(state => state.user)
 

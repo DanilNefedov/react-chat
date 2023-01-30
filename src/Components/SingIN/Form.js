@@ -6,7 +6,7 @@ import style from './SingIn.module.css';
 
 
 
-export function Form({ formProps, handleClick, setErrorReg, setModuleErr, moduleErr }) {
+function Form({ formProps, handleClick, setErrorReg, setModuleErr, moduleErr }) {
     const { nameForm, nameButton, link, nameLink, errorClass } = formProps
 
 
@@ -69,3 +69,5 @@ export function Form({ formProps, handleClick, setErrorReg, setModuleErr, module
         </section>
     )
 }
+
+export default Form

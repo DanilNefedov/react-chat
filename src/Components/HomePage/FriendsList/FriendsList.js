@@ -5,7 +5,7 @@ import img from '../../../img/user-M.png'
 
 
 
-export function FriendsList({friend}) {
+export default function FriendsList({friend}) {
     const {id, name, lastMessages, date, photo} = friend
 
     return (

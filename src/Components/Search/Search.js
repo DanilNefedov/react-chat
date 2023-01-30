@@ -2,15 +2,19 @@ import search from '../../img/search.svg';
 import style from './Search.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { addFrined } from '../../store/friendSlice';
-import { SearchList } from './SearchList'
+// import { SearchList } from './SearchList'
 import { doc, getDoc, getFirestore, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 import { Empty } from '../Empty/Empty';
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { ModuleError } from '../ModuleError/ModuleError';
 import classNames from 'classnames';
+import { Loader } from '../Loader/Loader';
+import React from 'react';
 
 
+
+const SearchList = React.lazy(() => import('./SearchList'))
 
 
 export function Search({ propsErr, user, handleSubmit, text, setText, handleEvent, searchListRef, searchRef }) {
@@ -121,9 +125,12 @@ export function Search({ propsErr, user, handleSubmit, text, setText, handleEven
                 {(user.length === 0) ? (
                     <Empty />
                 ) : (
-                    <div ref={containerSearch} className={classNames(style.containerSearchList, "container-search-list")}>
-                        <SearchList user={user} clickChat={bindChat} />
-                    </div>
+                    <Suspense fallback={<Loader></Loader>}>
+                         <div ref={containerSearch} className={classNames(style.containerSearchList, "container-search-list")}>
+                            <SearchList user={user} clickChat={bindChat} />
+                        </div>
+                    </Suspense>
+                   
                 )}
 
             </section>

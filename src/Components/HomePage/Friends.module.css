@@ -52,7 +52,10 @@
     height: 100vh;
     margin-right: 3px;
 }
-
+.emptyBlock{
+    text-align: center;
+    padding-top: 10px;
+}
 @media screen and (max-width: 770px) {
     .head{
         height: 45px;

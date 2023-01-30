@@ -1,19 +1,21 @@
 import style from './Friends.module.css';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { FriendsList } from "./FriendsList/FriendsList";
+// import { FriendsList } from "./FriendsList/FriendsList";
 import { Search } from '../Search/Search'
 import { addFrined, addLastMessage, updatePhotoName } from '../../store/friendSlice'
-import { useRef, useState } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 import { getFirestore, collection, query, where, getDocs, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { ModuleError } from '../ModuleError/ModuleError';
+import { Loader } from '../Loader/Loader';
 
 
+const FriendsList = React.lazy(() => import('./FriendsList/FriendsList'))
 
 
-export function Friends() {
+export default function Friends() {
     const context = useOutletContext()
     const containerFrineds = useRef()
     const friendsScroll = useRef()
@@ -42,7 +44,7 @@ export function Friends() {
 
     const activeModal = context.modal
     const setModalActive = context.setModal
-    const searchRefActive = context.searchRef
+
 
     const taskAddFriend = (event) => {
         event.preventDefault();
@@ -181,10 +183,13 @@ export function Friends() {
         return () => window.addEventListener("resize", resize);
     }, [friendList])
 
+
     useEffect(()=>{
-        const onClick = e => {
-            if(!refSearch.current.contains(e.target)){
-                if(!searchRefActive.current.contains(e.target)){
+        const searchBlock = refSearch.current
+        const searchActiveBlock = context.searchRef.current
+        const onClick = e => {    
+            if(!searchBlock.contains(e.target)){
+                if(!searchActiveBlock.contains(e.target)){
                     setModalActive(false)
                 }
             } 
@@ -212,13 +217,15 @@ export function Friends() {
                     </div>
                     <div ref={containerFrineds} className={style.scrollMessages}>
                         <div className={classNames(style.containerFriendsList)}>
-                            { (friendList.length > 0 ) ? (
-                                sortState.sort((a,b) => b.timePublic - a.timePublic).map((friend) => ( 
-                                    <FriendsList key={friend.id} friend={friend}></FriendsList>
-                                ))
-                            ):(
-                                <div>Friend list is empty</div>
-                            )}
+                            <Suspense fallback={<Loader></Loader>}>
+                                {(friendList.length > 0 ) ? (
+                                    sortState.sort((a,b) => b.timePublic - a.timePublic).map((friend) => ( 
+                                        <FriendsList key={friend.id} friend={friend}></FriendsList>
+                                    ))
+                                ):(
+                                    <div className={classNames(style.emptyBlock)}>Friend list is empty</div>
+                                )}
+                            </Suspense>
                         </div>
                         
                     </div>

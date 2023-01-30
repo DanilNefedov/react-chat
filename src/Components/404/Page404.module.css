@@ -1,0 +1,26 @@
+.page404{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header{
+    font-size: 25px;
+    padding-bottom: 20px;
+}
+
+.text{
+    font-size: 20px;
+}
+.link{
+    color: var(--desactive-text);
+    padding-top: 20px;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.link:hover{
+    color: var(--white);
+}

@@ -1,14 +1,16 @@
-import { Form } from "./Form";
+// import  Form  from "./Form";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import {setUser} from '../../store/authSlice'
 import { useNavigate } from "react-router-dom";
 import { getFirestore } from "firebase/firestore";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { Loader } from "../Loader/Loader";
+import React from "react";
 
 
-
+const Form = React.lazy(() => import('./Form'))
 
 
 export function Registration () {
@@ -74,6 +76,11 @@ export function Registration () {
     }
 
     return (
-        <Form moduleErr={moduleErr} setModuleErr={setModuleErr} setErrorReg={setErrorReg} formProps={formProps}  handleClick={handleRegister}></Form>
+        <>
+        <Suspense fallback={<Loader></Loader>}>
+            <Form moduleErr={moduleErr} setModuleErr={setModuleErr} setErrorReg={setErrorReg} formProps={formProps}  handleClick={handleRegister}></Form>
+        </Suspense>
+        </>
+        
     )
 }

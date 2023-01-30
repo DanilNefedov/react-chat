@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 
 
-export function SearchList(friendList) {
+export default function SearchList(friendList) {
     const { user, clickChat } = friendList
     const myInfo = useSelector(state => state.user)
 

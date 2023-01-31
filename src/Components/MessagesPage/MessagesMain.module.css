@@ -1,6 +1,6 @@
-.messagesSec{
+/* .messagesSec{
     height: 100%;
-}
+} */
 .header {
     display: flex;
     justify-content: space-between;
@@ -74,6 +74,7 @@
     border-width: 1px 0 0 0;
     border-color: var(--main-border);
     border-style: solid;
+    /* height: 100%; */
 }
 
 .messages{

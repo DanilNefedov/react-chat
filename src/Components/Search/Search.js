@@ -87,8 +87,8 @@ export function Search({ propsErr, user, handleSubmit, text, setText, handleEven
 
     const containerSearch = useRef()
     function resize() {
+        console.log()
         if (containerSearch.current !== null && containerSearch.current !== undefined) {
-
             const searchHeight = searchRef.current.offsetHeight
             const navigationRefHeight = context.navRef.current.offsetHeight
             const windowHeight = window.innerHeight
@@ -99,14 +99,12 @@ export function Search({ propsErr, user, handleSubmit, text, setText, handleEven
 
             containerSearch.current.style.height = `${res}px`
         }
-
-
     }
 
 
     useEffect(() => {
-        window.addEventListener("onload", resize);
         resize()
+        window.addEventListener("onload", resize);
         return () => window.addEventListener("resize", resize);
     }, [user])
 
@@ -125,12 +123,11 @@ export function Search({ propsErr, user, handleSubmit, text, setText, handleEven
                 {(user.length === 0) ? (
                     <Empty />
                 ) : (
-                    <Suspense fallback={<Loader></Loader>}>
-                         <div ref={containerSearch} className={classNames(style.containerSearchList, "container-search-list")}>
+                    <div ref={containerSearch} className={classNames(style.containerSearchList, "container-search-list")}>
+                        <Suspense fallback={<Loader></Loader>}>
                             <SearchList user={user} clickChat={bindChat} />
-                        </div>
-                    </Suspense>
-                   
+                        </Suspense>
+                    </div>
                 )}
 
             </section>

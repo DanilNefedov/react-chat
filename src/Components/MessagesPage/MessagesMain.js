@@ -102,10 +102,7 @@ export default function MessagesMain() {
                         dispatch(updatePhotoName({ name, photo, friendInfo }))
                         setDeletedAcc(false)
                     }
-
                 }
-
-
             }
 
         });
@@ -114,21 +111,24 @@ export default function MessagesMain() {
         }
     }, [friend.name, friend.photo, friend.email])
 
+    //const [test, seTest] = useState('')
+
     const reloadMess = () => {
         if (scrollRef.current !== null) {
             const headerHeight = infoSection.navRef.current.offsetHeight
-            const scrollHeight = scrollRef.current.offsetHeight
+            // const scrollHeight = scrollRef.current.offsetHeight
             const nameHeight = nameRef.current.offsetHeight
             const footerHeight = footerRef.current.offsetHeight
-            const windowHeight = window.innerHeight
-
-            const sum = headerHeight + scrollHeight + nameHeight + footerHeight
+            const windowHeight = window.innerHeight 
+            //console.log(document.documentElement.clientHeight)
+            //seTest(document.documentElement.clientHeight)
+            const sum = headerHeight + nameHeight + footerHeight
 
             const res = windowHeight - sum
 
-            const newHeight = scrollHeight - (-res)
+            // const newHeight = scrollHeight - (-res)
 
-            scrollRef.current.style.height = `${newHeight}px`
+            scrollRef.current.style.height = `${res}px`
         }
 
     }
@@ -146,6 +146,8 @@ export default function MessagesMain() {
                         <div className={style.about}>
                             <h2 className={style.name}>
                                 {infoChat.name}
+                                
+                                {/* {test} */}
                             </h2>
                         </div>
 
@@ -161,7 +163,7 @@ export default function MessagesMain() {
                     ?
                     <div ref={footerRef} className={classNames(style.deletedInput)}>Account has been deleted</div>
                     :
-                    <SendMessages innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />}
+                    <SendMessages reloadMess={reloadMess} innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />}
 
             </div>
         </section>

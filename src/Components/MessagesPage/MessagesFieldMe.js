@@ -26,7 +26,7 @@ export function MessagesFieldMe({infoChat, scrollRef, reloadMess}) {
         window.addEventListener("onload", reloadMess);
         reloadMess()
         return () => window.addEventListener("resize", reloadMess);        
-    },[messagesState])
+    },[messagesState, window.innerHeight])
 
 
     useEffect(() => {

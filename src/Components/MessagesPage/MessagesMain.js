@@ -134,7 +134,9 @@ export default function MessagesMain() {
     }
 
 
-
+    const [set, setSet] = useState('')
+    const [set2, setSet2] = useState('')
+    const [set3, setSet3] = useState('')
     return (
         <section className={style.messagesSec}>
             <div className={classNames(style.container, 'container')}>
@@ -146,7 +148,9 @@ export default function MessagesMain() {
                         <div className={style.about}>
                             <h2 className={style.name}>
                                 {infoChat.name}
-                                
+                                {set}{`window ${window.innerHeight}`}
+                                {set2}
+                                {set3}
                                 {/* {test} */}
                             </h2>
                         </div>
@@ -163,7 +167,7 @@ export default function MessagesMain() {
                     ?
                     <div ref={footerRef} className={classNames(style.deletedInput)}>Account has been deleted</div>
                     :
-                    <SendMessages navRef={infoSection.navRef} infoSection={infoSection} nameRef={nameRef} innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />}
+                    <SendMessages setSet2={setSet2} setSet3={setSet3} set={set} setSet={setSet} innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />}
 
             </div>
         </section>

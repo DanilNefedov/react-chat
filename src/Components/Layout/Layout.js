@@ -8,8 +8,8 @@ import { UserNavigation } from "../UserNavigation/UserNavigation";
 export function Layout(){
     const navRef = useRef()
     const searchRef = useRef()
-    const sidebarRef = useRef()
-    const sectionMain = useRef()
+
+
     //console.log(sidebarRef)
 
 
@@ -23,18 +23,16 @@ export function Layout(){
         navRef: navRef,
         searchRef: searchRef,
         modal: active,
-        setModal: setActive,
-        sidebarRef:sidebarRef,
-        sectionMain:sectionMain
+        setModal: setActive
     }
 
 
     return(
         <section className='main-content'>
-            <SideBarMain refSidebar={sidebarRef} infoClick={context}/>
+            <SideBarMain infoClick={context}/>
             <div className="header-main">
                 <UserNavigation innerRef={navRef} setModal={setModal} searchRef={searchRef}/>
-                <main ref={sectionMain} className="section-main">
+                <main className="section-main">
                     <Outlet context={context} />
                 </main>
             </div>

@@ -118,7 +118,7 @@ export default function Profile() {
                             })
 
                             friend.map(async (el) => {
-                                if (el.friendId) {
+                                if (el.friendId) {//try catch
                                     await updateDoc(doc(db, 'chatsList', el.friendId), {
                                         [el.id + '.userInfo']: {
                                             id: user.id,

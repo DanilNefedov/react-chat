@@ -163,7 +163,7 @@ export default function MessagesMain() {
                     ?
                     <div ref={footerRef} className={classNames(style.deletedInput)}>Account has been deleted</div>
                     :
-                    <SendMessages reloadMess={reloadMess} innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />}
+                    <SendMessages navRef={infoSection.navRef} infoSection={infoSection} nameRef={nameRef} innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />}
 
             </div>
         </section>

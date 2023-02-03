@@ -6,31 +6,33 @@ import style from './MessagesMain.module.css';
 
 
 export function SendMessages({setSet2,  sendMess, text, setMessageText, handleEvent, innerRef}) {
-
+    const context = useOutletContext()
+    const heightContext = context.height
     //const keyboardHeight = useKeyboardHeight();
     //const [set, setSet] = useState('')
-    console.log(window.visualViewport)
+    //console.log(window.visualViewport)
     useEffect(() =>{
         //setSet2(window.visualViewport.height)
-        window.addEventListener('keyboardDidShow', keyboardDidShow);
-        window.addEventListener('keyboardDidHide', keyboardDidHide);
-        console.log('w')
+        //window.addEventListener('keyboardDidShow', keyboardDidShow);
+        //window.addEventListener('keyboardDidHide', keyboardDidHide);
+        //console.log(heightContext)
 
-        function keyboardDidShow() {
-            console.log('yes')
-            setSet2('yes')
-        }
+        // function keyboardDidShow() {
+        //     console.log('yes')
+            setSet2(window.visualViewport.height)
+        // }
           
-        function keyboardDidHide() {
-            console.log('no')
-            setSet2('no')
-        }
+        // function keyboardDidHide() {
+        //     console.log('no')
+        //     setSet2('no')
+        // }
 
         return () =>{
-            keyboardDidShow()
-            keyboardDidHide()
+            setSet2(window.visualViewport.height)
+            //keyboardDidShow()
+            //keyboardDidHide()
         }
-    }, [])
+    }, [heightContext])
 
     // const keyboardIsOpen = () =>{
     //     const visualHeight = window.visualViewport.height

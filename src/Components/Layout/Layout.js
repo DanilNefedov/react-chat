@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRef } from "react";
 import { Outlet } from "react-router-dom";
+import useResizeObserver from "use-resize-observer";
 import { SideBarMain } from "../SideBar/SiteBarMain";
 import { UserNavigation } from "../UserNavigation/UserNavigation";
 
@@ -8,9 +9,10 @@ import { UserNavigation } from "../UserNavigation/UserNavigation";
 export function Layout(){
     const navRef = useRef()
     const searchRef = useRef()
+    const {ref, widht = 0, height = 0} = useResizeObserver()
 
 
-    //console.log(sidebarRef)
+    console.log(ref)
 
 
     const [active, setActive] = useState(false)
@@ -23,12 +25,13 @@ export function Layout(){
         navRef: navRef,
         searchRef: searchRef,
         modal: active,
-        setModal: setActive
+        setModal: setActive,
+        height:height
     }
 
 
     return(
-        <section className='main-content'>
+        <section ref={ref} className='main-content'>
             <SideBarMain infoClick={context}/>
             <div className="header-main">
                 <UserNavigation innerRef={navRef} setModal={setModal} searchRef={searchRef}/>

@@ -15,28 +15,33 @@ export function SendMessages({setSet2,  sendMess, text, setMessageText, handleEv
         setSet2(window.visualViewport.height)
     }
 
-    // useEffect(() =>{
-    //     //setSet2(window.visualViewport.height)
-    //     window.addEventListener('keyboardDidShow', keyboardDidShow);
-    //     //window.addEventListener('keyboardDidHide', keyboardDidHide);
-    //     //console.log(heightContext)
+    useEffect(() =>{
+        window.addEventListener("resize", function() {
+            //let height = window.innerHeight;
+            setSet2(window.visualViewport.height)
+            //document.body.style.height = height + "px";
+        });
+        //setSet2(window.visualViewport.height)
+        //window.addEventListener('keyboardDidShow', keyboardDidShow);
+        //window.addEventListener('keyboardDidHide', keyboardDidHide);
+        //console.log(heightContext)
 
-    //     function keyboardDidShow() {
-    //         console.log('yes')
-    //         setSet2(window.visualViewport.height)
-    //     }
+        // function keyboardDidShow() {
+        //     console.log('yes')
+        //     setSet2(window.visualViewport.height)
+        // }
           
-    //     // function keyboardDidHide() {
-    //     //     console.log('no')
-    //     //     setSet2('no')
-    //     // }
+        // function keyboardDidHide() {
+        //     console.log('no')
+        //     setSet2('no')
+        // }
 
-    //     return () =>{
-    //         setSet2(window.visualViewport.height)
-    //         keyboardDidShow()
-    //         //keyboardDidHide()
-    //     }
-    // }, [heightContext])
+        // return () =>{
+        //     setSet2(window.visualViewport.height)
+        //     keyboardDidShow()
+        //     //keyboardDidHide()
+        // }
+    }, [])
 
     // const keyboardIsOpen = () =>{
     //     const visualHeight = window.visualViewport.height

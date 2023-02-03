@@ -5,19 +5,41 @@ import style from './MessagesMain.module.css';
 
 
 
-export function SendMessages({setSet2, setSet3, setSet, sendMess, text, setMessageText, handleEvent, innerRef}) {
+export function SendMessages({setSet2,  sendMess, text, setMessageText, handleEvent, innerRef}) {
 
     //const keyboardHeight = useKeyboardHeight();
     //const [set, setSet] = useState('')
     console.log(window.visualViewport)
-    const keyboardIsOpen = () =>{
-        const visualHeight = window.visualViewport.height
-        const windowHeight = window.innerHeight
-        const result = windowHeight - visualHeight
-        document.body.style.height = `calc(100% - ${result}px)`;
-        setSet2(visualHeight)
-        setSet3(windowHeight)
-        setSet(result)
+    useEffect(() =>{
+        //setSet2(window.visualViewport.height)
+        window.addEventListener('keyboardDidShow', keyboardDidShow);
+        window.addEventListener('keyboardDidHide', keyboardDidHide);
+        console.log('w')
+
+        function keyboardDidShow() {
+            console.log('yes')
+            setSet2('yes')
+        }
+          
+        function keyboardDidHide() {
+            console.log('no')
+            setSet2('no')
+        }
+
+        return () =>{
+            keyboardDidShow()
+            keyboardDidHide()
+        }
+    }, [])
+
+    // const keyboardIsOpen = () =>{
+    //     const visualHeight = window.visualViewport.height
+    //     const windowHeight = window.innerHeight
+    //     const result = windowHeight - visualHeight
+    //     document.body.style.height = `calc(100% - ${result}px)`;
+    //     setSet2(visualHeight)
+    //     setSet3(windowHeight)
+    //     setSet(result)
         // window.addEventListener('keyboardDidShow', keyboardDidShow);
         // window.addEventListener('keyboardDidHide', keyboardDidHide);
         
@@ -37,12 +59,12 @@ export function SendMessages({setSet2, setSet3, setSet, sendMess, text, setMessa
         //     keyboardDidShow()
         //     keyboardDidHide()
         // }
-    }
+    //}
 
     return (
         <section className={style.textArea} ref={innerRef}>
-            {/* change click 'Enter your message'*/}
-            <textarea onFocus={() => keyboardIsOpen()} placeholder='Enter your message' onKeyDown={handleEvent} value={text} onChange={(e) => setMessageText(e.target.value)} name="messages" id='textarea' type='text' className={style.input} rows="1" ></textarea>
+            {/* change click 'Enter your message'onFocus={() => keyboardIsOpen()}*/}
+            <textarea  placeholder='Enter your message' onKeyDown={handleEvent} value={text} onChange={(e) => setMessageText(e.target.value)} name="messages" id='textarea' type='text' className={style.input} rows="1" ></textarea>
             <button onClick={() => sendMess()} type='submit' className={style.send}>
                 <img src={send} alt="Send" />
             </button>

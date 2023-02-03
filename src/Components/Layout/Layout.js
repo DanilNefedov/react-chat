@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useState } from "react";
 import { useRef } from "react";
 import { Outlet } from "react-router-dom";
@@ -11,11 +12,19 @@ export function Layout(){
     const searchRef = useRef()
     const {ref, widht = 0, height = 0} = useResizeObserver()
 
-
     //console.log(ref)
 
-
     const [active, setActive] = useState(false)
+
+    useEffect(() => {
+        const htmlElement = document.documentElement;
+        const bodyElement = document.body
+        const w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+        htmlElement.style.cssText = `width: ${w}px; height: ${h}px`
+        bodyElement.style.cssText = `width: ${w}px; height: ${h}px`
+    },[window.visualViewport.height])
     
     const setModal = (value) => {
         setActive(value)
@@ -28,6 +37,8 @@ export function Layout(){
         setModal: setActive,
         height:height
     }
+
+
 
 
     return(

@@ -5,49 +5,53 @@ import style from './MessagesMain.module.css';
 
 
 
-export function SendMessages({setSet2,  sendMess, text, setMessageText, handleEvent, innerRef}) {
+export function SendMessages({setSet2, scrollRef, sendMess, text, setMessageText, handleEvent, innerRef}) {
     const context = useOutletContext()
-    const heightContext = context.height
+    const heightContext = context.height.current
     //const keyboardHeight = useKeyboardHeight();
     //const [set, setSet] = useState('')
-    //console.log(window.visualViewport)
-    const resize = () => {
-        setSet2(window.visualViewport.height)
-    }
+    
+    // const resize = () => {
+    //     setSet2(window.visualViewport.height)
+    // }
 
     useEffect(() =>{
-        window.addEventListener("resize", function() {
-            //let height = window.innerHeight;
-            setSet2(window.visualViewport.height)
-            //document.body.style.height = height + "px";
-        });
+        console.log(scrollRef)
+        window.addEventListener("resize", keyboardDidShow )
         //setSet2(window.visualViewport.height)
         //window.addEventListener('keyboardDidShow', keyboardDidShow);
         //window.addEventListener('keyboardDidHide', keyboardDidHide);
         //console.log(heightContext)
 
-        // function keyboardDidShow() {
-        //     console.log('yes')
-        //     setSet2(window.visualViewport.height)
-        // }
+        function keyboardDidShow() {
+            //if(scrollRef !== null){
+                const newHeight = window.visualViewport.height;
+                const staticHeight = window.innerHeight
+                const res = staticHeight - newHeight
+                setSet2(newHeight)
+                document.body.style.height = ` ${newHeight}px`;
+                //scrollRef.current.style.height = ` ${newHeight}px`;
+            //}
+            
+        }
           
         // function keyboardDidHide() {
         //     console.log('no')
         //     setSet2('no')
         // }
 
-        // return () =>{
-        //     setSet2(window.visualViewport.height)
-        //     keyboardDidShow()
-        //     //keyboardDidHide()
-        // }
+        return () =>{
+            //setSet2(window.visualViewport.height)
+            keyboardDidShow()
+            //keyboardDidHide()
+        }
     }, [])
 
     // const keyboardIsOpen = () =>{
     //     const visualHeight = window.visualViewport.height
     //     const windowHeight = window.innerHeight
     //     const result = windowHeight - visualHeight
-    //     document.body.style.height = `calc(100% - ${result}px)`;
+    //     
     //     setSet2(visualHeight)
     //     setSet3(windowHeight)
     //     setSet(result)
@@ -75,7 +79,7 @@ export function SendMessages({setSet2,  sendMess, text, setMessageText, handleEv
     return (
         <section className={style.textArea} ref={innerRef}>
             {/* change click 'Enter your message'onFocus={() => keyboardIsOpen()}*/}
-            <textarea onFocus={() => {resize()}} placeholder='Enter your message' onKeyDown={handleEvent} value={text} onChange={(e) => setMessageText(e.target.value)} name="messages" id='textarea' type='text' className={style.input} rows="1" ></textarea>
+            <textarea  placeholder='Enter your message' onKeyDown={handleEvent} value={text} onChange={(e) => setMessageText(e.target.value)} name="messages" id='textarea' type='text' className={style.input} rows="1" ></textarea>
             <button onClick={() => sendMess()} type='submit' className={style.send}>
                 <img src={send} alt="Send" />
             </button>

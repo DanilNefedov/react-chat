@@ -119,7 +119,7 @@ export default function MessagesMain() {
             // const scrollHeight = scrollRef.current.offsetHeight
             const nameHeight = nameRef.current.offsetHeight
             const footerHeight = footerRef.current.offsetHeight
-            const windowHeight = window.innerHeight 
+            const windowHeight = window.visualViewport.height
             //console.log(document.documentElement.clientHeight)
             //seTest(document.documentElement.clientHeight)
             const sum = headerHeight + nameHeight + footerHeight
@@ -159,7 +159,8 @@ export default function MessagesMain() {
 
                 <section ref={scrollRef} id='scroll' className={style.messages}>
                     <span>{`window ${window.innerHeight}/`}
-                                {set2}</span>
+                        {set2}
+                    </span>
                     <MessagesFieldMe reloadMess={reloadMess} scrollRef={scrollRef} infoChat={infoChat}></MessagesFieldMe>
 
                 </section>
@@ -167,7 +168,7 @@ export default function MessagesMain() {
                     ?
                     <div ref={footerRef} className={classNames(style.deletedInput)}>Account has been deleted</div>
                     :
-                    <SendMessages setSet2={setSet2}  innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />}
+                    <SendMessages scrollRef={scrollRef} setSet2={setSet2}  innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />}
 
             </div>
         </section>

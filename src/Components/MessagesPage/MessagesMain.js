@@ -135,7 +135,7 @@ export default function MessagesMain() {
 
 
     //const [set, setSet] = useState('')
-    const [set2, setSet2] = useState('')
+    const [set2, setSet2] = useState(window.visualViewport.height)
     //const [set3, setSet3] = useState('')
     return (
         <section className={style.messagesSec}>

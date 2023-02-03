@@ -1,11 +1,11 @@
 {
   "files": {
-    "main.css": "/react-chat/static/css/main.8cec9a00.css",
-    "main.js": "/react-chat/static/js/main.425caad5.js",
+    "main.css": "/react-chat/static/css/main.792cae8d.css",
+    "main.js": "/react-chat/static/js/main.3fd81be0.js",
     "static/css/234.0bef90db.chunk.css": "/react-chat/static/css/234.0bef90db.chunk.css",
     "static/js/234.3323cd01.chunk.js": "/react-chat/static/js/234.3323cd01.chunk.js",
     "static/css/298.90e87ebb.chunk.css": "/react-chat/static/css/298.90e87ebb.chunk.css",
-    "static/js/298.79841f70.chunk.js": "/react-chat/static/js/298.79841f70.chunk.js",
+    "static/js/298.ee641acd.chunk.js": "/react-chat/static/js/298.ee641acd.chunk.js",
     "static/css/107.3ea5ff2e.chunk.css": "/react-chat/static/css/107.3ea5ff2e.chunk.css",
     "static/js/107.075cbb3a.chunk.js": "/react-chat/static/js/107.075cbb3a.chunk.js",
     "static/js/787.28cb0dcd.chunk.js": "/react-chat/static/js/787.28cb0dcd.chunk.js",
@@ -36,12 +36,12 @@
     "static/media/back-dark.svg": "/react-chat/static/media/back-dark.0645de5e8c6159eb4cd2606e1c4042ec.svg",
     "static/media/logo.svg": "/react-chat/static/media/logo.a404c4b0ce14c566387dafe2c6850be8.svg",
     "static/media/add.svg": "/react-chat/static/media/add.fcc2e62b8f34216f112ad5b485f24800.svg",
-    "main.8cec9a00.css.map": "/react-chat/static/css/main.8cec9a00.css.map",
-    "main.425caad5.js.map": "/react-chat/static/js/main.425caad5.js.map",
+    "main.792cae8d.css.map": "/react-chat/static/css/main.792cae8d.css.map",
+    "main.3fd81be0.js.map": "/react-chat/static/js/main.3fd81be0.js.map",
     "234.0bef90db.chunk.css.map": "/react-chat/static/css/234.0bef90db.chunk.css.map",
     "234.3323cd01.chunk.js.map": "/react-chat/static/js/234.3323cd01.chunk.js.map",
     "298.90e87ebb.chunk.css.map": "/react-chat/static/css/298.90e87ebb.chunk.css.map",
-    "298.79841f70.chunk.js.map": "/react-chat/static/js/298.79841f70.chunk.js.map",
+    "298.ee641acd.chunk.js.map": "/react-chat/static/js/298.ee641acd.chunk.js.map",
     "107.3ea5ff2e.chunk.css.map": "/react-chat/static/css/107.3ea5ff2e.chunk.css.map",
     "107.075cbb3a.chunk.js.map": "/react-chat/static/js/107.075cbb3a.chunk.js.map",
     "787.28cb0dcd.chunk.js.map": "/react-chat/static/js/787.28cb0dcd.chunk.js.map",
@@ -51,7 +51,7 @@
     "453.b026c72d.chunk.js.map": "/react-chat/static/js/453.b026c72d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8cec9a00.css",
-    "static/js/main.425caad5.js"
+    "static/css/main.792cae8d.css",
+    "static/js/main.3fd81be0.js"
   ]
 }

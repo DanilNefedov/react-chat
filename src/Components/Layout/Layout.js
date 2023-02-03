@@ -12,7 +12,7 @@ export function Layout(){
     const {ref, widht = 0, height = 0} = useResizeObserver()
 
 
-    console.log(ref)
+    //console.log(ref)
 
 
     const [active, setActive] = useState(false)

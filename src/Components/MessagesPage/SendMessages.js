@@ -13,14 +13,14 @@ export function SendMessages({setSet2,  sendMess, text, setMessageText, handleEv
     //console.log(window.visualViewport)
     useEffect(() =>{
         //setSet2(window.visualViewport.height)
-        //window.addEventListener('keyboardDidShow', keyboardDidShow);
+        window.addEventListener('keyboardDidShow', keyboardDidShow);
         //window.addEventListener('keyboardDidHide', keyboardDidHide);
         //console.log(heightContext)
 
-        // function keyboardDidShow() {
-        //     console.log('yes')
+        function keyboardDidShow() {
+            console.log('yes')
             setSet2(window.visualViewport.height)
-        // }
+        }
           
         // function keyboardDidHide() {
         //     console.log('no')
@@ -29,7 +29,7 @@ export function SendMessages({setSet2,  sendMess, text, setMessageText, handleEv
 
         return () =>{
             setSet2(window.visualViewport.height)
-            //keyboardDidShow()
+            keyboardDidShow()
             //keyboardDidHide()
         }
     }, [heightContext])

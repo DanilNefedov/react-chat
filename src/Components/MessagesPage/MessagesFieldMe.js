@@ -6,7 +6,7 @@ import { addMessage } from "../../store/messagesSlice";
 import style from './MessagesMain.module.css'
 
 
-export function MessagesFieldMe({infoChat, scrollRef, reloadMess}) {
+export function MessagesFieldMe({sizeWindow, setSizeWindow, infoChat, scrollRef}) {
   
     const messagesState = useSelector(state => state.message.messages)
     const user = useSelector(state => state.user)
@@ -19,13 +19,13 @@ export function MessagesFieldMe({infoChat, scrollRef, reloadMess}) {
 
     useEffect(() => {
         scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }, [messagesState])
+    }, [messagesState, sizeWindow])
 
     
     useEffect(()=>{
-        window.addEventListener("onload", reloadMess);
-        reloadMess()
-        return () => window.addEventListener("resize", reloadMess);        
+        window.addEventListener("onload", setSizeWindow(window.visualViewport.height));
+    
+        return () => window.addEventListener("resize", setSizeWindow(window.visualViewport.height));        
     },[messagesState, window.innerHeight])
 
 

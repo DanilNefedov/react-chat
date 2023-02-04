@@ -110,33 +110,24 @@ export default function MessagesMain() {
             unsub()
         }
     }, [friend.name, friend.photo, friend.email])
+    const [sizeWindow, setSizeWindow] = useState(window.visualViewport.height)
 
-    //const [test, seTest] = useState('')
-
-    const reloadMess = () => {
+    useEffect(()=>{
         if (scrollRef.current !== null) {
             const headerHeight = infoSection.navRef.current.offsetHeight
-            // const scrollHeight = scrollRef.current.offsetHeight
             const nameHeight = nameRef.current.offsetHeight
             const footerHeight = footerRef.current.offsetHeight
             const windowHeight = window.visualViewport.height
-            //console.log(document.documentElement.clientHeight)
-            //seTest(document.documentElement.clientHeight)
+
             const sum = headerHeight + nameHeight + footerHeight
 
             const res = windowHeight - sum
 
-            // const newHeight = scrollHeight - (-res)
-
             scrollRef.current.style.height = `${res}px`
         }
 
-    }
+    }, [sizeWindow])
 
-
-    //const [set, setSet] = useState('')
-    const [set2, setSet2] = useState(window.visualViewport.height)
-    //const [set3, setSet3] = useState('')
     return (
         <section className={style.messagesSec}>
             <div className={classNames(style.container, 'container')}>
@@ -148,9 +139,6 @@ export default function MessagesMain() {
                         <div className={style.about}>
                             <h2 className={style.name}>
                                 {infoChat.name}
-                                
-                               
-                                {/* {test} */}
                             </h2>
                         </div>
 
@@ -158,17 +146,17 @@ export default function MessagesMain() {
                 </header>
 
                 <section ref={scrollRef} id='scroll' className={style.messages}>
-                    <span>{`window ${window.innerHeight}/`}
+                    {/* <span>{`window ${window.innerHeight}/`}
                         {set2}
-                    </span>
-                    <MessagesFieldMe reloadMess={reloadMess} scrollRef={scrollRef} infoChat={infoChat}></MessagesFieldMe>
+                    </span> */}
+                    <MessagesFieldMe sizeWindow={sizeWindow} setSizeWindow={setSizeWindow} scrollRef={scrollRef} infoChat={infoChat}></MessagesFieldMe>
 
                 </section>
                 {deletedAcc
                     ?
                     <div ref={footerRef} className={classNames(style.deletedInput)}>Account has been deleted</div>
                     :
-                    <SendMessages scrollRef={scrollRef} setSet2={setSet2}  innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />}
+                    <SendMessages scrollRef={scrollRef} setSizeWindow={setSizeWindow}  innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />}
 
             </div>
         </section>

@@ -124,6 +124,7 @@ export default function MessagesMain() {
             const res = windowHeight - sum
 
             scrollRef.current.style.height = `${res}px`
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
 
     }, [sizeWindow])
@@ -146,11 +147,7 @@ export default function MessagesMain() {
                 </header>
 
                 <section ref={scrollRef} id='scroll' className={style.messages}>
-                    {/* <span>{`window ${window.innerHeight}/`}
-                        {set2}
-                    </span> */}
-                    <MessagesFieldMe sizeWindow={sizeWindow} setSizeWindow={setSizeWindow} scrollRef={scrollRef} infoChat={infoChat}></MessagesFieldMe>
-
+                    <MessagesFieldMe setSizeWindow={setSizeWindow} scrollRef={scrollRef} infoChat={infoChat}></MessagesFieldMe>
                 </section>
                 {deletedAcc
                     ?

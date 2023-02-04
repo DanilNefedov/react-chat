@@ -12,14 +12,17 @@ export function SendMessages({setSizeWindow, scrollRef, sendMess, text, setMessa
     useEffect(() =>{
         console.log(scrollRef)
         window.addEventListener("resize", keyboardDidShow )
-
         function keyboardDidShow() {
-            const newHeight = window.visualViewport.height;
-            const staticHeight = window.innerHeight
-            const res = staticHeight - newHeight
-            setSizeWindow(newHeight)
-            document.body.style.height = ` ${newHeight}px`;
+            //if(scrollRef !== null){
+                const newHeight = window.visualViewport.height;
+                // const staticHeight = window.innerHeight
+                // const res = staticHeight - newHeight
+                setSizeWindow(newHeight)
+                document.body.style.height = ` ${newHeight}px`;
+               // scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+           // }
         }
+        
         return () =>{
             keyboardDidShow()
         }

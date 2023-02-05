@@ -41,10 +41,9 @@ function App() {
             </Suspense>
           }/>
         </Route>
-        <Route path='/*' element={<Page404></Page404>}/>
         <Route path='/login' element={<SingIn/>}/>
         <Route path='/registration' element={<Registration/>}/>
-        
+        <Route path='/*' element={<Page404></Page404>}/>
       </Routes>
     // </div>
   );

@@ -130,3 +130,19 @@
         font-size: 11px;
     }
 }
+
+@media screen and (max-width: 450px) {
+    .form{
+        padding: 30px 25px 18px 25px;
+    }
+    .header{
+        font-size: 25px;
+        margin-bottom: 25px;
+    }
+    .headerForm{
+        font-size: 18px;
+    }
+    .email{
+        padding: 16px 0;
+    }
+}

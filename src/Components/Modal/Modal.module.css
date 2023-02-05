@@ -71,3 +71,21 @@
         font-size: 12px;
     }
 }
+
+@media screen and (max-width: 450px) {
+    .exitImg{
+        width: 25px;
+        height: 25px;
+    }
+    .containerModal{
+        padding: 15px 7px;
+        width: 280px;
+        left: calc(50% - 140px);
+    }
+    .input{
+        padding: 7px;
+    }
+    .btn{
+        font-size: 10px;
+    }
+}

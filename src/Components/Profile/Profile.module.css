@@ -247,6 +247,57 @@
     }
 }
 
+@media screen and (max-width: 450px) {
+    .userPhoto img{
+        width: 60px;
+        height: 60px;
+    }
+    .photoSection{
+        margin-bottom: 20px;
+    }
+    .nameUser, .emailUser{
+        margin-bottom: 6px;
+    }
+    .containerBtn{
+        margin-top: 8px;
+    }
+    .userInfo{
+        padding: 15px 20px 8px 21px;
+    }
+    .editPhoto{
+        margin-bottom: 23px;
+    }
+    .deletePhoto{
+        margin-bottom: 8px;
+    }
+    .nameSection{
+        margin-bottom: 23px;
+    }
+    .profile{
+        font-size: 10px;
+    }
+    .btnDelete{
+        font-size: 10px;
+    }
+    .iconBtn{
+        width: 17px;
+        height: 17px;
+    }
+    .infoSize{
+        font-size: 7px;
+        line-height: 7px;
+        bottom: -10px;
+    }
+    .btnUpdate{
+        font-size: 11px;
+    }
+    .editEmail, .editName{
+        font-size: 10px;
+    }
+}
+
+
+
 @media screen and (max-width:375px) {
     .userInfo, .editUserInfo{
         padding-left: 5px;

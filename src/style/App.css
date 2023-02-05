@@ -110,7 +110,7 @@ h6 {
 .main-content{
     display: flex;
     justify-content: space-between;
-    /* height: 100vh; */
+    height: 100vh;
 }
 .section-main{
     width: 100%;
@@ -223,5 +223,12 @@ h6 {
         top:0;
         right: 0;
         border-width: 0;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .active::after{
+        left: -8px;
+        top:-2px;
     }
 }

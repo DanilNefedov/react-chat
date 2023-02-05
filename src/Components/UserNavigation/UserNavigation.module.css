@@ -52,3 +52,22 @@
         display: block;
     }
 }
+
+@media screen and (max-width: 450px) {
+    .userNav{
+        padding: 7px;
+    }
+    .photoUser{
+        width: 25px;
+        height: 25px;
+        margin-left: 10px;
+    }
+    .nameUser{
+        font-size: 10px;
+    }
+    .search{
+        width: 14px;
+        height: 14px;
+    }
+    
+}

@@ -84,7 +84,11 @@
 .list:hover{
     background-color: #252632;
 }
-
+.empty{
+    color: var(--white);
+    text-align: center;
+    padding-top: 20px;
+}
 @media screen and (max-width:770px){
     #searchIcon{
         height: 45px;
@@ -121,5 +125,40 @@
     #searchIcon{
         font-size: 12px;
         color:var(--white);
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .search img{
+        width: 14px;
+        height: 14px;
+    }
+    #searchIcon{
+        height: 35px;
+        font-size: 10px;
+        padding-left: 30px;
+    }
+    .loupe{
+        top:calc(50% - 9px);
+        left: 8px;
+    }
+    .empty{
+        padding-top: 15px;
+        font-size: 10px;
+    }
+    .list{
+        padding: 5px 10px 5.5px 10px;
+    }
+    .user{
+        width: 27px;
+        height: 27px;
+        margin-right: 0;
+    }
+    .user img{
+        width: 27px;
+        height: 27px;
+    }
+    .name{
+        font-size: 10px;
     }
 }

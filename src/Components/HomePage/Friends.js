@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { FriendsList } from "./FriendsList/FriendsList";
 import { Search } from '../Search/Search'
 import { addFrined, addLastMessage, updatePhotoName } from '../../store/friendSlice'
-import React, { Suspense, useRef, useState } from 'react';
+import React, { Suspense, useMemo, useRef, useState } from 'react';
 import { getFirestore, collection, query, where, getDocs, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
@@ -82,6 +82,7 @@ export default function Friends() {
 
     }
 
+    // const frinedListMemo = useMemo(sortList, [myInfo.id, friendList.map(el => el)])
 
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "chatsList", myInfo.id), (doc) => {
@@ -158,6 +159,10 @@ export default function Friends() {
             unsub()
         }
     }, [myInfo.id, friendList.map(el => el)]) 
+
+
+    // const friendListMemo = useMemo(sortState, [myInfo.id, friendList.map(el => el)])
+    // console.log(friendListMemo)
 
     function resize() {
         if (containerFrineds.current !== null) {

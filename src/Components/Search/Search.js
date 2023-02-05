@@ -84,10 +84,9 @@ export function Search({ propsErr, user, handleSubmit, text, setText, handleEven
     }
 
     const context = useOutletContext()
-
     const containerSearch = useRef()
+    
     function resize() {
-        console.log()
         if (containerSearch.current !== null && containerSearch.current !== undefined) {
             const searchHeight = searchRef.current.offsetHeight
             const navigationRefHeight = context.navRef.current.offsetHeight
@@ -121,7 +120,7 @@ export function Search({ propsErr, user, handleSubmit, text, setText, handleEven
             <section ref={searchListRef} className={style.searchList} id="search-list">
 
                 {(user.length === 0) ? (
-                    <Empty />
+                    <div className={style.empty}>Search list is empty</div>
                 ) : (
                     <div ref={containerSearch} className={classNames(style.containerSearchList, "container-search-list")}>
                         <Suspense fallback={<Loader></Loader>}>

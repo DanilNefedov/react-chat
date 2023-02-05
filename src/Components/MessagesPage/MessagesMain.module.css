@@ -201,3 +201,50 @@
         font-size: 9px;
     }
 }
+
+@media screen and (max-width: 450px) {
+    .header{
+        padding: 7px;
+    }
+    .userImg{
+        width: 30px;
+        height: 30px;
+        margin-right: 7px;
+    }
+    .userImg img{
+        width: 30px;
+        height: 30px;
+    }
+    .name{
+        font-size: 12px;
+    }
+    .messagesFriend, .messagesMe{
+        padding: 2px 5px;
+        font-size: 9px;
+    }
+    .messagesMe{
+        border-radius: 4px 0 4px 4px;
+    }
+    .messagesFriend{
+        border-radius: 0 4px 4px 4px;
+    }
+    .dateMessages{
+        font-size: 7px;
+        line-height: 8px;
+        bottom: -12px;
+    }
+    .messageContainerFriend, .messageContainerMe{
+        margin-bottom: 20px;
+    }
+    .textArea{
+        padding: 7px;
+    }
+    .input{
+        padding: 7px 10px 5px;
+        font-size: 10px;
+    }
+    .send{
+        width: 30px;
+        border-radius: 4px;
+    }
+}

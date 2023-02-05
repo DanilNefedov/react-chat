@@ -29,6 +29,8 @@ export default function MessagesMain() {
 
     const dispatch = useDispatch()
 
+    const [sizeWindow, setSizeWindow] = useState(window.visualViewport.height)
+
     const [deletedAcc, setDeletedAcc] = useState(false)
 
     const [text, setMessageText] = useState('');
@@ -110,7 +112,6 @@ export default function MessagesMain() {
             unsub()
         }
     }, [friend.name, friend.photo, friend.email])
-    const [sizeWindow, setSizeWindow] = useState(window.visualViewport.height)
 
     useEffect(()=>{
         if (scrollRef.current !== null) {

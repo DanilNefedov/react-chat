@@ -1,28 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useEffect } from 'react';
 import send from '../../img/send.svg';
 import style from './MessagesMain.module.css';
 
 
 
-export function SendMessages({setSizeWindow, scrollRef, sendMess, text, setMessageText, handleEvent, innerRef}) {
-    const context = useOutletContext()
-    const heightContext = context.height.current
+export function SendMessages({setSizeWindow, sendMess, text, setMessageText, handleEvent, innerRef}) {
 
     useEffect(() =>{
-        console.log(scrollRef)
         window.addEventListener("resize", keyboardDidShow )
         function keyboardDidShow() {
-            //if(scrollRef !== null){
-                const newHeight = window.visualViewport.height;
-                // const staticHeight = window.innerHeight
-                // const res = staticHeight - newHeight
-                setSizeWindow(newHeight)
-                document.body.style.height = ` ${newHeight}px`;
-               // scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-           // }
+            const newHeight = window.visualViewport.height;
+            setSizeWindow(newHeight)
         }
-        
         return () =>{
             keyboardDidShow()
         }

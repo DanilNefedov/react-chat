@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/react-chat/static/css/main.8cec9a00.css",
-    "main.js": "/react-chat/static/js/main.dedd68a7.js",
-    "static/css/234.bf85b39f.chunk.css": "/react-chat/static/css/234.bf85b39f.chunk.css",
+    "main.css": "/react-chat/static/css/main.dddfab0c.css",
+    "main.js": "/react-chat/static/js/main.f1d9e1d9.js",
+    "static/css/234.098c97e2.chunk.css": "/react-chat/static/css/234.098c97e2.chunk.css",
     "static/js/234.46db3b95.chunk.js": "/react-chat/static/js/234.46db3b95.chunk.js",
-    "static/css/298.90e87ebb.chunk.css": "/react-chat/static/css/298.90e87ebb.chunk.css",
+    "static/css/298.57c68eca.chunk.css": "/react-chat/static/css/298.57c68eca.chunk.css",
     "static/js/298.02a482c7.chunk.js": "/react-chat/static/js/298.02a482c7.chunk.js",
-    "static/css/107.3ea5ff2e.chunk.css": "/react-chat/static/css/107.3ea5ff2e.chunk.css",
+    "static/css/107.ad07ff9c.chunk.css": "/react-chat/static/css/107.ad07ff9c.chunk.css",
     "static/js/107.075cbb3a.chunk.js": "/react-chat/static/js/107.075cbb3a.chunk.js",
     "static/js/787.28cb0dcd.chunk.js": "/react-chat/static/js/787.28cb0dcd.chunk.js",
-    "static/css/690.a73e567d.chunk.css": "/react-chat/static/css/690.a73e567d.chunk.css",
+    "static/css/690.87f3fc99.chunk.css": "/react-chat/static/css/690.87f3fc99.chunk.css",
     "static/js/690.eb1ea901.chunk.js": "/react-chat/static/js/690.eb1ea901.chunk.js",
     "static/js/291.1dbdeeb3.chunk.js": "/react-chat/static/js/291.1dbdeeb3.chunk.js",
     "static/js/453.b026c72d.chunk.js": "/react-chat/static/js/453.b026c72d.chunk.js",
@@ -36,22 +36,22 @@
     "static/media/back-dark.svg": "/react-chat/static/media/back-dark.0645de5e8c6159eb4cd2606e1c4042ec.svg",
     "static/media/logo.svg": "/react-chat/static/media/logo.a404c4b0ce14c566387dafe2c6850be8.svg",
     "static/media/add.svg": "/react-chat/static/media/add.fcc2e62b8f34216f112ad5b485f24800.svg",
-    "main.8cec9a00.css.map": "/react-chat/static/css/main.8cec9a00.css.map",
-    "main.dedd68a7.js.map": "/react-chat/static/js/main.dedd68a7.js.map",
-    "234.bf85b39f.chunk.css.map": "/react-chat/static/css/234.bf85b39f.chunk.css.map",
+    "main.dddfab0c.css.map": "/react-chat/static/css/main.dddfab0c.css.map",
+    "main.f1d9e1d9.js.map": "/react-chat/static/js/main.f1d9e1d9.js.map",
+    "234.098c97e2.chunk.css.map": "/react-chat/static/css/234.098c97e2.chunk.css.map",
     "234.46db3b95.chunk.js.map": "/react-chat/static/js/234.46db3b95.chunk.js.map",
-    "298.90e87ebb.chunk.css.map": "/react-chat/static/css/298.90e87ebb.chunk.css.map",
+    "298.57c68eca.chunk.css.map": "/react-chat/static/css/298.57c68eca.chunk.css.map",
     "298.02a482c7.chunk.js.map": "/react-chat/static/js/298.02a482c7.chunk.js.map",
-    "107.3ea5ff2e.chunk.css.map": "/react-chat/static/css/107.3ea5ff2e.chunk.css.map",
+    "107.ad07ff9c.chunk.css.map": "/react-chat/static/css/107.ad07ff9c.chunk.css.map",
     "107.075cbb3a.chunk.js.map": "/react-chat/static/js/107.075cbb3a.chunk.js.map",
     "787.28cb0dcd.chunk.js.map": "/react-chat/static/js/787.28cb0dcd.chunk.js.map",
-    "690.a73e567d.chunk.css.map": "/react-chat/static/css/690.a73e567d.chunk.css.map",
+    "690.87f3fc99.chunk.css.map": "/react-chat/static/css/690.87f3fc99.chunk.css.map",
     "690.eb1ea901.chunk.js.map": "/react-chat/static/js/690.eb1ea901.chunk.js.map",
     "291.1dbdeeb3.chunk.js.map": "/react-chat/static/js/291.1dbdeeb3.chunk.js.map",
     "453.b026c72d.chunk.js.map": "/react-chat/static/js/453.b026c72d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8cec9a00.css",
-    "static/js/main.dedd68a7.js"
+    "static/css/main.dddfab0c.css",
+    "static/js/main.f1d9e1d9.js"
   ]
 }

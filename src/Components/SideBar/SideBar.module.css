@@ -93,10 +93,10 @@
         height: 30px;
     }
     .home{
-        padding: 15px 7px 0;
+        padding: 14px 7px 0;
     }
     .profile, .exit{
-        padding: 7px 7px;
+        padding: 10px 7px;
     }
     .imgCont{
         width: 25px;
@@ -113,22 +113,22 @@
 
 @media screen and (max-width: 450px) {
     .logo{
-        padding: 7px;
+        padding: 9.5px;
     }
-    .logoImg{
+    /* .logoImg{
         width: 25px;
         height: 25px;
-    }
+    } */
     .imgCont{
-        width: 20px;
-        height: 20px;
+        width: 23px;
+        height: 23px;
     }
     .imgCont img{
-        width: 20px;
-        height: 20px;
+        width: 23px;
+        height: 23px;
     }
     .nameNav{
-        font-size: 8px;
+        font-size: 12px;
         line-height: 13px;
     }
 }

@@ -62,7 +62,7 @@
         
     }
     .header{
-        font-size: 12px;
+        font-size: 14px;
     }
 }
 
@@ -81,7 +81,7 @@
     .head{
         height: 30px;
     }
-    .header{
+    /* .header{
         font-size: 10px;
-    }
+    } */
 }

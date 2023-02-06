@@ -114,16 +114,16 @@
         font-size: 20px;
     }
     .headerEmail, .headerPass, .headerName{
-        font-size: 13px;
+        font-size: 14px;
     }
 
     .email input, .pass input, .name input{
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .regBnt{
         padding: 9px 12px;
-        font-size: 13px;
+        font-size: 14px;
     }
     .linkReg{
         padding-top: 10px;

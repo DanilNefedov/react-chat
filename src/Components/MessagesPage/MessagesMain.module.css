@@ -164,7 +164,7 @@
 
 @media screen and (max-width:770px) {
     .header{
-        padding: 10px;
+        padding: 12px;
     }
     .userImg{
         width: 40px;
@@ -175,16 +175,16 @@
         width: 40px;
         height: 40px;
     }
-    .name{
+    /* .name{
         font-size: 14px;
-    }
+    } */
 
     .textArea{
         padding: 10px;
     }
     .input{
         padding: 9px 15px 7px;
-        font-size: 11px;
+        font-size: 14px;
     }
     .send{
         width: 34px;
@@ -195,10 +195,10 @@
     }
     .messagesFriend, .messagesMe{
         padding: 4px 10px;
-        font-size: 11px;
+        font-size: 14px;
     }
     .dateMessages{
-        font-size: 9px;
+        font-size: 10px;
     }
 }
 
@@ -216,11 +216,12 @@
         height: 30px;
     }
     .name{
-        font-size: 12px;
+        font-size: 14px;
     }
     .messagesFriend, .messagesMe{
-        padding: 2px 5px;
-        font-size: 9px;
+        padding: 4px 7px;
+        font-size: 14px;
+        line-height: 16px;
     }
     .messagesMe{
         border-radius: 4px 0 4px 4px;
@@ -229,7 +230,7 @@
         border-radius: 0 4px 4px 4px;
     }
     .dateMessages{
-        font-size: 7px;
+        font-size: 9px;
         line-height: 8px;
         bottom: -12px;
     }
@@ -240,11 +241,11 @@
         padding: 7px;
     }
     .input{
-        padding: 7px 10px 5px;
-        font-size: 10px;
+        padding: 6px 10px 5px;
+        font-size: 14px;
     }
     .send{
-        width: 30px;
+        width: 36px;
         border-radius: 4px;
     }
 }

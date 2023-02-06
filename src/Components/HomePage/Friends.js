@@ -75,11 +75,11 @@ export default function Friends() {
     }
 
     const handleEvent = (e) => {
-        if (e.code === 'Enter') {
+        e.preventDefault();
+        if (e.keyCode === 13) {
             searchUsers()
             setText('')
         }
-
     }
 
     // const frinedListMemo = useMemo(sortList, [myInfo.id, friendList.map(el => el)])

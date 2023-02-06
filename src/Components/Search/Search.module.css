@@ -29,11 +29,14 @@
     position: absolute;
     left: 23px;
     top:18px;
+    width: 20px;
+    height: 20px;
     background-color: var(--second-main);
 }
 
 .search{
     width: 100%;
+    
 }
 
 .searchList{
@@ -89,46 +92,58 @@
     text-align: center;
     padding-top: 20px;
 }
+#searchIcon::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: url('../../img/close-search.svg') 100% 100% no-repeat;
+    background-size: cover;
+    cursor: pointer;
+}
+
 @media screen and (max-width:770px){
     #searchIcon{
-        height: 45px;
-        font-size: 12px;
-        padding-left: 55px;
+        height: 55px;
+        font-size: 14px;
+        padding: 2px 0 0 45px;
+        color:var(--white);
     }
     .loupe{
-        top:calc(50% - 10px)
+        top:calc(50% - 10px);
+        left: 13px;
     }
     .loupe img{
         width: 17px;
         height: 17px;
+        top:calc(50% - 9px);
     }
     .searchList{
         padding: 14px;
     }
     .user{
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
     }
     .user img{
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
     }
     .list{
-        padding:7px 14px 6.5px 11px;
+        padding: 11px 14px 10px 11px;
     }
     .searchList{
         padding: 0 3px 0 0 ;
     }
-    .name{
+    /* .name{
         font-size: 12px;
-    }
-    #searchIcon{
+    } */
+    /* #searchIcon{
         font-size: 12px;
-        color:var(--white);
-    }
+        
+    } */
 }
 
-@media screen and (max-width: 450px) {
+/* @media screen and (max-width: 450px) {
     .search img{
         width: 14px;
         height: 14px;
@@ -161,4 +176,4 @@
     .name{
         font-size: 10px;
     }
-}
+} */

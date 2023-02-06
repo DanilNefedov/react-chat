@@ -191,7 +191,7 @@ h6 {
 
 @media screen and (max-width:770px) {
     body{
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .active::after{
@@ -228,7 +228,7 @@ h6 {
 
 @media screen and (max-width: 450px) {
     .active::after{
-        left: -8px;
-        top:-2px;
+        left: -7px;
+        top:0px;
     }
 }

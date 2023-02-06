@@ -111,7 +111,7 @@ export function Search({ propsErr, user, handleSubmit, text, setText, handleEven
         <div className={classNames(style.container, "container")}>
             <section ref={searchRef} className={style.search} id="search">
                 <div className={style.cont}>
-                    <input className={classNames(style.searchIcon)} onKeyDown={handleEvent} value={text} onChange={(e) => setText(e.target.value)} type="text" id={style.searchIcon} placeholder="Find friend" />
+                    <input inputMode='search' className={classNames(style.searchIcon)} onKeyUp={ (e) => handleEvent(e)} value={text} onChange={(e) => setText(e.target.value)} type="search" id={style.searchIcon} placeholder="Find friend" />
                     <button type='submit' onClick={handleSubmit} className={style.loupe} htmlFor="search-icon"><img src={search} alt="Search" /></button>
 
                 </div>

@@ -6,15 +6,21 @@ import addPhoto from '../../img/add.svg'
 import edit from '../../img/edit.svg'
 import emailImg from '../../img/email.svg'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
-import { doc, getFirestore, onSnapshot } from 'firebase/firestore'
-import { updateUser } from '../../store/authSlice'
+import { useEffect, useState } from 'react'
+import { doc, getFirestore, onSnapshot, updateDoc } from 'firebase/firestore'
+import { removePhoto, updateUser } from '../../store/authSlice'
+import { deleteObject, getStorage, ref } from 'firebase/storage'
+import { getAuth, updateProfile } from 'firebase/auth'
+import done from '../../img/done.svg'
 
-export function ChangeProfile ({setPhoto, deletePhoto, setEmail, setName, name, classErrName, classErr, email}){
+export function ChangeProfile ({setSelected, selectedPhoto, setClassErrName, setClassErr, setModuleErr, setPropsErr, email, classErr, classErrName, name, setPhoto, setName, setEmail}){
 
     const user = useSelector(state => state.user)
+    const friend = useSelector(state => state.friend.friend)
     const dispatch = useDispatch()
     const db = getFirestore();
+    const auth = getAuth();
+    //const [selectedPhoto, setSelected] = useState(null)
 
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "users", user.id), (doc) => {
@@ -32,6 +38,69 @@ export function ChangeProfile ({setPhoto, deletePhoto, setEmail, setName, name, 
     }, [user.name, user.photoURL, user.email])
 
 
+    const deletePhoto = (e) => {
+        e.preventDefault()
+        if (user.photo !== null) {
+            const storage = getStorage();
+            const desertRef = ref(storage, user.photo);
+
+            deleteObject(desertRef).then(async () => {
+                dispatch(removePhoto())
+                await updateDoc(doc(db, 'users', user.id), {
+                    photoURL: null
+                })
+
+                await updateProfile(auth.currentUser, {
+                    photoURL: ''
+                }).then(() => {
+                    setPropsErr('')
+                    setModuleErr(false)
+
+                }).catch(() => {
+                    setModuleErr(true)
+                    setPropsErr('Error during photo deletion')
+                });
+
+                friend.map(async (el) => {
+                    //console.log(friend)
+                    try{
+                        await updateDoc(doc(db, 'chatsList', el.friendId), {
+                            [el.id + '.userInfo']: {
+                                id: user.id,
+                                displayName: name !== '' ? name : user.name,
+                                photo: null
+                            }
+                        })
+                    }catch{
+                        return
+                    }
+                })
+                setModuleErr(false)
+                setPropsErr('')
+            }).catch(() => {
+                setModuleErr(true)
+                setPropsErr('Error during photo deletion')
+            });
+        }
+        if(email === ''){
+            setClassErr('')
+        }
+        if(name === ''){
+            setClassErrName('')
+        }
+    }
+    const showPhoto = (e) =>{
+        setPhoto(e.target.files[0]);
+        const selectedFile = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            //setPhoto(e.target.result);
+            setSelected(e.target.result)
+        };
+        reader.readAsDataURL(selectedFile);
+        //setSelected(true)
+    }
+    //console.log(selectedPhoto)
     return(
         <>
         {user.photo ?
@@ -39,7 +108,11 @@ export function ChangeProfile ({setPhoto, deletePhoto, setEmail, setName, name, 
                 <div className={classNames(style.editPhoto, "edit-photo")}>
                     <img className={classNames(style.iconBtn)} src={download} alt="download" />
                     <label className={style.downloadImg} htmlFor={style.loadPhoto}>Edit Photo</label>
-                    <input id={style.loadPhoto} type="file" onChange={(e) => setPhoto(e.target.files[0])} accept='image/*, .png, .jpg, .web' />
+                    <input id={style.loadPhoto} type="file" onChange={(e) => showPhoto(e)} accept='image/*, .png, .jpg, .web' />
+                    {selectedPhoto ?
+                        <span className={classNames(style.selected)}><img src={done} alt="done" /></span> :
+                        <></>
+                    }
                     <span className={style.infoSize}>*.png, .jpg, .web</span>
                 </div>
                 <div className={classNames(style.deletePhoto, "delete-photo")}>
@@ -51,7 +124,11 @@ export function ChangeProfile ({setPhoto, deletePhoto, setEmail, setName, name, 
             <div className={classNames(style.editPhoto, "edit-photo")}>
                 <img className={classNames(style.iconBtn)} src={addPhoto} alt="add" />
                 <label className={style.downloadImg} htmlFor={style.loadPhoto}>Download Photo</label>
-                <input id={style.loadPhoto} type="file" onChange={(e) => setPhoto(e.target.files[0])} accept='image/*, .png, .jpg, .web' />
+                <input id={style.loadPhoto} type="file" onChange={(e) => showPhoto(e)} accept='image/*, .png, .jpg, .web' />
+                {selectedPhoto ?
+                    <span className={classNames(style.selected)}><img src={done} alt="done" /></span> :
+                    <></>
+                }
                 <span className={style.infoSize}>*.png, .jpg, .web</span>
             </div>
         }

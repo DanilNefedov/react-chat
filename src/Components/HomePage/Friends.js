@@ -22,10 +22,7 @@ export default function Friends() {
 
     const [text, setText] = useState('')
 
-    const [user, setUser] = useState([])
-
     const [moduleErr, setModuleErr] = useState(false)
-    const [propsErr, setPropsErr] = useState('')
 
     const myInfo = useSelector(state => state.user)
 
@@ -46,52 +43,12 @@ export default function Friends() {
     const setModalActive = context.setModal
 
 
-    const taskAddFriend = (event) => {
-        event.preventDefault();
-        setText('')
-        searchUsers()
-    }
-
-    const searchUsers = async () => {
-        const q = query(collection(db, "users"), where('name', '==', text));
-        
-        try {
-            const querySnapshot = await getDocs(q);
-            const searchArr = []
-            setUser([])
-
-            querySnapshot.forEach((doc) => {
-                const data = doc.data()
-                setModuleErr(false)
-                searchArr.push(data)
-                setUser(searchArr)
-            });
-
-        } catch (error) {
-            setModuleErr(true)
-            setPropsErr('')
-            console.error(error)
-        }
-    }
-
-    const handleEvent = (e) => {
-        e.preventDefault();
-        if (e.keyCode === 13) {
-            searchUsers()
-            setText('')
-        }
-    }
-
-    // const frinedListMemo = useMemo(sortList, [myInfo.id, friendList.map(el => el)])
-
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "chatsList", myInfo.id), (doc) => {
             if (doc.data()) {
-
                 const data = Object.entries(doc.data())
-
                 data.map(el => {
-
+                    //console.log(el)
                     const combinedId = el[0]
                     if (combinedId) {
                         const userInfo = el[1].userInfo
@@ -158,11 +115,7 @@ export default function Friends() {
         return () => {
             unsub()
         }
-    }, [myInfo.id, friendList.map(el => el)]) 
-
-
-    // const friendListMemo = useMemo(sortState, [myInfo.id, friendList.map(el => el)])
-    // console.log(friendListMemo)
+    }, [friendList]) 
 
     function resize() {
         if (containerFrineds.current !== null) {
@@ -210,7 +163,7 @@ export default function Friends() {
     return (
         <section className="home">
             <div ref={refSearch} className={activeModal ? classNames(style.searchFriends, "search-friends, active-modal-search") : classNames(style.searchFriends, "search-friends")}>
-                <Search searchListRef={searchListRef} searchRef={searchRef} user={user} handleSubmit={taskAddFriend} text={text} setText={setText} handleEvent={handleEvent} />
+                <Search searchListRef={searchListRef} searchRef={searchRef}  text={text} setText={setText}  />
             </div> 
             <section className={style.friends} ref={friendsScroll}>
 
@@ -236,7 +189,7 @@ export default function Friends() {
                     </div>
                 </div>
             </section>
-            {moduleErr ? <ModuleError propsErr={propsErr} setModuleErr={setModuleErr}></ModuleError> : <></>}
+            {moduleErr ? <ModuleError setModuleErr={setModuleErr}></ModuleError> : <></>}
         </section>
     );
 }

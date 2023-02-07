@@ -30,8 +30,11 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
 
 
     useEffect(() => {
+        //console.log('w')
         const unsub = onSnapshot(doc(db, 'chats', infoChat.id), (doc) => {
+            //console.log('ww')
             if (doc.data()) {
+                //console.log('www')
                 const data = doc.data()
                 const chatId = infoChat.id
 

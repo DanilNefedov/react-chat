@@ -3,9 +3,9 @@ import style from './Search.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { addFrined } from '../../store/friendSlice';
 // import { SearchList } from './SearchList'
-import { doc, getDoc, getFirestore, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, getFirestore, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 import { Empty } from '../Empty/Empty';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { ModuleError } from '../ModuleError/ModuleError';
 import classNames from 'classnames';
@@ -17,7 +17,7 @@ import React from 'react';
 const SearchList = React.lazy(() => import('./SearchList'))
 
 
-export function Search({ propsErr, user, handleSubmit, text, setText, handleEvent, searchListRef, searchRef }) {
+export function Search({  text, setText, searchListRef, searchRef }) {
 
     const [moduleErr, setModuleErr] = useState(false)
 
@@ -27,6 +27,48 @@ export function Search({ propsErr, user, handleSubmit, text, setText, handleEven
     const friend = useSelector(state => state.friend.friend)
 
     const myInfo = useSelector(state => state.user)
+
+    const [propsErr, setPropsErr] = useState('')
+    const [user, setUser] = useState([]) 
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setText('')
+        searchUsers()
+    }  
+
+    const handleEvent = (e) => {
+        e.preventDefault();
+        if (e.keyCode === 13) {
+            searchUsers()
+            setText('')
+        }
+    }
+
+
+    const searchUsers = async () => {
+        const q = query(collection(db, "users"), where('name', '==', text));
+        
+        try {
+            const querySnapshot = await getDocs(q);
+            const searchArr = []
+            setUser([])
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data()
+                if(data.id !== myInfo.id){
+                    setModuleErr(false)
+                    searchArr.push(data)
+                    setUser(searchArr)
+                }
+            });
+
+        } catch (error) {
+            setModuleErr(true)
+            setPropsErr('')
+            console.error(error)
+        }
+    }
 
 
 
@@ -106,6 +148,9 @@ export function Search({ propsErr, user, handleSubmit, text, setText, handleEven
         window.addEventListener("onload", resize);
         return () => window.addEventListener("resize", resize);
     }, [user])
+
+
+
 
     return (
         <div className={classNames(style.container, "container")}>

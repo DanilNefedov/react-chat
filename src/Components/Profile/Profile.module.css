@@ -165,6 +165,12 @@
     border:  1px solid var(--red)!important;
 }
 
+.selected{
+    width: 25px;
+    height: 25px;
+    /* background-color: green; */
+    margin-left: 10px;
+}
 
 @media screen and (max-width: 870px) {
     .profile{

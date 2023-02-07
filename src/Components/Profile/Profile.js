@@ -22,6 +22,7 @@ export default function Profile() {
     const db = getFirestore();
 
     const [photo, setPhoto] = useState(null)
+    const [selectedPhoto, setSelected] = useState(null)
 
     const [name, setName] = useState('')
 
@@ -87,6 +88,8 @@ export default function Profile() {
             }
 
             if (photo) {
+                //setPhoto(photo)
+                //setSelected(null)
                 const storage = getStorage();
                 const storageRef = ref(storage, `avatar/${user.name}`);
                 const uploadTask = uploadBytesResumable(storageRef, photo);
@@ -108,6 +111,7 @@ export default function Profile() {
                             }).then(() => {
                                 setModuleErr(false)
                                 setPropsErr('')
+                                //setSelected(null)
                             }).catch(() => {
                                 setModuleErr(true)
                                 setPropsErr('Error in photo update')
@@ -131,8 +135,9 @@ export default function Profile() {
                                     return
                                 }
                             })
+                            setSelected(null)
                         });
-                        setPhoto(null)
+                        setPhoto(null) 
                     }
                 );
                 if(email === ''){
@@ -141,6 +146,7 @@ export default function Profile() {
                 if(name === ''){
                     setClassErrName('')
                 }
+                //
             }
 
             if(name.length > 20){
@@ -192,53 +198,7 @@ export default function Profile() {
             console.error(error)
         }
         setName('')
-    }
-
-    const deletePhoto = (e) => {
-        e.preventDefault()
-        if (user.photo !== null) {
-            const storage = getStorage();
-            const desertRef = ref(storage, user.photo);
-
-            deleteObject(desertRef).then(async () => {
-                dispatch(removePhoto())
-                await updateDoc(doc(db, 'users', user.id), {
-                    photoURL: null
-                })
-
-                await updateProfile(auth.currentUser, {
-                    photoURL: ''
-                }).then(() => {
-                    setPropsErr('')
-                    setModuleErr(false)
-
-                }).catch(() => {
-                    setModuleErr(true)
-                    setPropsErr('Error during photo deletion')
-                });
-
-                friend.map(async (el) => {
-                    await updateDoc(doc(db, 'chatsList', el.friendId), {
-                        [el.id + '.userInfo']: {
-                            id: user.id,
-                            displayName: name !== '' ? name : user.name,
-                            photo: null
-                        }
-                    })
-                })
-                setModuleErr(false)
-                setPropsErr('')
-            }).catch(() => {
-                setModuleErr(true)
-                setPropsErr('Error during photo deletion')
-            });
-        }
-        if(email === ''){
-            setClassErr('')
-        }
-        if(name === ''){
-            setClassErrName('')
-        }
+        //setSelected(null)
     }
 
     const deleteAccount = (event) => {
@@ -294,14 +254,14 @@ export default function Profile() {
             return
         });
     }
-
+    //console.log(photo)
     return (
         <section className={classNames(style.profile, 'profile')}>
             <div className={classNames(style.container, 'container')}>
                 <div className={classNames(style.userInfo, "user-info")}>
                     <div className={classNames(style.containerUserInfo, "container-userInfo")}>
 
-                        <ProfilePhoto></ProfilePhoto>
+                        <ProfilePhoto selectedPhoto={selectedPhoto}></ProfilePhoto>
 
                         <div className={classNames(style.nameEmail, "name-email")}>
                             <p className={classNames(style.nameUser, "name-user")}>
@@ -322,7 +282,7 @@ export default function Profile() {
                 <div className={classNames(style.editUserInfo, "edit-user-info")}>
                     <div className={classNames(style.containerEditUser, "container")}>
                 
-                        <ChangeProfile email={email} classErr={classErr} classErrName={classErrName} name={name} setPhoto={setPhoto} deletePhoto={deletePhoto} setName={setName} setEmail={setEmail}></ChangeProfile>
+                        <ChangeProfile setSelected={setSelected} selectedPhoto={selectedPhoto} setClassErrName={setClassErrName} setClassErr={setClassErr} setModuleErr={setModuleErr} setPropsErr={setPropsErr} email={email} classErr={classErr} classErrName={classErrName} name={name} setPhoto={setPhoto} setName={setName} setEmail={setEmail}></ChangeProfile>
 
                         <div className={classNames(style.updateSection, 'update')}>
                             <button onClick={(event) => {

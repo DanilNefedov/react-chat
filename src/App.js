@@ -1,12 +1,9 @@
 import './style/Variables.css';
 import './style/App.css';
-// import { Friends } from './Components/HomePage/Friends';
-// import { MessagesMain } from './Components/MessagesPage/MessagesMain';
 import { Route, Routes } from 'react-router-dom';
 import { SingIn } from './Components/SingIN/SingIn';
 import { ProtecteedRoute } from './Components/SingIN/ProtectedRoute';
 import {Registration} from './Components/SingIN/Registration';
-// import { Profile } from './Components/Profile/Profile';
 import React, { Suspense } from 'react';
 import { Loader } from './Components/Loader/Loader';
 import { Page404 } from './Components/404/Page404';
@@ -21,7 +18,6 @@ function App() {
   
 
   return (
-    // <div  className="wrapper">
       <Routes>
         <Route element={<ProtecteedRoute/>}>
           <Route index element={
@@ -45,7 +41,6 @@ function App() {
         <Route path='/registration' element={<Registration/>}/>
         <Route path='/*' element={<Page404></Page404>}/>
       </Routes>
-    // </div>
   );
 }
 

@@ -3,14 +3,16 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebas
 import { useDispatch, useSelector } from "react-redux";
 import {setUser} from '../../store/authSlice'
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import { useState } from "react";
 import { Loader } from "../Loader/Loader";
+import { initialState, reducer } from "../../state/moduleError";
 
 
 export function SingIn (){
     const [load, setLoad] = useState(true)
     const userState = useSelector(state => state.user)
+    const [state, dispatchState] = useReducer(reducer, initialState)
     const [errorLog, setErrorLog] = useState(true)
     
     const dispatch = useDispatch();
@@ -55,12 +57,12 @@ export function SingIn (){
         const auth = getAuth();
         await signInWithEmailAndPassword(auth, email, password)
             .then(() => {
-                setErrorLog(true)
+                dispatchState({type:'registrationErrorClassName', payload:'errorLog'})
                 goBack()
                 
             })
             .catch(()=>{
-                setErrorLog(false)
+                dispatchState({type:'registrationErrorClassName', payload:''})
             })
         setLoad(false)
     }
@@ -74,7 +76,7 @@ export function SingIn (){
     }
     return(
         <>
-            {load ? <Loader/> : <Form errorLog={errorLog} handleClick={handleLogin} formProps={formProps}></Form>}
+            {load ? <Loader/> : <Form handleClick={handleLogin} formProps={formProps}></Form>}
         </>
     )
 }

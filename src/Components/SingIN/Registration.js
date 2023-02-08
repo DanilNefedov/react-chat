@@ -1,4 +1,3 @@
-// import  Form  from "./Form";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
@@ -76,11 +75,8 @@ export function Registration () {
     }
 
     return (
-        <>
         <Suspense fallback={<Loader></Loader>}>
             <Form moduleErr={moduleErr} setModuleErr={setModuleErr} setErrorReg={setErrorReg} formProps={formProps}  handleClick={handleRegister}></Form>
         </Suspense>
-        </>
-        
     )
 }

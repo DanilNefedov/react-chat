@@ -1,6 +1,7 @@
 import classNames from "classnames";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { Link } from "react-router-dom";
+import { initialState, reducer } from "../../state/regForm";
 import { ModuleError } from "../ModuleError/ModuleError";
 import style from './SingIn.module.css';
 
@@ -9,11 +10,7 @@ import style from './SingIn.module.css';
 function Form({ formProps, handleClick, setErrorReg, setModuleErr, moduleErr }) {
     const { nameForm, nameButton, link, nameLink, errorClass } = formProps
 
-
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [nameUser, setNameUser] = useState('')
-
+    const [state, dispatch] = useReducer(reducer, initialState)
 
     return (
         <section className={ 
@@ -27,27 +24,27 @@ function Form({ formProps, handleClick, setErrorReg, setModuleErr, moduleErr }) 
 
                 {nameForm === 'Registration' && <div className={style.name}>
                     <label htmlFor="name" className={classNames(style.headerName, 'head-name')}>Name:</label>
-                    <input value={nameUser} onChange={(e) => setNameUser(e.target.value)} type='name' placeholder="Enter your name"></input>
+                    <input value={state.name} onChange={(e) => dispatch({type:'name', payload:e.target.value})} type='name' placeholder="Enter your name"></input>
                 </div>}
 
                 <div className={style.email}>
                     <label htmlFor="email" className={classNames(style.headerEmail, 'head-name')}>Email:</label>
-                    <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Enter your email" />
+                    <input value={state.email} onChange={(e) => dispatch({type:'email', payload:e.target.value})} type="email" placeholder="Enter your email" />
                 </div>
                 <div className={style.pass}>
                     <label htmlFor="password" className={classNames(style.headerPass, 'head-name')}>Password:</label>
-                    <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Enter your password" />
+                    <input value={state.password} onChange={(e) => dispatch({type:'password', payload:e.target.value})} type="password" placeholder="Enter your password" />
                 </div>
 
                 {nameForm === 'Registration' ?
                 <button onClick={(e) => {
                     e.preventDefault()
-                    if(nameUser.length > 20){
+                    if(state.name.length > 20){
                         setErrorReg(false)
                     }else{
                         setErrorReg(true)
                         setModuleErr(false)
-                        handleClick( nameUser, email, password)
+                        handleClick( state.name, state.email, state.password)
                     }
                     
                 }}
@@ -55,7 +52,7 @@ function Form({ formProps, handleClick, setErrorReg, setModuleErr, moduleErr }) 
                 :
                 <button onClick={(e) => {
                     e.preventDefault()
-                    handleClick( email, password)
+                    handleClick( state.email, state.password)
                 }}
                     className={style.regBnt}>{nameButton}</button>
                 }

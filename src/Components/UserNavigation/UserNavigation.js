@@ -5,7 +5,7 @@ import { Search } from "./Search";
 import { useLocation } from "react-router-dom";
 
 
-export function UserNavigation({innerRef, setModal,searchRef}){
+export function UserNavigation({innerRef, setModal, searchRef}){
     const location = useLocation()
     const locationName = location.pathname
     

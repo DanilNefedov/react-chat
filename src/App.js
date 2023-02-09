@@ -10,13 +10,13 @@ import { Page404 } from './Components/404/Page404';
 
 
 
+
 const Friends = React.lazy(() => import('./Components/HomePage/Friends'))
 const MessagesMain = React.lazy(() => import('./Components/MessagesPage/MessagesMain'))
 const Profile = React.lazy(() => import('./Components/Profile/Profile'))
 
 function App() {
   
-
   return (
       <Routes>
         <Route element={<ProtecteedRoute/>}>

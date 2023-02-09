@@ -18,6 +18,7 @@ const SearchList = React.lazy(() => import('./SearchList'))
 
 
 export function Search({  text, setText, searchListRef, searchRef }) {
+    //const [state, dispatch]
 
     const [moduleErr, setModuleErr] = useState(false)
 

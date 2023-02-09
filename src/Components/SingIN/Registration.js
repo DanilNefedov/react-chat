@@ -4,18 +4,22 @@ import { useDispatch } from "react-redux";
 import {setUser} from '../../store/authSlice'
 import { useNavigate } from "react-router-dom";
 import { getFirestore } from "firebase/firestore";
-import { Suspense, useState } from "react";
+import { createContext, Suspense, useReducer, useState } from "react";
 import { Loader } from "../Loader/Loader";
 import React from "react";
+import { initialStateModule, reducerModule } from "../../state/moduleError";
 
+export const ContextRegistration = createContext({})
 
 const Form = React.lazy(() => import('./Form'))
 
 
 export function Registration () {
     const dispatch = useDispatch()
+    const [stateModule, dispatchModule] = useReducer(reducerModule, initialStateModule)
     const [errorReg, setErrorReg] = useState(true)
     const [moduleErr, setModuleErr] = useState(false)
+    //console.log(stateModule)
 
     const navigate = useNavigate()
 
@@ -50,16 +54,20 @@ export function Registration () {
                     await setDoc(doc(db, 'chatsList', user.uid),{})
 
                   }).catch((error) => {
-                    setModuleErr(true)
+                    //setModuleErr(true)
+                    dispatchModule({type:'registrationActiveModalWindow', payload:true})
                     console.error(error)
                 });
                 goBack()
+                dispatchModule({type:'registrationErrorClassName', payload:''})
             })
             .catch(()=>{
-                setErrorReg(false)
+                dispatchModule({type:'registrationErrorClassName', payload:'errorReg'})
+                //setErrorReg(false)
             })
         }catch(error){
-            setModuleErr(true)
+            dispatchModule({type:'registrationActiveModalWindow', payload:true})
+            //setModuleErr(true)
             console.error(error)
         }
         
@@ -71,12 +79,14 @@ export function Registration () {
         nameButton:'Register',
         link:'/login',
         nameLink:'Back to login',
-        errorClass: errorReg ? '' : 'errorReg'
+        //errorClass: errorReg ? '' : 'errorReg'
     }
 
     return (
         <Suspense fallback={<Loader></Loader>}>
-            <Form moduleErr={moduleErr} setModuleErr={setModuleErr} setErrorReg={setErrorReg} formProps={formProps}  handleClick={handleRegister}></Form>
+            <ContextRegistration.Provider value={[stateModule, dispatchModule]}>
+                <Form formProps={formProps}  handleClick={handleRegister}></Form>
+            </ContextRegistration.Provider>
         </Suspense>
     )
 }

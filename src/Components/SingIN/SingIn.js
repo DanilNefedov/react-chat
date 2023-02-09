@@ -3,18 +3,22 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebas
 import { useDispatch, useSelector } from "react-redux";
 import {setUser} from '../../store/authSlice'
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { useState } from "react";
 import { Loader } from "../Loader/Loader";
-import { initialState, reducer } from "../../state/moduleError";
+import { initialStateModule, reducerModule } from "../../state/moduleError";
+
+
+export const ContextAuth = createContext({})
 
 
 export function SingIn (){
     const [load, setLoad] = useState(true)
     const userState = useSelector(state => state.user)
-    const [state, dispatchState] = useReducer(reducer, initialState)
-    const [errorLog, setErrorLog] = useState(true)
-    
+    const [stateModal, dispatchState] = useReducer(reducerModule, initialStateModule)
+    //const Context = createContext()
+    //const [errorLog, setErrorLog] = useState(true)
+    //console.log(stateModal)
     const dispatch = useDispatch();
 
     const navigate = useNavigate()
@@ -57,12 +61,13 @@ export function SingIn (){
         const auth = getAuth();
         await signInWithEmailAndPassword(auth, email, password)
             .then(() => {
-                dispatchState({type:'registrationErrorClassName', payload:'errorLog'})
+                dispatchState({type:'registrationReset', payload:initialStateModule.registration})
                 goBack()
-                
+                //console.log('w')
             })
             .catch(()=>{
-                dispatchState({type:'registrationErrorClassName', payload:''})
+                //console.log('n')
+                dispatchState({type:'registrationErrorClassName', payload:'errorLog'})
             })
         setLoad(false)
     }
@@ -72,11 +77,16 @@ export function SingIn (){
         nameButton:'Log in',
         link:'/registration',
         nameLink:'Create an account',
-        errorClass: errorLog ? '' : 'errorLog'
+        //errorClass: errorLog ? '' : 'errorLog'
     }
     return(
         <>
-            {load ? <Loader/> : <Form handleClick={handleLogin} formProps={formProps}></Form>}
+            {load ? <Loader/> : (
+                <ContextAuth.Provider value={[stateModal, dispatchState]}>
+                    <Form handleClick={handleLogin} formProps={formProps}></Form>
+                </ContextAuth.Provider>
+               
+            )}
         </>
     )
 }

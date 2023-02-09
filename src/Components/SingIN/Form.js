@@ -1,21 +1,30 @@
 import classNames from "classnames";
-import { useReducer, useState } from "react";
+import { useContext, useReducer, useState } from "react";
 import { Link } from "react-router-dom";
-import { initialState, reducer } from "../../state/regForm";
+import { initialStateModule, reducerModule } from "../../state/moduleError";
+import { initialState, initialStateAuth, reducer, reducerAuth } from "../../state/regForm";
 import { ModuleError } from "../ModuleError/ModuleError";
+import { ContextRegistration } from "./Registration";
+import { ContextAuth } from "./SingIn";
 import style from './SingIn.module.css';
 
 
 
-function Form({ formProps, handleClick, setErrorReg, setModuleErr, moduleErr }) {
-    const { nameForm, nameButton, link, nameLink, errorClass } = formProps
+function Form({ formProps, handleClick  }) {//setModuleErr, moduleErr
+    const { nameForm, nameButton, link, nameLink } = formProps
+    const contextSingIn = useContext(ContextAuth)
+    console.log(contextSingIn)
+    const contextReg = useContext(ContextRegistration)
+    console.log(contextReg)
 
-    const [state, dispatch] = useReducer(reducer, initialState)
+    const [stateAuth, dispatchAuth] = useReducer(reducerAuth, initialStateAuth)
+    const [stateModule, dispatchModule] = useReducer(reducerModule, initialStateModule)
+    //console.log(stateModule)
 
     return (
         <section className={ 
-            errorClass === 'errorLog'  
-            ? classNames(style.errorLog,style.sectionForm ) : errorClass === 'errorReg' 
+            stateModule.registration.errorClassName === 'errorLog'  
+            ? classNames(style.errorLog,style.sectionForm ) : stateModule.registration.errorClassName === 'errorReg' 
             ? classNames(style.errorReg,style.sectionForm ) : classNames( style.sectionForm)   
         }>
             <form action="" className={style.form}>
@@ -24,27 +33,28 @@ function Form({ formProps, handleClick, setErrorReg, setModuleErr, moduleErr }) 
 
                 {nameForm === 'Registration' && <div className={style.name}>
                     <label htmlFor="name" className={classNames(style.headerName, 'head-name')}>Name:</label>
-                    <input value={state.name} onChange={(e) => dispatch({type:'name', payload:e.target.value})} type='name' placeholder="Enter your name"></input>
+                    <input value={stateAuth.name} onChange={(e) => dispatchAuth({type:'name', payload:e.target.value})} type='name' placeholder="Enter your name"></input>
                 </div>}
 
                 <div className={style.email}>
                     <label htmlFor="email" className={classNames(style.headerEmail, 'head-name')}>Email:</label>
-                    <input value={state.email} onChange={(e) => dispatch({type:'email', payload:e.target.value})} type="email" placeholder="Enter your email" />
+                    <input value={stateAuth.email} onChange={(e) => dispatchAuth({type:'email', payload:e.target.value})} type="email" placeholder="Enter your email" />
                 </div>
                 <div className={style.pass}>
                     <label htmlFor="password" className={classNames(style.headerPass, 'head-name')}>Password:</label>
-                    <input value={state.password} onChange={(e) => dispatch({type:'password', payload:e.target.value})} type="password" placeholder="Enter your password" />
+                    <input value={stateAuth.password} onChange={(e) => dispatchAuth({type:'password', payload:e.target.value})} type="password" placeholder="Enter your password" />
                 </div>
 
                 {nameForm === 'Registration' ?
                 <button onClick={(e) => {
                     e.preventDefault()
-                    if(state.name.length > 20){
-                        setErrorReg(false)
+                    if(stateAuth.name.length > 20){
+                        dispatchModule({type:'registrationActiveModalWindow', payload:true})
                     }else{
-                        setErrorReg(true)
-                        setModuleErr(false)
-                        handleClick( state.name, state.email, state.password)
+                        //setErrorReg(true)
+                        dispatchModule({type:'registrationActiveModalWindow', payload:false})
+                        //setModuleErr(false)
+                        handleClick( stateAuth.name, stateAuth.email, stateAuth.password)
                     }
                     
                 }}
@@ -52,7 +62,7 @@ function Form({ formProps, handleClick, setErrorReg, setModuleErr, moduleErr }) 
                 :
                 <button onClick={(e) => {
                     e.preventDefault()
-                    handleClick( state.email, state.password)
+                    handleClick( stateAuth.email, stateAuth.password)
                 }}
                     className={style.regBnt}>{nameButton}</button>
                 }
@@ -61,7 +71,7 @@ function Form({ formProps, handleClick, setErrorReg, setModuleErr, moduleErr }) 
                 <Link to={link} className={style.linkReg}>{nameLink}</Link>
 
             </form>
-            {nameForm === 'Registration' && moduleErr ? <ModuleError setModuleErr={setModuleErr}></ModuleError> : <></>}
+            {nameForm === 'Registration' && stateModule.registration.activeModalWindow ? <ModuleError ></ModuleError> : <></>}
             
         </section>
     )

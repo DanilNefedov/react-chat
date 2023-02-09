@@ -1,26 +1,40 @@
-export const initialState = {
+export const initialStateModule = {
     registration:{
         errorClassName:'',
         activeModalWindow: false//для каждого компонента свой актив
     }
 }
 
-export function reducer(state, action){
+export function initRegistration (initialStateModule){
+    return { 
+        registration:{
+            errorClassName: initialStateModule,
+            activeModalWindow: initialStateModule
+        }
+    }
+}
+
+export function reducerModule(state, action){
     switch(action.type){
         case 'registrationErrorClassName':
             return{
+                ...state,
                 registration:{
-                    ...state, 
+                    ...state.registration, 
                     errorClassName: action.payload
                 }
             }
         case 'registrationActiveModalWindow':
             return{
+                ...state,
                 registration:{
                     ...state, 
                     activeModalWindow: action.payload
                 }
             }
+        case 'registrationReset':
+
+            return initRegistration(action.payload)
             
     }
 }

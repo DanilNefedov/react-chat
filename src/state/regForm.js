@@ -1,10 +1,10 @@
-export const initialState = {
+export const initialStateAuth = {
     email:'',
     password: '',
     name: ''
 }
 
-export function reducer(state, action) {
+export function reducerAuth(state, action) {
     switch(action.type){
         case 'email':
             return {

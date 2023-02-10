@@ -86,7 +86,8 @@
     color: var(--white)
 }
 .email input, 
-.pass input{
+.pass input,
+.name input{
     border:1px solid transparent;
 }
 

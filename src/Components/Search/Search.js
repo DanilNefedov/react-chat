@@ -2,34 +2,23 @@ import search from '../../img/search.svg';
 import style from './Search.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { addFrined } from '../../store/friendSlice';
-// import { SearchList } from './SearchList'
 import { collection, doc, getDoc, getDocs, getFirestore, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
-import { Empty } from '../Empty/Empty';
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useEffect, useReducer, useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { ModuleError } from '../ModuleError/ModuleError';
+import { ModuleError } from '../ModalError/ModalError';
 import classNames from 'classnames';
 import { Loader } from '../Loader/Loader';
 import React from 'react';
-
-
+import { initialStateModal, reducerModal } from '../../state/modalError';
 
 const SearchList = React.lazy(() => import('./SearchList'))
 
-
-export function Search({  text, setText, searchListRef, searchRef }) {
-    //const [state, dispatch]
-
-    const [moduleErr, setModuleErr] = useState(false)
-
+export function Search({ text, setText, searchListRef, searchRef }) {
+    const [stateModal, dispatchModal] = useReducer(reducerModal, initialStateModal)
     const dispatch = useDispatch()
     const db = getFirestore()
-
     const friend = useSelector(state => state.friend.friend)
-
     const myInfo = useSelector(state => state.user)
-
-    const [propsErr, setPropsErr] = useState('')
     const [user, setUser] = useState([]) 
 
     const handleSubmit = (event) => {
@@ -58,15 +47,14 @@ export function Search({  text, setText, searchListRef, searchRef }) {
             querySnapshot.forEach((doc) => {
                 const data = doc.data()
                 if(data.id !== myInfo.id){
-                    setModuleErr(false)
+                    dispatchModal({type:'resetModal', payload:initialStateModal})
                     searchArr.push(data)
                     setUser(searchArr)
                 }
             });
 
         } catch (error) {
-            setModuleErr(true)
-            setPropsErr('')
+            dispatchModal({type:'activeModalWindow', payload:true})
             console.error(error)
         }
     }
@@ -74,26 +62,18 @@ export function Search({  text, setText, searchListRef, searchRef }) {
 
 
     const bindChat = async (el) => {
-
         const name = el.name;
         const id = el.id;
         const photo = el.photoURL
         const combinedId = myInfo.id > id ? myInfo.id + id : id + myInfo.id
         const find = friend.find(el => el.id === combinedId)
 
-
         try {
-
-
             if (!find) {
                 const friendId = id
                 dispatch(addFrined({ combinedId, name, friendId, photo }))
             }
-
             const res = await getDoc(doc(db, 'chats', combinedId))
-
-
-
             if (!res.exists()) {
 
                 await setDoc(doc(db, 'chats', combinedId), { messages: [] })
@@ -117,11 +97,10 @@ export function Search({  text, setText, searchListRef, searchRef }) {
                 })
             }
 
-
-            setModuleErr(false)
+            dispatchModal({type:'resetModal', payload:initialStateModal})
 
         } catch (error) {
-            setModuleErr(true)
+            dispatchModal({type:'activeModalWindow', payload:true})
             console.error(error)
         }
     }
@@ -176,7 +155,7 @@ export function Search({  text, setText, searchListRef, searchRef }) {
                 )}
 
             </section>
-            {moduleErr ? <ModuleError propsErr={propsErr} setModuleErr={setModuleErr}></ModuleError> : <></>}
+            {stateModal.activeModalWindow ? <ModuleError state={[stateModal, dispatchModal]}></ModuleError> : <></>}
         </div>
 
 

@@ -1,15 +1,15 @@
 import style from './Friends.module.css';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-// import { FriendsList } from "./FriendsList/FriendsList";
 import { Search } from '../Search/Search'
 import { addFrined, addLastMessage, updatePhotoName } from '../../store/friendSlice'
-import React, { Suspense, useMemo, useRef, useState } from 'react';
-import { getFirestore, collection, query, where, getDocs, doc, onSnapshot } from 'firebase/firestore';
+import React, { Suspense, useReducer, useRef, useState } from 'react';
+import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { ModuleError } from '../ModuleError/ModuleError';
+import { ModuleError } from '../ModalError/ModalError';
 import { Loader } from '../Loader/Loader';
+import { initialStateModal, reducerModal } from '../../state/modalError';
 
 
 const FriendsList = React.lazy(() => import('./FriendsList/FriendsList'))
@@ -19,26 +19,17 @@ export default function Friends() {
     const context = useOutletContext()
     const containerFrineds = useRef()
     const friendsScroll = useRef()
-
     const [text, setText] = useState('')
-
-    const [moduleErr, setModuleErr] = useState(false)
-
+    const [stateModal, dispatchModal] = useReducer(reducerModal, initialStateModal)
     const myInfo = useSelector(state => state.user)
-
     const db = getFirestore();
-
     const dispatch = useDispatch()
-
     const friendList = useSelector(state => state.friend.friend)
-
     const sortState = [...friendList]
-
     const headRef = useRef()
     const searchRef = useRef();
     const searchListRef = useRef();       
     const refSearch = useRef(null)
-
     const activeModal = context.modal
     const setModalActive = context.setModal
 
@@ -58,9 +49,9 @@ export default function Friends() {
                         const photo = userInfo.photo
                         const lastMessages = el[1].lastMessage ? el[1].lastMessage.messageText : 'No messages'
                         const timePublic = userDate.getTime() ? userDate.getTime() : '--:--'
-                        const dateUser = new Date()
-                        const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth() + 1}.${userDate.getFullYear()}`
-                        const findMyDayUser = `${dateUser.getDate()}.${dateUser.getMonth()+1}.${dateUser.getFullYear()}`
+                        const dateUserNow = new Date()
+                        const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth()+1}.${userDate.getFullYear()}`
+                        const findMyDayUser = `${dateUserNow.getDate()}.${dateUserNow.getMonth()+1}.${dateUserNow.getFullYear()}`
                         let minute = userDate.getMinutes().toString()
 
                         if (minute.length === 1) {
@@ -104,10 +95,9 @@ export default function Friends() {
                     }
                     
                 })
-                setModuleErr(false)
-
+                dispatchModal({type:'resetModal', payload:initialStateModal})
             } else {
-                setModuleErr(true)
+                dispatchModal({type:'activeModalWindow', payload:true})
                 return 
             }
 
@@ -122,7 +112,6 @@ export default function Friends() {
             const containerFrinedsHeight = containerFrineds.current.offsetHeight
             const headRefHeight = headRef.current.offsetHeight
             const navigationRefHeight = context.navRef.current.offsetHeight
-
             const windowHeight = window.innerHeight
 
             const sum = containerFrinedsHeight + headRefHeight + navigationRefHeight
@@ -189,7 +178,7 @@ export default function Friends() {
                     </div>
                 </div>
             </section>
-            {moduleErr ? <ModuleError setModuleErr={setModuleErr}></ModuleError> : <></>}
+            {stateModal.activeModalWindow ? <ModuleError state={[stateModal, dispatchModal]}></ModuleError> : <></>}
         </section>
     );
 }

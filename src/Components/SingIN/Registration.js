@@ -4,33 +4,28 @@ import { useDispatch } from "react-redux";
 import {setUser} from '../../store/authSlice'
 import { useNavigate } from "react-router-dom";
 import { getFirestore } from "firebase/firestore";
-import { createContext, Suspense, useReducer, useState } from "react";
+import { Suspense, useReducer } from "react";
 import { Loader } from "../Loader/Loader";
 import React from "react";
-import { initialStateModule, reducerModule } from "../../state/moduleError";
-
-export const ContextRegistration = createContext({})
+import { initialStateModal, reducerModal } from "../../state/modalError";
 
 const Form = React.lazy(() => import('./Form'))
 
 
 export function Registration () {
     const dispatch = useDispatch()
-    const [stateModule, dispatchModule] = useReducer(reducerModule, initialStateModule)
-    const [errorReg, setErrorReg] = useState(true)
-    const [moduleErr, setModuleErr] = useState(false)
-    //console.log(stateModule)
-
+    const [stateModal, dispatchModal] = useReducer(reducerModal, initialStateModal)
     const navigate = useNavigate()
-
     const goBack = () => navigate('/login')
-
     const db = getFirestore()
-
 
 
     const handleRegister = async (nameUser, email, password) =>{
         const auth = getAuth();
+        if(nameUser.length > 20){
+            dispatchModal({type:'errorClassName', payload:'errorReg'})
+            return
+        }
         try{
             await createUserWithEmailAndPassword(auth, email, password)
             .then(({user}) => {
@@ -54,23 +49,18 @@ export function Registration () {
                     await setDoc(doc(db, 'chatsList', user.uid),{})
 
                   }).catch((error) => {
-                    //setModuleErr(true)
-                    dispatchModule({type:'registrationActiveModalWindow', payload:true})
+                    dispatchModal({type:'activeModalWindow', payload:true})
                     console.error(error)
                 });
                 goBack()
-                dispatchModule({type:'registrationErrorClassName', payload:''})
+                dispatchModal({type:'resetModal', payload:initialStateModal})
             })
             .catch(()=>{
-                dispatchModule({type:'registrationErrorClassName', payload:'errorReg'})
-                //setErrorReg(false)
+                dispatchModal({type:'errorClassName', payload:'errorReg'})
             })
         }catch(error){
-            dispatchModule({type:'registrationActiveModalWindow', payload:true})
-            //setModuleErr(true)
             console.error(error)
         }
-        
     }   
     
 
@@ -78,15 +68,12 @@ export function Registration () {
         nameForm:'Registration',
         nameButton:'Register',
         link:'/login',
-        nameLink:'Back to login',
-        //errorClass: errorReg ? '' : 'errorReg'
+        nameLink:'Back to login'
     }
 
     return (
         <Suspense fallback={<Loader></Loader>}>
-            <ContextRegistration.Provider value={[stateModule, dispatchModule]}>
-                <Form formProps={formProps}  handleClick={handleRegister}></Form>
-            </ContextRegistration.Provider>
+            <Form state={[stateModal, dispatchModal]} formProps={formProps} handleClick={handleRegister}></Form>
         </Suspense>
     )
 }

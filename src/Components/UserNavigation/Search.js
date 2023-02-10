@@ -6,11 +6,8 @@ import classNames from "classnames";
 export function Search({setModal, searchRef}){
 
     return (
-        
         <button ref={searchRef} onClick={()=>{setModal(true)}} className={classNames(style.search)}>
             <img className={classNames(style.searchImg)} src={searchImg} alt='Search' />
         </button>
-
-        
     );
 }

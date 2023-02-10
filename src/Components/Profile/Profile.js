@@ -9,7 +9,7 @@ import { deleteDoc, deleteField, doc, getFirestore, updateDoc } from "firebase/f
 import { Modal } from "../Modal/Modal"
 import { removeFrined } from "../../store/friendSlice"
 import { removeMessage } from "../../store/messagesSlice"
-import { ModuleError } from "../ModuleError/ModuleError"
+import { ModuleError } from "../ModalError/ModalError"
 import { ProfilePhoto } from "./ProfilePhoto"
 import { DeleteProfile } from "./DeleteProfile"
 import { ChangeProfile } from "./ChangeProfile"

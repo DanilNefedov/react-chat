@@ -35,9 +35,6 @@ export function Navigation({infoClick}){
     } 
 
 
-
-
-
     return (
         <nav className={style.nav}>
             <div className={style.home}>

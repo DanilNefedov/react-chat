@@ -1,18 +1,19 @@
 import classNames from 'classnames'
-import style from './ModuleError.module.css'
+import style from './ModalError.module.css'
 import img from '../../img/close.svg'
+import { initialStateModal } from '../../state/modalError'
 
 
-export function ModuleError ({setModuleErr, propsErr}){
+export function ModuleError ({state}){
     return(
         <div className={classNames( style.err, 'module-err')}>
             <p>
-                {propsErr !== '' && propsErr ? propsErr : "Something's wrong." }<br />
+                {state[0].informationAboutError !== '' && state[0].informationAboutError ? state[0].informationAboutError : "Something's wrong." }<br />
                 Reload the page or try again later
             </p>   
             <button onClick={(e) => {
                 e.preventDefault()
-                setModuleErr(false)
+                state[1]({type:'resetModal', payload:initialStateModal})
             }} className={classNames(style.btn, 'module-err-btn')}>
                 <img src={img} alt="back" />
             </button> 

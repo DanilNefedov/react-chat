@@ -29,10 +29,8 @@ export default function MessagesMain() {
 
     const dispatch = useDispatch()
 
-    const [sizeWindow, setSizeWindow] = useState(window.visualViewport.height)
-
+    const [sizeWindow, setSizeWindow] = useState(window.visualViewport.height)//can change for reducer
     const [deletedAcc, setDeletedAcc] = useState(false)
-
     const [text, setMessageText] = useState('');
 
     const sendMess = async () => {
@@ -154,8 +152,8 @@ export default function MessagesMain() {
                     ?
                     <div ref={footerRef} className={classNames(style.deletedInput)}>Account has been deleted</div>
                     :
-                    <SendMessages scrollRef={scrollRef} setSizeWindow={setSizeWindow}  innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />}
-
+                    <SendMessages scrollRef={scrollRef} setSizeWindow={setSizeWindow}  innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />
+                }
             </div>
         </section>
     );

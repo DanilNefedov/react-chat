@@ -4,15 +4,15 @@ import style from './Profile.module.css'
 import img from '../../img/user-M.png'
 import { useState } from "react"
 
-export function ProfilePhoto ({selectedPhoto}) {
+export function ProfilePhoto ({stateProfile}) {
     const user = useSelector(state => state.user)
 
     return(
         <>
-        {selectedPhoto ?
+        {stateProfile.selectedPhoto ?
             <div className={classNames(style.photoSection, 'photo')}>
                 <div className={classNames(style.userPhoto, "user-photo")}>
-                    <img src={selectedPhoto} alt="user" />
+                    <img src={stateProfile.selectedPhoto} alt="user" />
                 </div>
             </div>
             :

@@ -4,9 +4,9 @@ export const initialStateModal = {
     informationAboutError: ''
 }
 
-export function initModalError (initialStateModule){
+export function initModalError (initialStateModal){
     return { 
-        ...initialStateModule
+        ...initialStateModal
     }
 }
 

@@ -1,19 +1,22 @@
 import classNames from 'classnames'
 import style from './Modal.module.css'
 import backDark from '../../img/back-dark.svg'
+import { initialStateModal } from '../../state/modalError'
 
-export function Modal({ deleteUserState, setDeleteUserState, deleteAccount, submiteUpdates, setActiveModal, activeModal, passwodModal, setPasswordModal, propsErr, setPropsErr }) {
-
+export function Modal({stateProfile, deleteAccount, submiteUpdates, passwodModal, setPasswordModal, state }) {
+    //console.log(state)
     return (
-        <div className={activeModal || deleteUserState ? 'modal active-modal' : 'modal'} >
+        <div className={stateProfile[0].modalReAuth || stateProfile[0].deletedFriend ? 'modal active-modal' : 'modal'} >
             <div onClick={(e) => {
                 e.preventDefault()
                 setPasswordModal('')
-                setDeleteUserState(false)
-                setActiveModal(false)
+                //setDeleteUserState(false)
+                stateProfile[1]({type:"deletedFriend", payload: false})
+                stateProfile[1]({type: 'modalReAuth', payload: false})
+                //setActiveModal(false)
                 
-                if (propsErr === 'Error in re-authorization') {
-                    setPropsErr('')
+                if (state[0].informationAboutError === 'Error in re-authorization') {
+                    state[1]({type:'resetModal', payload:initialStateModal})
                 }
             }}
                 className={classNames(style.exitBtn)}>
@@ -21,16 +24,16 @@ export function Modal({ deleteUserState, setDeleteUserState, deleteAccount, subm
             </div>
             <div className={style.containerModal}>
                 <p className={classNames(style.header, 'head-name')}>Enter Your Password</p>
-                <input className={propsErr === 'Error in re-authorization' ? classNames(style.input, style.err) : classNames(style.input)} value={passwodModal} onChange={(e) => setPasswordModal(e.target.value)} type="password" />
+                <input className={state[0].informationAboutError  === 'Error in re-authorization' ? classNames(style.input, style.err) : classNames(style.input)} value={passwodModal} onChange={(e) => setPasswordModal(e.target.value)} type="password" />
                 <button className={classNames(style.btn, 'head-name')} onClick={(event) => {
 
-                    if (deleteUserState) {
+                    if (stateProfile[0].deletedFriend) {
                         deleteAccount(event)
                     } else {
                         submiteUpdates(event)
                     }
 
-                }}>{deleteUserState ? "Delete" : "Log In"}</button>
+                }}>{stateProfile[0].deletedFriend ? "Delete" : "Log In"}</button>
             </div>
 
         </div>

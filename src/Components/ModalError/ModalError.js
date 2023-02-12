@@ -5,6 +5,7 @@ import { initialStateModal } from '../../state/modalError'
 
 
 export function ModuleError ({state}){
+
     return(
         <div className={classNames( style.err, 'module-err')}>
             <p>

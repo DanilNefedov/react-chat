@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import { useDispatch, useSelector } from "react-redux"
 import style from './Profile.module.css'
-import { useState } from "react"
+import { useReducer, useState } from "react"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { deleteUser, EmailAuthProvider, getAuth, reauthenticateWithCredential, signOut, updateEmail, updateProfile } from "firebase/auth";
 import { removePhoto, removeUser } from "../../store/authSlice"
@@ -13,31 +13,29 @@ import { ModuleError } from "../ModalError/ModalError"
 import { ProfilePhoto } from "./ProfilePhoto"
 import { DeleteProfile } from "./DeleteProfile"
 import { ChangeProfile } from "./ChangeProfile"
+import { initialStateModal, reducerModal } from "../../state/modalError";
+import { initialStateProfile, reducerProfile } from "../../state/profileModalError";
 
 export default function Profile() {
     const user = useSelector(state => state.user)
     const friend = useSelector(state => state.friend.friend)
+    const [stateModalErr, dispatchStateErr] = useReducer(reducerModal, initialStateModal) 
+    const [stateProfile, dispatchStateProfile] = useReducer(reducerProfile, initialStateProfile)
+    console.log(stateProfile)
     const auth = getAuth();
     const dispatch = useDispatch()
     const db = getFirestore();
 
-    const [photo, setPhoto] = useState(null)
-    const [selectedPhoto, setSelected] = useState(null)
+    //const [photo, setPhoto] = useState(null)//prof+
+    //const [selectedPhoto, setSelected] = useState(null)//prof+
 
-    const [name, setName] = useState('')
-
-    const [moduleErr, setModuleErr] = useState(false)
-
-    const [deleteUserState, setDeleteUserState] = useState(false)
-
-    const [email, setEmail] = useState('')
-
-    const [activeModal, setActiveModal] = useState(false)
-    const [propsErr, setPropsErr] = useState('')
-    const [classErr, setClassErr] = useState('')
-    const [classErrName, setClassErrName] = useState('')
-
-    const [passwodModal, setPasswordModal] = useState('')
+    //const [name, setName] = useState('')//prof+
+    //const [classErr, setClassErr] = useState('')//prof Class for meil + change to boolean
+    //const [classErrName, setClassErrName] = useState('')//prof class for name + change to boolean
+    //const [activeModal, setActiveModal] = useState(false)//modalForPass - prof +
+    //const [deleteUserState, setDeleteUserState] = useState(false)//prof +
+    const [email, setEmail] = useState('')//prof+
+    const [passwodModal, setPasswordModal] = useState('')//prof
 
     const submiteUpdates = async (event) => {
         event.preventDefault()
@@ -57,64 +55,75 @@ export default function Profile() {
                             email: email !== '' ? email : user.email,
                         }).then(() => {
                             setEmail('')
-                            setModuleErr(false)
-                            setPropsErr('')
+                            //setModuleErr(false)
+                            dispatchStateErr({type: 'resetModal', payload: initialStateModal})
+                            //setPropsErr('')
                         }).catch(() => {
-                            setModuleErr(true)
-                            setPropsErr('Error in email update')
+                            //setModuleErr(true)
+                            dispatchStateErr({type: 'activeModalWindow', payload: true})
+                            dispatchStateErr({type:'errorClassName', payload:'Error in email update'})
+                            //setPropsErr('Error in email update')
                         });
 
                         await updateDoc(doc(db, 'users', user.id), {
                             email: email !== '' ? email : user.email,
                         })
                         setEmail('')
-                        setClassErr('')
+                        dispatchStateProfile({type:'resetSomeField', payload: ['emailClassError', initialStateProfile.emailClassError]})
                     }).catch(() => {
-                        setClassErr('errorEmail')
+                        dispatchStateProfile({type: 'emailClassError', payload: true})
                     })
-                    if(name === ''){
-                        setClassErrName('')
+                    if(stateProfile.name === ''){
+                        dispatchStateProfile({type:'resetSomeField', payload: ['emailClassError', initialStateProfile.emailClassError]})
                     }
-                    setModuleErr(false)
-                    setPropsErr('')
+                    //setModuleErr(false)
+                    dispatchStateErr({type: 'resetModal', payload: initialStateModal})
+                    //setPropsErr('')
                     setPasswordModal('')
                     setEmail('')
-                    setActiveModal(false)
+                    dispatchStateProfile({type: 'modalReAuth', payload: true})
                 }).catch(() => {
                     setPasswordModal('')
-                    setActiveModal(true)
-                    setPropsErr('Error in re-authorization')
+                    dispatchStateProfile({type:'resetSomeField', payload: ['modalReAuth', initialStateProfile.modalReAuth]})
+                    dispatchStateErr({type:'errorClassName', payload:'Error in re-authorization'})
+                    //setPropsErr('Error in re-authorization')
                 });
             }
 
-            if (photo) {
+            if (stateProfile.photo) {
                 //setPhoto(photo)
                 //setSelected(null)
                 const storage = getStorage();
                 const storageRef = ref(storage, `avatar/${user.name}`);
-                const uploadTask = uploadBytesResumable(storageRef, photo);
+                const uploadTask = uploadBytesResumable(storageRef, stateProfile.photo);
                 uploadTask.on('state_changed',
                     (snapshot) => {
                         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                         console.log(`Upload is ${progress} % done`);
-                        setModuleErr(false)
-                        setPropsErr('')
+                        //setModuleErr(false)
+                        dispatchStateErr({type: 'resetModal', payload: initialStateModal})
+                        //setPropsErr('')
                     },
                     () => {
-                        setModuleErr(true)
-                        setPropsErr('Error while downloading a file')
+                        dispatchStateErr({type: 'activeModalWindow', payload: true})
+                        //setModuleErr(true)
+                        dispatchStateErr({type:'errorClassName', payload:'Error while downloading a file'})
+                        //setPropsErr('Error while downloading a file')
                     },
                     () => {
                         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
                             await updateProfile(auth.currentUser, {
                                 photoURL: downloadURL
                             }).then(() => {
-                                setModuleErr(false)
-                                setPropsErr('')
-                                //setSelected(null)
+                                dispatchStateErr({type: 'resetModal', payload: initialStateModal})
+                                //setModuleErr(false)
+                                //setPropsErr('')
+                                dispatchStateProfile({type:'resetSomeField', payload: ['selectedPhoto', initialStateProfile.selectedPhoto]})
                             }).catch(() => {
-                                setModuleErr(true)
-                                setPropsErr('Error in photo update')
+                                dispatchStateErr({type: 'activeModalWindow', payload: true})
+                                //setModuleErr(true)
+                                dispatchStateErr({type:'errorClassName', payload:'Error in photo update'})
+                                //setPropsErr('Error in photo update')
                             });
 
                             await updateDoc(doc(db, 'users', user.id), {
@@ -126,7 +135,7 @@ export default function Profile() {
                                     await updateDoc(doc(db, 'chatsList', el.friendId), {
                                         [el.id + '.userInfo']: {
                                             id: user.id,
-                                            displayName: name !== '' ? name : user.name,
+                                            displayName: stateProfile.name !== '' ? stateProfile.name : user.name,
                                             photo: downloadURL
                                         }
                                     })
@@ -135,51 +144,57 @@ export default function Profile() {
                                     return
                                 }
                             })
-                            setSelected(null)
+                            dispatchStateProfile({type:'resetSomeField', payload: ['selectedPhoto', initialStateProfile.selectedPhoto]})
                         });
-                        setPhoto(null) 
+                        dispatchStateProfile({type:'resetSomeField', payload: ['photo', initialStateProfile.photo]})
                     }
                 );
                 if(email === ''){
-                    setClassErr('')
+                    dispatchStateProfile({type:'resetSomeField', payload: ['emailClassError', initialStateProfile.emailClassError]})
                 }
-                if(name === ''){
-                    setClassErrName('')
+                if(stateProfile.name === ''){
+                    dispatchStateProfile({type:'resetSomeField', payload: ['nameClassError', initialStateProfile.nameClassError]})
                 }
-                //
+                
             }
 
-            if(name.length > 20){
-                setClassErrName('errorName')
+            if(stateProfile.name.length > 20){
+                dispatchStateProfile({type:'nameClassError', payload: true})
+                //setClassErrName('errorName')
                 if(email === ''){
-                    setClassErr('')
+                    dispatchStateProfile({type:'resetSomeField', payload: ['emailClassError', initialStateProfile.emailClassError]})
                 }
             }
 
-            if (name.length <= 20 && name !== '') {
+            if (stateProfile.name.length <= 20 && stateProfile.name !== '') {
                 await updateProfile(auth.currentUser, {
-                    displayName: name !== '' ? name : user.name,
+                    displayName: stateProfile.name !== '' ? stateProfile.name : user.name,
                 }).then(() => {
-                    setClassErrName('')
-                    setModuleErr(false)
-                    setPropsErr('')
+                    //setClassErrName('')
+                    dispatchStateProfile({type:'resetSomeField', payload: ['nameClassError', initialStateProfile.nameClassError]})
+                    
+                    dispatchStateErr({type: 'resetModal', payload: initialStateModal})
+                    //setModuleErr(false)
+                    //setPropsErr('')
                     
                 }).catch((error) => {
-                    setModuleErr(true)
-                    setPropsErr('Error updating name or photo')
+                    dispatchStateErr({type: 'activeModalWindow', payload: true})
+                    //setModuleErr(true)
+                    dispatchStateErr({type:'errorClassName', payload:'Error updating name or photo'})
+                    //setPropsErr('Error updating name or photo')
                     console.error(error)
                 });
 
 
                 await updateDoc(doc(db, 'users', user.id), {
-                    name: name !== '' ? name : user.name,
+                    name: stateProfile.name !== '' ? stateProfile.name : user.name,
                 })
                 friend.map(async (el) => {
                     if (el.friendId) {
                         await updateDoc(doc(db, 'chatsList', el.friendId), {
                             [el.id + '.userInfo']: {
                                 id: user.id,
-                                displayName: name !== '' ? name : user.name,
+                                displayName: stateProfile.name !== '' ? stateProfile.name : user.name,
                                 photo: user.photo
                             }
                         })
@@ -188,17 +203,21 @@ export default function Profile() {
                         return
                     }
                 })
-                setClassErr('')
+                dispatchStateProfile({type:'resetSomeField', payload: ['emailClassError', initialStateProfile.emailClassError]})
+                //setClassErr('')//mb change no for all reset
             }
-            
-            setModuleErr(false)
-            setName('')
+            dispatchStateErr({type: 'resetModal', payload: initialStateModal})
+            dispatchStateProfile({type:'resetSomeField', payload: ['name', initialStateProfile.name]})
+            //setModuleErr(false)
         } catch (error) {
-            setModuleErr(true)
+            dispatchStateErr({type: 'activeModalWindow', payload: true})
+            //setModuleErr(true)
             console.error(error)
         }
-        setName('')
-        //setSelected(null)
+        //dispatchStateProfile({type: 'resetProfile', payload: initialStateProfile})
+        dispatchStateProfile({type:'resetSomeField', payload: ['name', initialStateProfile.name]})
+        dispatchStateProfile({type:'resetSomeField', payload: ['selectedPhoto', initialStateProfile.selectedPhoto]})
+        
     }
 
     const deleteAccount = (event) => {
@@ -209,7 +228,8 @@ export default function Profile() {
             passwodModal
         )
         reauthenticateWithCredential(user, credential).then(() => {
-            setDeleteUserState(true)
+            dispatchStateProfile({type:"deletedFriend", payload: true})
+            //setDeleteUserState(true)
             deleteUser(user).then(async () => {
                 await deleteDoc(doc(db, "users", user.uid));
 
@@ -234,34 +254,44 @@ export default function Profile() {
                     dispatch(removeUser())
                     dispatch(removeFrined())
                     dispatch(removeMessage())
-                    setModuleErr(false)
+                    dispatchStateErr({type: 'resetModal', payload: initialStateModal})
+                    //setModuleErr(false)
                 }).catch(() => {
-                    setModuleErr(true)
-                    setPropsErr('Error when logging out of your account')
+                    dispatchStateErr({type: 'activeModalWindow', payload: true})
+                    //setModuleErr(true)
+                    dispatchStateErr({type:'errorClassName', payload:'Error when logging out of your account'})
+                    //setPropsErr('Error when logging out of your account')
                 });
-                setModuleErr(false)
-                setPropsErr('')
+                dispatchStateErr({type: 'resetModal', payload: initialStateModal})
+                //setModuleErr(false)
+                //setPropsErr('')
             }).catch(() => {
-                setModuleErr(true)
-                setPropsErr('Error in time to delete the account')
+                dispatchStateErr({type: 'activeModalWindow', payload: true})
+                //setModuleErr(true)
+                dispatchStateErr({type:'errorClassName', payload:'Error in time to delete the account'})
+                //setPropsErr('Error in time to delete the account')
             });
-            setPropsErr('')
-            setDeleteUserState(false)
+            //setPropsErr('')
+            dispatchStateErr({type: 'resetModal', payload: initialStateModal})
+            dispatchStateProfile({type:"deletedFriend", payload: false})
+            //setDeleteUserState(false)
         }).catch(() => {
-            setDeleteUserState(true)
+            //setDeleteUserState(true)
+            dispatchStateProfile({type:"deletedFriend", payload: true})
             setPasswordModal('')
-            setPropsErr('Error in re-authorization')
+            dispatchStateErr({type:'errorClassName', payload:'Error in re-authorization'})
+            //setPropsErr('Error in re-authorization')
             return
         });
     }
-    //console.log(photo)
+    console.log(stateModalErr)
     return (
         <section className={classNames(style.profile, 'profile')}>
             <div className={classNames(style.container, 'container')}>
                 <div className={classNames(style.userInfo, "user-info")}>
                     <div className={classNames(style.containerUserInfo, "container-userInfo")}>
 
-                        <ProfilePhoto selectedPhoto={selectedPhoto}></ProfilePhoto>
+                        <ProfilePhoto stateProfile={stateProfile}></ProfilePhoto>
 
                         <div className={classNames(style.nameEmail, "name-email")}>
                             <p className={classNames(style.nameUser, "name-user")}>
@@ -273,7 +303,7 @@ export default function Profile() {
                                 <span className="header">{user.email}</span>
                             </p>
 
-                            <DeleteProfile setActiveModal={setActiveModal} setDeleteUserState={setDeleteUserState}></DeleteProfile>
+                            <DeleteProfile stateProfile={dispatchStateProfile}></DeleteProfile>
 
                         </div>
                     </div>
@@ -282,30 +312,32 @@ export default function Profile() {
                 <div className={classNames(style.editUserInfo, "edit-user-info")}>
                     <div className={classNames(style.containerEditUser, "container")}>
                 
-                        <ChangeProfile setSelected={setSelected} selectedPhoto={selectedPhoto} setClassErrName={setClassErrName} setClassErr={setClassErr} setModuleErr={setModuleErr} setPropsErr={setPropsErr} email={email} classErr={classErr} classErrName={classErrName} name={name} setPhoto={setPhoto} setName={setName} setEmail={setEmail}></ChangeProfile>
+                        <ChangeProfile state={[stateModalErr, dispatchStateErr]} email={email} stateProfile={[stateProfile, dispatchStateProfile]} setEmail={setEmail}></ChangeProfile>
 
                         <div className={classNames(style.updateSection, 'update')}>
                             <button onClick={(event) => {
-                                email !== '' ? setActiveModal(true) : submiteUpdates(event)
+                                email !== '' ? dispatchStateProfile({type: 'modalReAuth', payload: true}) : submiteUpdates(event)
                             }} className={classNames(style.btnUpdate)}>Update</button>
                         </div>
                     </div>
                 </div>
             </div>
-
+                            
             <Modal
-                propsErr={propsErr}
-                setPropsErr={setPropsErr}
+                state={[stateModalErr, dispatchStateErr]}
+                stateProfile = {[stateProfile, dispatchStateProfile]}
+                // propsErr={propsErr}
+                // setPropsErr={setPropsErr}
                 deleteAccount={deleteAccount}
-                setDeleteUserState={setDeleteUserState}
-                deleteUserState={deleteUserState}
+                //setDeleteUserState={setDeleteUserState}
+                //deleteUserState={deleteUserState}
                 submiteUpdates={submiteUpdates}
-                activeModal={activeModal}
-                setActiveModal={setActiveModal}
+                // activeModal={activeModal}
+                // setActiveModal={setActiveModal}
                 passwodModal={passwodModal}
                 setPasswordModal={setPasswordModal}>
             </Modal>
-            {moduleErr ? <ModuleError propsErr={propsErr} setModuleErr={setModuleErr}></ModuleError> : <></>}
+            {stateModalErr.activeModalWindow ? <ModuleError state={[stateModalErr, dispatchStateErr]}></ModuleError> : <></>}
         </section>
     )
 }

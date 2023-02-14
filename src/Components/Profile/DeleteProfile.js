@@ -12,8 +12,6 @@ export function DeleteProfile ({stateProfile}){
                 event.preventDefault()
                 stateProfile({type: 'modalReAuth', payload: true})
                 stateProfile({type:"deletedFriend", payload: true})
-                //setDeleteUserState(true)
-                
             }}
                 className={classNames(style.btnDelete)}>Delete Account</button>
         </div>

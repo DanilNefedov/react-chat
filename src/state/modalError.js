@@ -24,6 +24,11 @@ export function reducerModal(state, action){
                 activeModalWindow: action.payload
                 
             }
+        case 'informationAboutError':
+            return{
+                ...state, 
+                informationAboutError: action.payload
+            }
         case 'resetModal':
             return initModalError(action.payload)
             

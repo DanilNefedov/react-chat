@@ -160,9 +160,11 @@
 .containerBtn{
     margin-left: -2px;
 }
-
+.nameSection input, .emailSection input{
+    border: 1px solid transparent!important;
+}
 .nameSection .err, .emailSection .err{
-    border:  1px solid var(--red)!important;
+    border-color: var(--red)!important;
 }
 
 .selected{

@@ -1,10 +1,10 @@
 import classNames from "classnames"
 import { useDispatch, useSelector } from "react-redux"
 import style from './Profile.module.css'
-import { useReducer, useState } from "react"
-import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
+import { useReducer } from "react"
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { deleteUser, EmailAuthProvider, getAuth, reauthenticateWithCredential, signOut, updateEmail, updateProfile } from "firebase/auth";
-import { removePhoto, removeUser } from "../../store/authSlice"
+import { removeUser } from "../../store/authSlice"
 import { deleteDoc, deleteField, doc, getFirestore, updateDoc } from "firebase/firestore"
 import { Modal } from "../Modal/Modal"
 import { removeFrined } from "../../store/friendSlice"
@@ -13,102 +13,80 @@ import { ModuleError } from "../ModalError/ModalError"
 import { ProfilePhoto } from "./ProfilePhoto"
 import { DeleteProfile } from "./DeleteProfile"
 import { ChangeProfile } from "./ChangeProfile"
-import { initialStateModal, reducerModal } from "../../state/modalError";
 import { initialStateProfile, reducerProfile } from "../../state/profileModalError";
+import { Loader } from "../Loader/Loader";
+import { initialStateModal, reducerModal } from "../../state/modalError";
 
 export default function Profile() {
     const user = useSelector(state => state.user)
     const friend = useSelector(state => state.friend.friend)
-    const [stateModalErr, dispatchStateErr] = useReducer(reducerModal, initialStateModal) 
+    const [stateModalErr, dispatchStateErr] = useReducer(reducerModal, initialStateModal)
     const [stateProfile, dispatchStateProfile] = useReducer(reducerProfile, initialStateProfile)
-    console.log(stateProfile)
     const auth = getAuth();
     const dispatch = useDispatch()
     const db = getFirestore();
-
-    //const [photo, setPhoto] = useState(null)//prof+
-    //const [selectedPhoto, setSelected] = useState(null)//prof+
-
-    //const [name, setName] = useState('')//prof+
-    //const [classErr, setClassErr] = useState('')//prof Class for meil + change to boolean
-    //const [classErrName, setClassErrName] = useState('')//prof class for name + change to boolean
-    //const [activeModal, setActiveModal] = useState(false)//modalForPass - prof +
-    //const [deleteUserState, setDeleteUserState] = useState(false)//prof +
-    const [email, setEmail] = useState('')//prof+
-    const [passwodModal, setPasswordModal] = useState('')//prof
 
     const submiteUpdates = async (event) => {
         event.preventDefault()
 
         try {
-            if (email !== '') {
-
+            if (stateProfile.email !== '') {
                 const credential = EmailAuthProvider.credential(
                     auth.currentUser.email,
-                    passwodModal
+                    stateProfile.passwordModalReAuth
                 )
                 const reUser = auth.currentUser;
 
                 await reauthenticateWithCredential(reUser, credential).then(async () => {
-                    await updateEmail(reUser, email).then(async () => {
+                    await updateEmail(reUser, stateProfile.email).then(async () => {
                         await updateProfile(auth.currentUser, {
-                            email: email !== '' ? email : user.email,
+                            email: stateProfile.email !== '' ? stateProfile.email : user.email,
                         }).then(() => {
-                            setEmail('')
-                            //setModuleErr(false)
+                            dispatchStateProfile({type:'setEmail', payload: initialStateProfile.email})
                             dispatchStateErr({type: 'resetModal', payload: initialStateModal})
-                            //setPropsErr('')
                         }).catch(() => {
-                            //setModuleErr(true)
                             dispatchStateErr({type: 'activeModalWindow', payload: true})
                             dispatchStateErr({type:'errorClassName', payload:'Error in email update'})
-                            //setPropsErr('Error in email update')
                         });
 
                         await updateDoc(doc(db, 'users', user.id), {
-                            email: email !== '' ? email : user.email,
+                            email: stateProfile.email !== '' ? stateProfile.email : user.email,
                         })
-                        setEmail('')
-                        dispatchStateProfile({type:'resetSomeField', payload: ['emailClassError', initialStateProfile.emailClassError]})
+                        dispatchStateProfile({type:'setEmail', payload: initialStateProfile.email})
+                        dispatchStateProfile({type:'emailClassError', payload: initialStateProfile.emailClassError})
                     }).catch(() => {
                         dispatchStateProfile({type: 'emailClassError', payload: true})
                     })
                     if(stateProfile.name === ''){
-                        dispatchStateProfile({type:'resetSomeField', payload: ['emailClassError', initialStateProfile.emailClassError]})
+                        dispatchStateProfile({type:'nameClassError', payload: initialStateProfile.emailClassError})
                     }
-                    //setModuleErr(false)
-                    dispatchStateErr({type: 'resetModal', payload: initialStateModal})
-                    //setPropsErr('')
-                    setPasswordModal('')
-                    setEmail('')
-                    dispatchStateProfile({type: 'modalReAuth', payload: true})
+                    dispatchStateErr({type: 'informationAboutError', payload: initialStateModal.informationAboutError})
+                    dispatchStateProfile({type:'passwordModalReAuth', payload: initialStateProfile.passwordModalReAuth})
+                    dispatchStateProfile({type:'setEmail', payload: initialStateProfile.email})
+                    dispatchStateProfile({type: 'modalReAuth', payload: initialStateProfile.modalReAuth})
                 }).catch(() => {
-                    setPasswordModal('')
-                    dispatchStateProfile({type:'resetSomeField', payload: ['modalReAuth', initialStateProfile.modalReAuth]})
-                    dispatchStateErr({type:'errorClassName', payload:'Error in re-authorization'})
-                    //setPropsErr('Error in re-authorization')
+                    dispatchStateProfile({type:'passwordModalReAuth', payload: initialStateProfile.passwordModalReAuth})
+                    dispatchStateProfile({type:'modalReAuth', payload: true})
+                    dispatchStateErr({type:'informationAboutError', payload:'Error in re-authorization'})
                 });
             }
 
             if (stateProfile.photo) {
-                //setPhoto(photo)
-                //setSelected(null)
                 const storage = getStorage();
-                const storageRef = ref(storage, `avatar/${user.name}`);
+                const storageRef = ref(storage, `avatar/${user.name}ID-${user.id}`);
                 const uploadTask = uploadBytesResumable(storageRef, stateProfile.photo);
                 uploadTask.on('state_changed',
                     (snapshot) => {
                         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        console.log(`Upload is ${progress} % done`);
-                        //setModuleErr(false)
+                        if(progress < 100){
+                            
+                            return (<Loader></Loader>)
+                        }
                         dispatchStateErr({type: 'resetModal', payload: initialStateModal})
-                        //setPropsErr('')
                     },
                     () => {
                         dispatchStateErr({type: 'activeModalWindow', payload: true})
-                        //setModuleErr(true)
                         dispatchStateErr({type:'errorClassName', payload:'Error while downloading a file'})
-                        //setPropsErr('Error while downloading a file')
                     },
                     () => {
                         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
@@ -116,14 +94,10 @@ export default function Profile() {
                                 photoURL: downloadURL
                             }).then(() => {
                                 dispatchStateErr({type: 'resetModal', payload: initialStateModal})
-                                //setModuleErr(false)
-                                //setPropsErr('')
-                                dispatchStateProfile({type:'resetSomeField', payload: ['selectedPhoto', initialStateProfile.selectedPhoto]})
+                                
                             }).catch(() => {
                                 dispatchStateErr({type: 'activeModalWindow', payload: true})
-                                //setModuleErr(true)
                                 dispatchStateErr({type:'errorClassName', payload:'Error in photo update'})
-                                //setPropsErr('Error in photo update')
                             });
 
                             await updateDoc(doc(db, 'users', user.id), {
@@ -144,25 +118,24 @@ export default function Profile() {
                                     return
                                 }
                             })
-                            dispatchStateProfile({type:'resetSomeField', payload: ['selectedPhoto', initialStateProfile.selectedPhoto]})
+                            dispatchStateProfile({type:'selectedPhoto', payload: initialStateProfile.selectedPhoto})
                         });
-                        dispatchStateProfile({type:'resetSomeField', payload: ['photo', initialStateProfile.photo]})
+
                     }
                 );
-                if(email === ''){
-                    dispatchStateProfile({type:'resetSomeField', payload: ['emailClassError', initialStateProfile.emailClassError]})
+                if(stateProfile.email === ''){
+                    dispatchStateProfile({type:'emailClassError', payload:initialStateProfile.emailClassError})
                 }
                 if(stateProfile.name === ''){
-                    dispatchStateProfile({type:'resetSomeField', payload: ['nameClassError', initialStateProfile.nameClassError]})
+                    dispatchStateProfile({type:'nameClassError', payload: initialStateProfile.nameClassError})
                 }
                 
             }
 
             if(stateProfile.name.length > 20){
                 dispatchStateProfile({type:'nameClassError', payload: true})
-                //setClassErrName('errorName')
-                if(email === ''){
-                    dispatchStateProfile({type:'resetSomeField', payload: ['emailClassError', initialStateProfile.emailClassError]})
+                if(stateProfile.email === ''){
+                    dispatchStateProfile({type:'emailClassError', payload: initialStateProfile.emailClassError})
                 }
             }
 
@@ -170,18 +143,12 @@ export default function Profile() {
                 await updateProfile(auth.currentUser, {
                     displayName: stateProfile.name !== '' ? stateProfile.name : user.name,
                 }).then(() => {
-                    //setClassErrName('')
-                    dispatchStateProfile({type:'resetSomeField', payload: ['nameClassError', initialStateProfile.nameClassError]})
-                    
+                    dispatchStateProfile({type:'setName', payload:  initialStateProfile.name})
+                    dispatchStateProfile({type:'nameClassError', payload:  initialStateProfile.nameClassError})
                     dispatchStateErr({type: 'resetModal', payload: initialStateModal})
-                    //setModuleErr(false)
-                    //setPropsErr('')
-                    
                 }).catch((error) => {
                     dispatchStateErr({type: 'activeModalWindow', payload: true})
-                    //setModuleErr(true)
                     dispatchStateErr({type:'errorClassName', payload:'Error updating name or photo'})
-                    //setPropsErr('Error updating name or photo')
                     console.error(error)
                 });
 
@@ -203,21 +170,14 @@ export default function Profile() {
                         return
                     }
                 })
-                dispatchStateProfile({type:'resetSomeField', payload: ['emailClassError', initialStateProfile.emailClassError]})
-                //setClassErr('')//mb change no for all reset
+                dispatchStateProfile({type:'emailClassError', payload: initialStateProfile.emailClassError})
             }
             dispatchStateErr({type: 'resetModal', payload: initialStateModal})
-            dispatchStateProfile({type:'resetSomeField', payload: ['name', initialStateProfile.name]})
-            //setModuleErr(false)
         } catch (error) {
             dispatchStateErr({type: 'activeModalWindow', payload: true})
-            //setModuleErr(true)
             console.error(error)
         }
-        //dispatchStateProfile({type: 'resetProfile', payload: initialStateProfile})
-        dispatchStateProfile({type:'resetSomeField', payload: ['name', initialStateProfile.name]})
-        dispatchStateProfile({type:'resetSomeField', payload: ['selectedPhoto', initialStateProfile.selectedPhoto]})
-        
+
     }
 
     const deleteAccount = (event) => {
@@ -225,11 +185,11 @@ export default function Profile() {
         const user = auth.currentUser;
         const credential = EmailAuthProvider.credential(
             auth.currentUser.email,
-            passwodModal
+            stateProfile.passwordModalReAuth
         )
         reauthenticateWithCredential(user, credential).then(() => {
             dispatchStateProfile({type:"deletedFriend", payload: true})
-            //setDeleteUserState(true)
+
             deleteUser(user).then(async () => {
                 await deleteDoc(doc(db, "users", user.uid));
 
@@ -255,36 +215,31 @@ export default function Profile() {
                     dispatch(removeFrined())
                     dispatch(removeMessage())
                     dispatchStateErr({type: 'resetModal', payload: initialStateModal})
+                    dispatchStateProfile({type:"resetProfile", payload: initialStateProfile})
                     //setModuleErr(false)
                 }).catch(() => {
                     dispatchStateErr({type: 'activeModalWindow', payload: true})
-                    //setModuleErr(true)
                     dispatchStateErr({type:'errorClassName', payload:'Error when logging out of your account'})
-                    //setPropsErr('Error when logging out of your account')
                 });
                 dispatchStateErr({type: 'resetModal', payload: initialStateModal})
-                //setModuleErr(false)
-                //setPropsErr('')
             }).catch(() => {
                 dispatchStateErr({type: 'activeModalWindow', payload: true})
-                //setModuleErr(true)
                 dispatchStateErr({type:'errorClassName', payload:'Error in time to delete the account'})
-                //setPropsErr('Error in time to delete the account')
             });
-            //setPropsErr('')
+
             dispatchStateErr({type: 'resetModal', payload: initialStateModal})
             dispatchStateProfile({type:"deletedFriend", payload: false})
-            //setDeleteUserState(false)
+
         }).catch(() => {
             //setDeleteUserState(true)
             dispatchStateProfile({type:"deletedFriend", payload: true})
-            setPasswordModal('')
+            dispatchStateProfile({type:'passwordModalReAuth', payload: initialStateProfile.passwordModalReAuth})
             dispatchStateErr({type:'errorClassName', payload:'Error in re-authorization'})
-            //setPropsErr('Error in re-authorization')
+
             return
         });
     }
-    console.log(stateModalErr)
+
     return (
         <section className={classNames(style.profile, 'profile')}>
             <div className={classNames(style.container, 'container')}>
@@ -312,30 +267,18 @@ export default function Profile() {
                 <div className={classNames(style.editUserInfo, "edit-user-info")}>
                     <div className={classNames(style.containerEditUser, "container")}>
                 
-                        <ChangeProfile state={[stateModalErr, dispatchStateErr]} email={email} stateProfile={[stateProfile, dispatchStateProfile]} setEmail={setEmail}></ChangeProfile>
+                        <ChangeProfile state={[stateModalErr, dispatchStateErr]} stateProfile={[stateProfile, dispatchStateProfile]} ></ChangeProfile>
 
                         <div className={classNames(style.updateSection, 'update')}>
                             <button onClick={(event) => {
-                                email !== '' ? dispatchStateProfile({type: 'modalReAuth', payload: true}) : submiteUpdates(event)
+                                stateProfile.email !== '' ? dispatchStateProfile({type: 'modalReAuth', payload: true}) : submiteUpdates(event)
                             }} className={classNames(style.btnUpdate)}>Update</button>
                         </div>
                     </div>
                 </div>
             </div>
                             
-            <Modal
-                state={[stateModalErr, dispatchStateErr]}
-                stateProfile = {[stateProfile, dispatchStateProfile]}
-                // propsErr={propsErr}
-                // setPropsErr={setPropsErr}
-                deleteAccount={deleteAccount}
-                //setDeleteUserState={setDeleteUserState}
-                //deleteUserState={deleteUserState}
-                submiteUpdates={submiteUpdates}
-                // activeModal={activeModal}
-                // setActiveModal={setActiveModal}
-                passwodModal={passwodModal}
-                setPasswordModal={setPasswordModal}>
+            <Modal state={[stateModalErr, dispatchStateErr]} stateProfile = {[stateProfile, dispatchStateProfile]} deleteAccount={deleteAccount} submiteUpdates={submiteUpdates}>
             </Modal>
             {stateModalErr.activeModalWindow ? <ModuleError state={[stateModalErr, dispatchStateErr]}></ModuleError> : <></>}
         </section>

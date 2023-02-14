@@ -16,12 +16,6 @@ export function initProfile (initialStateProfile){
     }
 }
 
-function initSomeField(value){
-    initialStateProfile[value[0]] = value[1]
-    return{
-        ...initialStateProfile,
-    }
-}
 
 export function reducerProfile(state, action){
     switch(action.type){
@@ -70,9 +64,6 @@ export function reducerProfile(state, action){
                 ...state,
                 passwordModalReAuth: action.payload
             }
-        case "resetSomeField": {
-            return initSomeField(action.payload)
-        }
         case "resetProfile": {
             return initProfile(action.payload)
         }

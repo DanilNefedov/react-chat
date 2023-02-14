@@ -2,7 +2,7 @@ import classNames from "classnames"
 import { useSelector } from "react-redux"
 import style from './Profile.module.css'
 import img from '../../img/user-M.png'
-import { useState } from "react"
+
 
 export function ProfilePhoto ({stateProfile}) {
     const user = useSelector(state => state.user)

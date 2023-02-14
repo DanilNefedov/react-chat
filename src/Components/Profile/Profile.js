@@ -79,10 +79,10 @@ export default function Profile() {
                     (snapshot) => {
                         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                         if(progress < 100){
-                            
-                            return (<Loader></Loader>)
+                            dispatchStateProfile({type: "loadPhoto", payload: true})
+                        }else{
+                            dispatchStateProfile({type: "loadPhoto", payload: initialStateProfile.loadPhoto})
                         }
-                        dispatchStateErr({type: 'resetModal', payload: initialStateModal})
                     },
                     () => {
                         dispatchStateErr({type: 'activeModalWindow', payload: true})
@@ -173,11 +173,12 @@ export default function Profile() {
                 dispatchStateProfile({type:'emailClassError', payload: initialStateProfile.emailClassError})
             }
             dispatchStateErr({type: 'resetModal', payload: initialStateModal})
+            
         } catch (error) {
             dispatchStateErr({type: 'activeModalWindow', payload: true})
             console.error(error)
         }
-
+        
     }
 
     const deleteAccount = (event) => {
@@ -241,6 +242,7 @@ export default function Profile() {
     }
 
     return (
+        stateProfile.loadPhoto ? <Loader></Loader> : 
         <section className={classNames(style.profile, 'profile')}>
             <div className={classNames(style.container, 'container')}>
                 <div className={classNames(style.userInfo, "user-info")}>

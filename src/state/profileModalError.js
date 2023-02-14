@@ -7,7 +7,8 @@ export const initialStateProfile = {
     nameClassError:false,
     modalReAuth: false,
     deletedFriend:false,
-    passwordModalReAuth:''
+    passwordModalReAuth:'',
+    loadPhoto: false
 }
 
 export function initProfile (initialStateProfile){
@@ -63,6 +64,11 @@ export function reducerProfile(state, action){
             return{
                 ...state,
                 passwordModalReAuth: action.payload
+            }
+        case "loadPhoto": 
+            return{
+                ...state,
+                loadPhoto: action.payload
             }
         case "resetProfile": {
             return initProfile(action.payload)

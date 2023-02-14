@@ -55,7 +55,14 @@
     background-color: #252632;
    
 }
-
+.viewMess{
+    font-size: 11px;
+    color: var(--white);
+    padding: 1px 2px;
+    border-radius: 50%;
+    background-color: var(--main-violet);
+    text-align: center;
+}
 
 @media screen and (max-width: 770px) {
     .list{

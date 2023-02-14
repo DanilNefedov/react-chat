@@ -52,7 +52,8 @@ export default function MessagesMain() {
 
             await updateDoc(doc(db, 'chatsList', user.id), {
                 [infoChat.id + '.lastMessage']: {
-                    messageText
+                    messageText,
+                    view: true
                 },
                 [infoChat.id + '.date']: serverTimestamp()
             })
@@ -62,7 +63,8 @@ export default function MessagesMain() {
             if (res.exists()) {
                 await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
                     [infoChat.id + '.lastMessage']: {
-                        messageText
+                        messageText,
+                        view: false
                     },
                     [infoChat.id + '.date']: serverTimestamp()
                 })

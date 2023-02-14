@@ -17,14 +17,17 @@ const friendSlice = createSlice({
                 friendId: action.payload.friendId,
                 lastMessages:action.payload.lastMessages,
                 timePublic: action.payload.timePublic,
-                photo: action.payload.photo
+                photo: action.payload.photo,
+                view:action.payload.view 
             })
         },
         addLastMessage(state, action){
             const friend = state.friend.find(el => el.id === action.payload.friendInfo)
+            //console.log(action.payload.view)
             friend.lastMessages = action.payload.messageText
             friend.date = action.payload.datePush
             friend.timePublic = action.payload.timePublic
+            friend.view = action.payload.view 
         },
         updatePhotoName(state,action){
             const friend = state.friend.find(el => el.id === action.payload.friendInfo)
@@ -32,6 +35,11 @@ const friendSlice = createSlice({
             friend.name = action.payload.name
             
         },
+        // viewMessage(state, action){
+        //     console.log(action.payload, state.friend.find(el => el.id === action.payload.friendId))
+        //     // const friend = state.friend.find(el => el.id === action.payload.friendId)
+        //     // friend.view = action.payload.view ? action.payload.view : true
+        // },
         removeFrined(state){
             state.friend = []
         }
@@ -39,6 +47,6 @@ const friendSlice = createSlice({
 })
 
 
-export const {addFrined, addLastMessage, updatePhoto, updatePhotoName, removeFrined} = friendSlice.actions;
+export const {addFrined, addLastMessage, updatePhoto, updatePhotoName, viewMessage, removeFrined} = friendSlice.actions;
 
 export default friendSlice.reducer;

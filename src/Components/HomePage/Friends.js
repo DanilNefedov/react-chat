@@ -2,7 +2,7 @@ import style from './Friends.module.css';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '../Search/Search'
-import { addFrined, addLastMessage, updatePhotoName } from '../../store/friendSlice'
+import { addFrined, addLastMessage, updatePhotoName, viewMessage } from '../../store/friendSlice'
 import React, { Suspense, useReducer, useRef, useState } from 'react';
 import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
@@ -33,17 +33,16 @@ export default function Friends() {
     const activeModal = context.modal
     const setModalActive = context.setModal
 
-
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "chatsList", myInfo.id), (doc) => {
             if (doc.data()) {
                 const data = Object.entries(doc.data())
                 data.map(el => {
-                    //console.log(el)
+                    //console.log('w')
                     const combinedId = el[0]
                     if (combinedId) {
                         const userInfo = el[1].userInfo
-                        const userDate = el[1].date.toDate()
+                        const userDate = el[1].date.toDate()//some error
                         const friendId = userInfo.id
                         const name = userInfo.displayName
                         const photo = userInfo.photo
@@ -52,6 +51,12 @@ export default function Friends() {
                         const dateUserNow = new Date()
                         const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth()+1}.${userDate.getFullYear()}`
                         const findMyDayUser = `${dateUserNow.getDate()}.${dateUserNow.getMonth()+1}.${dateUserNow.getFullYear()}`
+                        const view = el[1].lastMessage.view 
+                        // if(!view){
+                        //     dispatch(viewMessage({view, friendId}))
+                            //console.log(view)
+                        // }
+                        
                         let minute = userDate.getMinutes().toString()
 
                         if (minute.length === 1) {
@@ -64,12 +69,12 @@ export default function Friends() {
                             const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
 
                             if (!find) {
-                                dispatch(addFrined({ combinedId, name, date, friendId, timePublic, lastMessages, photo }))
+                                dispatch(addFrined({view, combinedId, name, date, friendId, timePublic, lastMessages, photo }))
                             } else if (find.timePublic !== timePublic) {
                                 const friendInfo = combinedId
                                 const messageText = lastMessages
                                 const datePush = date
-                                dispatch(addLastMessage({ friendInfo, messageText, datePush, timePublic }))
+                                dispatch(addLastMessage({view, friendInfo, messageText, datePush, timePublic }))
 
                             }else if (find.name !== name || find.photo !== photo) {
                                 const friendInfo = combinedId
@@ -80,12 +85,12 @@ export default function Friends() {
                             const date = findMyDayBase
 
                             if (!find) {
-                                dispatch(addFrined({ combinedId, name, date, friendId, timePublic, lastMessages, photo }))
+                                dispatch(addFrined({view, combinedId, name, date, friendId, timePublic, lastMessages, photo }))
                             } else if (find.timePublic !== timePublic) {
                                 const friendInfo = combinedId
                                 const messageText = lastMessages
                                 const datePush = date
-                                dispatch(addLastMessage({ friendInfo, messageText, datePush, timePublic }))
+                                dispatch(addLastMessage({view, friendInfo, messageText, datePush, timePublic }))
 
                             }else if (find.name !== name || find.photo !== photo) {
                                 const friendInfo = combinedId
@@ -106,6 +111,7 @@ export default function Friends() {
             unsub()
         }
     }, [friendList]) 
+    console.log(friendList)
 
     function resize() {
         if (containerFrineds.current !== null) {

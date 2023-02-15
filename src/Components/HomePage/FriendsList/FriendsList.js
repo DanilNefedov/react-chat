@@ -8,23 +8,47 @@ import { doc, getFirestore, serverTimestamp, updateDoc } from 'firebase/firestor
 
 
 export default function FriendsList({friend}) {
-    const {id, name, lastMessages, date, photo, view} = friend
+    const {id, name, lastMessages, date, photo, view, friendId, idSender} = friend
     const myInfo = useSelector(state => state.user)
     const db = getFirestore()
     
-    // const viewMess = view === undefined ? true : false
-    console.log(view)
-    //GjEfkiFmyWZHbk4egF5QchdKxlD2 - me
-    //ESBe9PgxZSfsPArSATzprDOMdQx2 - friend
+    //console.log(friend)
     const delViewMess = async () => {
-        //console.log(id)
-        await updateDoc(doc(db, 'chatsList', myInfo.id), {
-            [id + '.lastMessage']: {
-                messageText: lastMessages,
-                view: true
-            }
-        })
+        try{
+            await updateDoc(doc(db, 'chatsList', myInfo.id), {
+                [id + '.viewMessage']: {
+                    view: true,
+                }
+            })
+            await updateDoc(doc(db, 'chatsList', friendId), {
+                [id + '.viewMessage']: {
+                    view: idSender !== myInfo.id ? false : true,
+                    // view: true ,
+                }
+            })
+        } catch(err){
+            console.error(err)
+        }
     }
+
+
+    const viewMessage = () =>{
+        if(view && idSender === myInfo.id){
+            return <div>-</div>
+        }else if(!view && idSender !== myInfo.id){
+            return <div className={classNames(style.viewMess)}>1+</div>
+        }
+        // else if(view && idSender !== myInfo.id){
+        //     return <div>fs is</div>
+        // }else if(!view && idSender === myInfo.id) {
+        //     return <div className={classNames(style.viewMess)}>1+</div>
+        // }else if(!view && idSender !== myInfo.id) {
+        //     return <div>-</div>
+        // }else{
+        //     return  <></>
+        // }
+    }
+
 
     return (
 
@@ -42,7 +66,19 @@ export default function FriendsList({friend}) {
                 <div className={classNames(style.date, 'list-date')}>
                     {date}
                 </div>
-                {view ? <></> : <div className={classNames(style.viewMess)}>1+</div>}
+                {/* {view ? <>+</> : <div className={classNames(style.viewMess)}>1+</div>} */}
+                {view ? idSender === myInfo.id 
+                    ? <>-</> : <div>is fsen</div> 
+                : idSender !== myInfo.id  
+                    ?<div className={classNames(style.viewMess)}>1+</div> : <>+</>
+                }
+                {/* {view && idSender === myInfo.id ? <div>-</div> : view && idSender !== myInfo.id ? <div className={classNames(style.viewMess)}>1+</div> : !view && idSender !== myInfo.id ? 
+                <div className={classNames(style.viewMess)}>1+</div> : <>f</>} */}
+                {/* {viewMessage()} */}
+                {/* {view && idSender === myInfo.id ? <div>+</div> : view && idSender !== myInfo.id ? <div>fs is</div> : !view && idSender === myInfo.id ? <div>-</div> :
+                !view && idSender !== myInfo.id ? <div className={classNames(style.viewMess)}>1+</div> : <></>} */}
+                {/* idSender === myInfo.id && idSender !== null ? <div>m</div> :  <div className={classNames(style.viewMess)}>1+</div>  */}
+                
             </div>
         </Link>
 

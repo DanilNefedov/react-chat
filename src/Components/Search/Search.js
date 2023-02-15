@@ -84,7 +84,10 @@ export function Search({ text, setText, searchListRef, searchRef }) {
                         displayName: name,
                         photo: photo
                     },
-                    [combinedId + '.date']: serverTimestamp()
+                    [combinedId + '.date']: serverTimestamp(),
+                    [combinedId + '.viewMessage'] :{
+                        view: true
+                    }
                 })
 
                 await updateDoc(doc(db, 'chatsList', id), {
@@ -93,7 +96,10 @@ export function Search({ text, setText, searchListRef, searchRef }) {
                         displayName: myInfo.name,
                         photo: myInfo.photo
                     },
-                    [combinedId + '.date']: serverTimestamp()
+                    [combinedId + '.date']: serverTimestamp(),
+                    [combinedId + '.viewMessage'] :{
+                        view: false
+                    }
                 })
             }
 

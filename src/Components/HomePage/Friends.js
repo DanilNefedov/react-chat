@@ -38,9 +38,10 @@ export default function Friends() {
             if (doc.data()) {
                 const data = Object.entries(doc.data())
                 data.map(el => {
-                    //console.log('w')
+                    console.log(el)
                     const combinedId = el[0]
                     if (combinedId) {
+                        const find = friendList.find(el => el.id === combinedId)
                         const userInfo = el[1].userInfo
                         const userDate = el[1].date.toDate()//some error
                         const friendId = userInfo.id
@@ -51,25 +52,24 @@ export default function Friends() {
                         const dateUserNow = new Date()
                         const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth()+1}.${userDate.getFullYear()}`
                         const findMyDayUser = `${dateUserNow.getDate()}.${dateUserNow.getMonth()+1}.${dateUserNow.getFullYear()}`
-                        const view = el[1].lastMessage.view 
-                        // if(!view){
-                        //     dispatch(viewMessage({view, friendId}))
-                            //console.log(view)
-                        // }
+                        const view = el[1].viewMessage.view 
+                        const idSender = el[1].idSender ? el[1].idSender.idSender : null
+                        console.log(idSender)
+                       
                         
                         let minute = userDate.getMinutes().toString()
 
                         if (minute.length === 1) {
                             minute = `0${minute}`
                         }
-
-                        const find = friendList.find(el => el.id === combinedId)
-
+                       
+                        
                         if(findMyDayBase === findMyDayUser){
                             const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
 
                             if (!find) {
                                 dispatch(addFrined({view, combinedId, name, date, friendId, timePublic, lastMessages, photo }))
+                                
                             } else if (find.timePublic !== timePublic) {
                                 const friendInfo = combinedId
                                 const messageText = lastMessages
@@ -97,6 +97,10 @@ export default function Friends() {
                                 dispatch(updatePhotoName({ friendInfo, photo, name }))
                             }
                         }
+                    
+                        if(view){
+                            dispatch(viewMessage({view,combinedId,idSender}))
+                        }
                     }
                     
                 })
@@ -110,8 +114,8 @@ export default function Friends() {
         return () => {
             unsub()
         }
-    }, [friendList]) 
-    console.log(friendList)
+    }, [ friendList]) 
+    //console.log(friendList)
 
     function resize() {
         if (containerFrineds.current !== null) {

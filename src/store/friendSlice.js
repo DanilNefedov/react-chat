@@ -35,11 +35,12 @@ const friendSlice = createSlice({
             friend.name = action.payload.name
             
         },
-        // viewMessage(state, action){
-        //     console.log(action.payload, state.friend.find(el => el.id === action.payload.friendId))
-        //     // const friend = state.friend.find(el => el.id === action.payload.friendId)
-        //     // friend.view = action.payload.view ? action.payload.view : true
-        // },
+        viewMessage(state, action){
+            //console.log('w')
+            const friend = state.friend.find(el => el.id === action.payload.combinedId)
+            friend.view = action.payload.view 
+            friend.idSender = action.payload.idSender 
+        },
         removeFrined(state){
             state.friend = []
         }

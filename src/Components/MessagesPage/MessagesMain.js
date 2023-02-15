@@ -52,10 +52,16 @@ export default function MessagesMain() {
 
             await updateDoc(doc(db, 'chatsList', user.id), {
                 [infoChat.id + '.lastMessage']: {
-                    messageText,
+                    messageText
+                },
+                [infoChat.id + '.date']: serverTimestamp(),
+                [infoChat.id + '.viewMessage'] :{
                     view: true
                 },
-                [infoChat.id + '.date']: serverTimestamp()
+                [infoChat.id + '.idSender'] :{
+                    idSender:user.id
+                }
+
             })
 
             const res = await getDoc(doc(db, 'chatsList', infoChat.friendId))
@@ -63,10 +69,15 @@ export default function MessagesMain() {
             if (res.exists()) {
                 await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
                     [infoChat.id + '.lastMessage']: {
-                        messageText,
+                        messageText
+                    },
+                    [infoChat.id + '.date']: serverTimestamp(),
+                    [infoChat.id + '.viewMessage'] :{
                         view: false
                     },
-                    [infoChat.id + '.date']: serverTimestamp()
+                    [infoChat.id + '.idSender'] :{
+                        idSender:user.id
+                    }
                 })
             }
 

@@ -56,9 +56,7 @@ export default function MessagesMain() {
                 },
                 [infoChat.id + '.date']: serverTimestamp(),
                 [infoChat.id + '.viewMessage'] :{
-                    view: true
-                },
-                [infoChat.id + '.idSender'] :{
+                    view: true,
                     idSender:user.id
                 }
 
@@ -73,9 +71,7 @@ export default function MessagesMain() {
                     },
                     [infoChat.id + '.date']: serverTimestamp(),
                     [infoChat.id + '.viewMessage'] :{
-                        view: false
-                    },
-                    [infoChat.id + '.idSender'] :{
+                        view: false,
                         idSender:user.id
                     }
                 })

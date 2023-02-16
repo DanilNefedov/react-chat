@@ -38,7 +38,6 @@ export default function Friends() {
             if (doc.data()) {
                 const data = Object.entries(doc.data())
                 data.map(el => {
-                    console.log(el)
                     const combinedId = el[0]
                     if (combinedId) {
                         const find = friendList.find(el => el.id === combinedId)
@@ -53,28 +52,25 @@ export default function Friends() {
                         const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth()+1}.${userDate.getFullYear()}`
                         const findMyDayUser = `${dateUserNow.getDate()}.${dateUserNow.getMonth()+1}.${dateUserNow.getFullYear()}`
                         const view = el[1].viewMessage.view 
-                        const idSender = el[1].idSender ? el[1].idSender.idSender : null
-                        console.log(idSender)
-                       
-                        
-                        let minute = userDate.getMinutes().toString()
+                        const idSender = el[1].viewMessage ? el[1].viewMessage.idSender : null
+                        const newMess = el[1].viewMessage.newMess ? el[1].viewMessage.newMess : false
 
+                        let minute = userDate.getMinutes().toString()
                         if (minute.length === 1) {
                             minute = `0${minute}`
                         }
-                       
                         
                         if(findMyDayBase === findMyDayUser){
                             const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
 
                             if (!find) {
-                                dispatch(addFrined({view, combinedId, name, date, friendId, timePublic, lastMessages, photo }))
+                                dispatch(addFrined({newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
                                 
                             } else if (find.timePublic !== timePublic) {
                                 const friendInfo = combinedId
                                 const messageText = lastMessages
                                 const datePush = date
-                                dispatch(addLastMessage({view, friendInfo, messageText, datePush, timePublic }))
+                                dispatch(addLastMessage({idSender,  view, friendInfo, messageText, datePush, timePublic }))
 
                             }else if (find.name !== name || find.photo !== photo) {
                                 const friendInfo = combinedId
@@ -83,26 +79,21 @@ export default function Friends() {
 
                         }else {
                             const date = findMyDayBase
-
                             if (!find) {
-                                dispatch(addFrined({view, combinedId, name, date, friendId, timePublic, lastMessages, photo }))
+                                dispatch(addFrined({newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
                             } else if (find.timePublic !== timePublic) {
                                 const friendInfo = combinedId
                                 const messageText = lastMessages
                                 const datePush = date
-                                dispatch(addLastMessage({view, friendInfo, messageText, datePush, timePublic }))
+                                dispatch(addLastMessage({idSender,  view, friendInfo, messageText, datePush, timePublic }))
 
                             }else if (find.name !== name || find.photo !== photo) {
                                 const friendInfo = combinedId
                                 dispatch(updatePhotoName({ friendInfo, photo, name }))
                             }
                         }
-                    
-                        if(view){
-                            dispatch(viewMessage({view,combinedId,idSender}))
-                        }
-                    }
-                    
+                        dispatch(viewMessage({newMess, view,combinedId,idSender}))
+                    }  
                 })
                 dispatchModal({type:'resetModal', payload:initialStateModal})
             } else {
@@ -115,7 +106,6 @@ export default function Friends() {
             unsub()
         }
     }, [ friendList]) 
-    //console.log(friendList)
 
     function resize() {
         if (containerFrineds.current !== null) {

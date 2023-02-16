@@ -86,7 +86,8 @@ export function Search({ text, setText, searchListRef, searchRef }) {
                     },
                     [combinedId + '.date']: serverTimestamp(),
                     [combinedId + '.viewMessage'] :{
-                        view: true
+                        view: true,
+                        idSender:myInfo.id
                     }
                 })
 
@@ -98,13 +99,12 @@ export function Search({ text, setText, searchListRef, searchRef }) {
                     },
                     [combinedId + '.date']: serverTimestamp(),
                     [combinedId + '.viewMessage'] :{
-                        view: false
+                        view: false,
+                        idSender:myInfo.id
                     }
                 })
             }
-
             dispatchModal({type:'resetModal', payload:initialStateModal})
-
         } catch (error) {
             dispatchModal({type:'activeModalWindow', payload:true})
             console.error(error)

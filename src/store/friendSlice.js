@@ -18,16 +18,18 @@ const friendSlice = createSlice({
                 lastMessages:action.payload.lastMessages,
                 timePublic: action.payload.timePublic,
                 photo: action.payload.photo,
-                view:action.payload.view 
+                view:action.payload.view,
+                idSender: action.payload.idSender,
+                newMess: action.payload.newMess
             })
         },
         addLastMessage(state, action){
             const friend = state.friend.find(el => el.id === action.payload.friendInfo)
-            //console.log(action.payload.view)
             friend.lastMessages = action.payload.messageText
             friend.date = action.payload.datePush
             friend.timePublic = action.payload.timePublic
-            friend.view = action.payload.view 
+            friend.view = action.payload.view
+            friend.idSender = action.payload.idSender
         },
         updatePhotoName(state,action){
             const friend = state.friend.find(el => el.id === action.payload.friendInfo)
@@ -39,7 +41,8 @@ const friendSlice = createSlice({
             //console.log('w')
             const friend = state.friend.find(el => el.id === action.payload.combinedId)
             friend.view = action.payload.view 
-            friend.idSender = action.payload.idSender 
+            friend.idSender = action.payload.idSender
+            friend.newMess = action.payload.newMess
         },
         removeFrined(state){
             state.friend = []

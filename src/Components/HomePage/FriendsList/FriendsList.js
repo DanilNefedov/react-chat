@@ -58,7 +58,7 @@ export default function FriendsList({friend}) {
                     <p className={style.headMess}>{lastMessages === ''? 'No messages': lastMessages}</p>
                 </div>
             </div>
-            <div className="list-date-check">
+            <div className={style.listDateCheck}>
                 <div className={classNames(style.date, 'list-date')}>
                     {date}
                 </div>

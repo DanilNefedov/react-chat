@@ -3,7 +3,7 @@
     border-width: 0 1px 0 0;
     border-color: var(--main-border);
     border-style: solid;
-    font-size: 14px;
+    /* font-size: 14px; */
 }
 
 .nav{
@@ -16,7 +16,7 @@
 .logo{
     display: flex;
     justify-content: center;
-    padding: 21px 21px;
+    padding: 10px 10px;
     border-width: 0 0 1px 0;
     border-color: var(--main-border);
     border-style: solid;
@@ -24,6 +24,8 @@
 }
 
 .logoImg{
+    width: 50px;
+    height: 50px;
     display: block;
 }
 
@@ -34,16 +36,16 @@
 }
 
 .profile, .exit{
-    padding: 15px 0;
+    padding: 10px 0;
 }
 
 .img{
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
 }
 
 .home{
-    padding: 30px 0 15px;
+    padding: 25px 0 10px;
 }
 
 .link{
@@ -64,8 +66,8 @@
     position: absolute;
     top:0;
     left: 0;
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
 }
 
 .imgWhite{
@@ -75,8 +77,8 @@
 
 .imgCont{
     position: relative;
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
 }
 
 .nameNav{
@@ -84,13 +86,13 @@
     color:var(--main-gray)
 }
 
-@media screen and (max-width: 770px) {
+/* @media screen and (max-width: 770px) {
     .logo{
         padding: 13px 13px;
     }
     .logoImg{
-        width: 30px;
-        height: 30px;
+        width: 35px;
+        height: 35px;
     }
     .home{
         padding: 14px 7px 0;
@@ -107,18 +109,16 @@
         height: 25px;
     }
     .nameNav{
-        font-size: 10px;
+        font-size: 12px;
     }
+    
 }
 
 @media screen and (max-width: 450px) {
     .logo{
         padding: 9.5px;
     }
-    /* .logoImg{
-        width: 25px;
-        height: 25px;
-    } */
+    
     .imgCont{
         width: 23px;
         height: 23px;
@@ -131,4 +131,4 @@
         font-size: 12px;
         line-height: 13px;
     }
-}
+} */

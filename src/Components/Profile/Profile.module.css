@@ -55,7 +55,7 @@
 .btnDelete{
     background-color: transparent;
     color:var(--desactive-text);
-    font-size: 16px;
+    font-size: 15px;
     transition: 0.2s;
 }
 .btnDelete:hover{
@@ -129,7 +129,7 @@
     border-radius: 3px;
     color:var(--white);
     line-height: 21px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
     transition: 0.2s;
 }
@@ -150,10 +150,10 @@
 }
 .infoSize{
     display: block;
-    font-size: 10px;
+    font-size: 11px;
     position: absolute;
     bottom: -22px;
-    letter-spacing: 1px;
+    letter-spacing: 0.3px;
     color:var(--desactive-text);
     left: 5px;
 }

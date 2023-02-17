@@ -1,7 +1,11 @@
 .list{
-    padding: 15px 0 13px;
+    display: flex;
+    padding: 10px;
     justify-content: space-between;
-    color:var(--white)
+    color:var(--white);
+}
+.list:hover{
+    background-color: #252632;
 }
 .message{
     display: flex;
@@ -10,26 +14,26 @@
 }
 
 .userPhoto img{
-    height: 48px; 
-    width: 48px;
+    height: 50px; 
+    width: 50px;
     border-radius: 50%;
 }
 .userPhoto{
-    height: 48px; 
-    width: 48px;
+    height: 50px; 
+    width: 50px;
     margin-right: 15px;
 }
 .userMess{
-    font-size: 12px;
+    font-size: 13px;
     max-width: 62%;
 }
 .name{
-    font-size: 14px;
+    font-size: 15px;
     padding-bottom: 6px;
 }
 
 .date{
-    font-size: 10px;
+    font-size: 11px;
     color:var(--desactive-text)
 }
 .headMess{
@@ -45,17 +49,13 @@
     -webkit-box-orient: vertical;
     word-break: break-all;
 }
-.list{
+.listDateCheck{
     display: flex;
-    justify-content: space-between; 
-    padding-right: 28px;
-    padding-left: 22px;
-}
-.list:hover{
-    background-color: #252632;
-   
+    flex-direction: column;
+    align-items: center;
 }
 .check{
+    margin-top: 4px;
     width: 20px;
     height: 20px;
 }
@@ -65,9 +65,10 @@
     border-radius: 50%;
     background-color: var(--main-violet);
     text-align: center;
+    font-weight: normal;
 }
 
-@media screen and (max-width: 770px) {
+/* @media screen and (max-width: 770px) {
     .list{
         padding: 11px 14px 10px 11px;
     }
@@ -94,7 +95,7 @@
     }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 450px) { */
     /* .list{
         padding: 5px 10px 5.5px 10px;
     }
@@ -121,4 +122,4 @@
         line-height: 14px;
         padding-top: 2px;
     } */
-}
+/* } */

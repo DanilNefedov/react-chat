@@ -9,7 +9,7 @@ import { arrayUnion, doc, getDoc, getFirestore, onSnapshot, serverTimestamp, Tim
 import { v4 as uuid } from 'uuid';
 import img from '../../img/user-M.png'
 import { useEffect } from 'react';
-import { updatePhotoName } from '../../store/friendSlice';
+import { updatePhotoName, viewMessage } from '../../store/friendSlice';
 
 
 
@@ -56,8 +56,13 @@ export default function MessagesMain() {
                 },
                 [infoChat.id + '.date']: serverTimestamp(),
                 [infoChat.id + '.viewMessage'] :{
-                    view: true,
+                    view: false,
+                },
+                [infoChat.id + '.idSender'] :{
                     idSender:user.id
+                },
+                [infoChat.id + '.viewNewMessage'] :{
+                    viewNewMess: true
                 }
 
             })
@@ -72,7 +77,12 @@ export default function MessagesMain() {
                     [infoChat.id + '.date']: serverTimestamp(),
                     [infoChat.id + '.viewMessage'] :{
                         view: false,
+                    },
+                    [infoChat.id + '.idSender'] :{
                         idSender:user.id
+                    },
+                    [infoChat.id + '.viewNewMessage'] :{
+                        viewNewMess: false
                     }
                 })
             }
@@ -99,9 +109,14 @@ export default function MessagesMain() {
                 const findChat = data.find(el => el[0] === infoChat.id)
 
                 if (findChat) {
+                    const combinedId = findChat[0]
                     const friendInfo = infoChat.id
                     const name = findChat[1].userInfo.displayName ? findChat[1].userInfo.displayName : ''
                     const photo = findChat[1].userInfo.photo
+                    const view = findChat[1].viewMessage.view 
+                    const idSender = findChat[1].idSender ? findChat[1].idSender.idSender : null
+                    const newMess = findChat[1].viewNewMessage.viewNewMess 
+                    //console.log(findChat)
 
                     if (findChat[1].userInfo.acc === 'deleted') {
                         dispatch(updatePhotoName({ name, photo, friendInfo }))
@@ -111,6 +126,8 @@ export default function MessagesMain() {
                         dispatch(updatePhotoName({ name, photo, friendInfo }))
                         setDeletedAcc(false)
                     }
+
+                    dispatch(viewMessage({newMess, view,combinedId,idSender}))
                 }
             }
 
@@ -161,7 +178,7 @@ export default function MessagesMain() {
                     ?
                     <div ref={footerRef} className={classNames(style.deletedInput)}>Account has been deleted</div>
                     :
-                    <SendMessages scrollRef={scrollRef} setSizeWindow={setSizeWindow}  innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />
+                    <SendMessages infoChat={infoChat} scrollRef={scrollRef} setSizeWindow={setSizeWindow}  innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />
                 }
             </div>
         </section>

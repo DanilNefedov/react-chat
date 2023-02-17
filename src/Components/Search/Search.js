@@ -86,8 +86,14 @@ export function Search({ text, setText, searchListRef, searchRef }) {
                     },
                     [combinedId + '.date']: serverTimestamp(),
                     [combinedId + '.viewMessage'] :{
-                        view: true,
+                        view: false,
                         idSender:myInfo.id
+                    },
+                    [combinedId + '.idSender'] :{
+                        idSender:myInfo.id
+                    },
+                    [combinedId + '.viewNewMessage'] :{
+                        viewNewMess: true
                     }
                 })
 
@@ -100,7 +106,12 @@ export function Search({ text, setText, searchListRef, searchRef }) {
                     [combinedId + '.date']: serverTimestamp(),
                     [combinedId + '.viewMessage'] :{
                         view: false,
+                    },
+                    [combinedId + '.idSender'] :{
                         idSender:myInfo.id
+                    },
+                    [combinedId + '.viewNewMessage'] :{
+                        viewNewMess: false
                     }
                 })
             }

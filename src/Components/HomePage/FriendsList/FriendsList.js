@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import img from '../../../img/user-M.png'
 import { useSelector } from 'react-redux';
 import { doc, getFirestore, updateDoc } from 'firebase/firestore';
+import checkDone from '../../../img/check-mess-done.svg'
+import checkMess from '../../../img/check-mess.svg'
 
 
 
@@ -11,25 +13,20 @@ export default function FriendsList({friend}) {
     const {id, name, lastMessages, date, photo, view, friendId, idSender, newMess} = friend
     const myInfo = useSelector(state => state.user)
     const db = getFirestore()
-    
-    console.log(friend)
+
 
     const delViewMess = async () => {
         try{
             await updateDoc(doc(db, 'chatsList', myInfo.id), {
-                [id + '.viewMessage']: {
-                    view: true,
-                    idSender
+                [id + '.viewNewMessage'] :{
+                    viewNewMess: true
                 }
             })
             await updateDoc(doc(db, 'chatsList', friendId), {
                 [id + '.viewMessage']: {
-                    view: false,
-                    idSender,
-                    newMess:true
+                    view: true, 
                 }
             })
-            
         } catch(err){
             console.error(err)
         }
@@ -37,18 +34,16 @@ export default function FriendsList({friend}) {
 
 
     const viewMessage = () =>{
-        if(!newMess){
-            if(!view && idSender !== myInfo.id){
-                return <div className={classNames(style.viewMess)}>1+</div>
-            }
+        if(!newMess && idSender !== myInfo.id){
+            return <div className={classNames(style.viewMess)}>1+</div>
         }
-        if(view && idSender === myInfo.id){  
-            return <>-</>
+        if(view && idSender === myInfo.id){
+            return <img src={checkDone} alt="check message done"></img>
         }
-    
         if(!view && idSender === myInfo.id){
-            return <>+</> 
+            return <img src={checkMess} alt="check message done"></img>
         }
+        return <></>
     }
 
 

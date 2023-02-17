@@ -52,8 +52,9 @@ export default function Friends() {
                         const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth()+1}.${userDate.getFullYear()}`
                         const findMyDayUser = `${dateUserNow.getDate()}.${dateUserNow.getMonth()+1}.${dateUserNow.getFullYear()}`
                         const view = el[1].viewMessage.view 
-                        const idSender = el[1].viewMessage ? el[1].viewMessage.idSender : null
-                        const newMess = el[1].viewMessage.newMess ? el[1].viewMessage.newMess : false
+                        const idSender = el[1].idSender ? el[1].idSender.idSender : null
+                        const newMess = el[1].viewNewMessage.viewNewMess 
+                        //console.log(newMess)
 
                         let minute = userDate.getMinutes().toString()
                         if (minute.length === 1) {

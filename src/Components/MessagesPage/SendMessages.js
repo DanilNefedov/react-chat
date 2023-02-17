@@ -1,10 +1,14 @@
+import { doc, getFirestore, updateDoc } from 'firebase/firestore';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import send from '../../img/send.svg';
 import style from './MessagesMain.module.css';
 
 
 
-export function SendMessages({setSizeWindow, sendMess, text, setMessageText, handleEvent, innerRef}) {
+export function SendMessages({setSizeWindow, sendMess, text, setMessageText, handleEvent, innerRef, infoChat}) {
+    const myInfo = useSelector(state => state.user)
+    const db = getFirestore()
 
     useEffect(() =>{
         window.addEventListener("resize", keyboardDidShow )
@@ -17,10 +21,27 @@ export function SendMessages({setSizeWindow, sendMess, text, setMessageText, han
         }
     }, [])
 
+    const delViewMess = async () => {
+        try{
+            await updateDoc(doc(db, 'chatsList', myInfo.id), {
+                [infoChat.id + '.viewNewMessage'] :{
+                    viewNewMess: true
+                }
+            })
+            await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
+                [infoChat.id + '.viewMessage']: {
+                    view: true, 
+                }
+            })
+        } catch(err){
+            console.error(err)
+        }
+    }
+
     return (
         <section className={style.textArea} ref={innerRef}>
             {/* change click 'Enter your message'onFocus={() => keyboardIsOpen()}*/}
-            <textarea  placeholder='Enter your message' onKeyDown={handleEvent} value={text} onChange={(e) => setMessageText(e.target.value)} name="messages" id='textarea' type='text' className={style.input} rows="1" ></textarea>
+            <textarea onClick={() => delViewMess()} placeholder='Enter your message' onKeyDown={handleEvent} value={text} onChange={(e) => setMessageText(e.target.value)} name="messages" id='textarea' type='text' className={style.input} rows="1" ></textarea>
             <button onClick={() => sendMess()} type='submit' className={style.send}>
                 <img src={send} alt="Send" />
             </button>

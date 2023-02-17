@@ -62,7 +62,6 @@
 .viewMess{
     font-size: 11px;
     color: var(--white);
-    padding: 0 2px;
     border-radius: 50%;
     background-color: var(--main-violet);
     text-align: center;

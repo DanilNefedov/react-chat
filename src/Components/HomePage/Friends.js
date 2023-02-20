@@ -10,13 +10,16 @@ import { useOutletContext } from 'react-router-dom';
 import { ModuleError } from '../ModalError/ModalError';
 import { Loader } from '../Loader/Loader';
 import { initialStateModal, reducerModal } from '../../state/modalError';
+import { UserNavigation } from '../UserNavigation/UserNavigation';
 
 
 const FriendsList = React.lazy(() => import('./FriendsList/FriendsList'))
 
 
 export default function Friends() {
-    const context = useOutletContext()
+    const [activeModal, setActiveModal] = useState(false)
+    const navRef = useRef()
+    const searchRefUser = useRef()
     const containerFrineds = useRef()
     const friendsScroll = useRef()
     const [text, setText] = useState('')
@@ -30,8 +33,6 @@ export default function Friends() {
     const searchRef = useRef();
     const searchListRef = useRef();       
     const refSearch = useRef(null)
-    const activeModal = context.modal
-    const setModalActive = context.setModal
 
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "chatsList", myInfo.id), (doc) => {
@@ -112,7 +113,7 @@ export default function Friends() {
         if (containerFrineds.current !== null) {
             const containerFrinedsHeight = containerFrineds.current.offsetHeight
             const headRefHeight = headRef.current.offsetHeight
-            const navigationRefHeight = context.navRef.current.offsetHeight
+            const navigationRefHeight = navRef.current.offsetHeight
             const windowHeight = window.innerHeight
 
             const sum = containerFrinedsHeight + headRefHeight + navigationRefHeight
@@ -134,11 +135,11 @@ export default function Friends() {
 
     useEffect(()=>{
         const searchBlock = refSearch.current
-        const searchActiveBlock = context.searchRef.current
+        const searchActiveBlock = searchRefUser.current
         const onClick = e => {    
             if(!searchBlock.contains(e.target)){
-                if(!searchActiveBlock.contains(e.target)){
-                    setModalActive(false)
+                if(searchActiveBlock !== undefined && !searchActiveBlock.contains(e.target)){
+                    setActiveModal(false)
                 }
             } 
         }
@@ -151,9 +152,11 @@ export default function Friends() {
 
 
     return (
+    <>
+        <UserNavigation setActiveModal={setActiveModal} innerRef={navRef} searchRefUser={searchRefUser}/>
         <section className="home">
             <div ref={refSearch} className={activeModal ? classNames(style.searchFriends, "search-friends, active-modal-search") : classNames(style.searchFriends, "search-friends")}>
-                <Search searchListRef={searchListRef} searchRef={searchRef}  text={text} setText={setText}  />
+                <Search navRef={navRef} searchListRef={searchListRef} searchRef={searchRef}  text={text} setText={setText}  />
             </div> 
             <section className={style.friends} ref={friendsScroll}>
 
@@ -181,5 +184,7 @@ export default function Friends() {
             </section>
             {stateModal.activeModalWindow ? <ModuleError state={[stateModal, dispatchModal]}></ModuleError> : <></>}
         </section>
+    </>
+        
     );
 }

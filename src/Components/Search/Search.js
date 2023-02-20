@@ -13,7 +13,7 @@ import { initialStateModal, reducerModal } from '../../state/modalError';
 
 const SearchList = React.lazy(() => import('./SearchList'))
 
-export function Search({ text, setText, searchListRef, searchRef }) {
+export function Search({ text, setText, searchListRef, searchRef, navRef }) {
     const [stateModal, dispatchModal] = useReducer(reducerModal, initialStateModal)
     const dispatch = useDispatch()
     const db = getFirestore()
@@ -128,7 +128,7 @@ export function Search({ text, setText, searchListRef, searchRef }) {
     function resize() {
         if (containerSearch.current !== null && containerSearch.current !== undefined) {
             const searchHeight = searchRef.current.offsetHeight
-            const navigationRefHeight = context.navRef.current.offsetHeight
+            const navigationRefHeight = navRef.current.offsetHeight
             const windowHeight = window.innerHeight
 
             const sum = searchHeight + navigationRefHeight

@@ -1,4 +1,4 @@
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import style from './MessagesMain.module.css';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,14 +10,15 @@ import { v4 as uuid } from 'uuid';
 import img from '../../img/user-M.png'
 import { useEffect } from 'react';
 import { updatePhotoName, viewMessage } from '../../store/friendSlice';
+import back from '../../img/back-dark.svg'
 
 
 
 export default function MessagesMain() {
     const friend = useSelector(state => state.friend.friend)
     const user = useSelector(state => state.user)
+    const navigate = useNavigate()
 
-    const infoSection = useOutletContext()
     const nameRef = useRef();
     const scrollRef = useRef();
     const footerRef = useRef();
@@ -139,12 +140,11 @@ export default function MessagesMain() {
 
     useEffect(()=>{
         if (scrollRef.current !== null) {
-            const headerHeight = infoSection.navRef.current.offsetHeight
             const nameHeight = nameRef.current.offsetHeight
             const footerHeight = footerRef.current.offsetHeight
             const windowHeight = window.visualViewport.height
 
-            const sum = headerHeight + nameHeight + footerHeight
+            const sum =   nameHeight + footerHeight
 
             const res = windowHeight - sum
 
@@ -168,6 +168,9 @@ export default function MessagesMain() {
                             </h2>
                         </div>
 
+                    </div>
+                    <div onClick={() => {navigate('/')}} className={style.back}>
+                        <img src={back} alt="back" />
                     </div>
                 </header>
 

@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import { useDispatch, useSelector } from "react-redux"
 import style from './Profile.module.css'
-import { useReducer } from "react"
+import { useReducer, useRef, useState } from "react"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { deleteUser, EmailAuthProvider, getAuth, reauthenticateWithCredential, signOut, updateEmail, updateProfile } from "firebase/auth";
 import { removeUser } from "../../store/authSlice"
@@ -16,8 +16,16 @@ import { ChangeProfile } from "./ChangeProfile"
 import { initialStateProfile, reducerProfile } from "../../state/profileModalError";
 import { Loader } from "../Loader/Loader";
 import { initialStateModal, reducerModal } from "../../state/modalError";
+import { UserNavigation } from "../UserNavigation/UserNavigation";
+import { useNavigate } from "react-router-dom";
+import back from '../../img/back-dark.svg'
 
 export default function Profile() {
+    const navRef = useRef()
+    const searchRef = useRef()
+    const navigate = useNavigate()
+
+
     const user = useSelector(state => state.user)
     const friend = useSelector(state => state.friend.friend)
     const [stateModalErr, dispatchStateErr] = useReducer(reducerModal, initialStateModal)
@@ -243,7 +251,14 @@ export default function Profile() {
 
     return (
         stateProfile.loadPhoto ? <Loader></Loader> : 
+        <>
+        <UserNavigation innerRef={navRef} searchRef={searchRef}/>
         <section className={classNames(style.profile, 'profile')}>
+
+            <div onClick={() => {navigate('/')}} className={style.back}>
+                <img src={back} alt="back" />
+            </div>
+
             <div className={classNames(style.container, 'container')}>
                 <div className={classNames(style.userInfo, "user-info")}>
                     <div className={classNames(style.containerUserInfo, "container-userInfo")}>
@@ -284,5 +299,7 @@ export default function Profile() {
             </Modal>
             {stateModalErr.activeModalWindow ? <ModuleError state={[stateModalErr, dispatchStateErr]}></ModuleError> : <></>}
         </section>
+        </>
+        
     )
 }

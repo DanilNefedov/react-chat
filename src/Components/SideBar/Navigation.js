@@ -15,12 +15,10 @@ import { removeMessage } from '../../store/messagesSlice';
 
 
 
-export function Navigation({infoClick}){
+export function Navigation({modalBurger}){
 
     const dispatch = useDispatch()
     const location = useLocation()
-    const setActiveModal = infoClick.setModal
-    const activeModal = infoClick.modal
     const auth = getAuth();
 
     
@@ -39,7 +37,7 @@ export function Navigation({infoClick}){
         <nav className={style.nav}>
             <div className={style.home}>
                 {location.pathname === '/profile' ?  
-                    <NavLink className={style.link} to='/' exact='true' end  onClick={() => {if(activeModal){setActiveModal(false)}}}>
+                    <NavLink className={style.link} to='/' exact='true' end  onClick={() => {if(modalBurger[0]){modalBurger[1](false)}}}>
                         <div className={style.imgCont}>
                             <img src={homeDark} alt="Home" className={classNames(style.img, style.imgDark)} />
                             <img src={homeWhite} alt="Home" className={classNames(style.img, style.imgWhite, 'img-white')} />
@@ -47,7 +45,7 @@ export function Navigation({infoClick}){
                         <p className={classNames(style.nameNav, 'name-nav')}>Home</p>
                     </NavLink>
                 : 
-                    <NavLink className={style.link} to='/' exact='true' onClick={() => {if(activeModal){setActiveModal(false)}}}>
+                    <NavLink className={style.link} to='/' exact='true' onClick={() => {if(modalBurger[0]){modalBurger[1](false)}}}>
                         <div className={style.imgCont}>
                             <img src={homeDark} alt="Home" className={classNames(style.img, style.imgDark)} />
                             <img src={homeWhite} alt="Home" className={classNames(style.img, style.imgWhite, 'img-white')} />
@@ -58,7 +56,7 @@ export function Navigation({infoClick}){
                  
             </div>
             <div className={style.profile}>
-                <NavLink className={style.link} to="/profile" onClick={() => {if(activeModal){setActiveModal(false)}}} end>
+                <NavLink className={style.link} to="/profile" onClick={() => {if(modalBurger[0]){modalBurger[1](false)}}} end>
                     <div className={style.imgCont}>
                         <img src={profileDark} alt="Profile" className={classNames(style.img, style.imgDark)} />
                         <img src={profileWhite} alt="Profile" className={classNames(style.img, style.imgWhite, 'img-white')} />
@@ -67,7 +65,7 @@ export function Navigation({infoClick}){
                 </NavLink>
             </div>
             <div className={style.exit}>
-                <NavLink className={style.link} to="/login" onClick={() => {if(activeModal){setActiveModal(false)}}} >
+                <NavLink className={style.link} to="/login" onClick={() => {if(modalBurger[0]){modalBurger[1](false)}}} >
                     <div className={style.imgCont}>
                         <img onClick={()=>clickOut()} src={exitDark}  alt="Exit" className={classNames(style.img, style.imgDark)}/>
                         <img onClick={()=>clickOut()} src={exitWhite}  alt="Exit" className={classNames(style.img, style.imgWhite, 'img-white')} />

@@ -3,10 +3,10 @@ import searchImg from '../../img/search.svg'
 import classNames from "classnames";
 
 
-export function Search({setModal, searchRef}){
+export function Search({setActiveModal, searchRefUser}){
 
     return (
-        <button ref={searchRef} onClick={()=>{setModal(true)}} className={classNames(style.search)}>
+        <button ref={searchRefUser} onClick={() => setActiveModal(true)} className={classNames(style.search)}>
             <img className={classNames(style.searchImg)} src={searchImg} alt='Search' />
         </button>
     );

@@ -36,6 +36,24 @@
     height: 17px;
 }
 
+
+@media screen and (max-width:660px) {
+    .search{
+        display: block;
+        width: 20px;
+        height: 20px;
+        top:calc(50% - 10px) ;
+    }
+}
+
+
+@media screen and (max-width:500px) {
+    .userNav{
+        width: calc(100% - 71px);
+        margin-left: auto;
+        border-width: 0 0 1px;
+    }
+}
 /* @media screen and (max-width: 770px){
     .userNav{
         padding: 10.5px 12px;
@@ -50,14 +68,7 @@
     }
 }
 
-@media screen and (max-width:600px) {
-    .search{
-        display: block;
-        width: 16px;
-        height: 16px;
-        top:calc(50% - 7px) ;
-    }
-}
+
 
 @media screen and (max-width: 450px) {
     .userNav{

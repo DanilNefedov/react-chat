@@ -8,7 +8,7 @@
     border-width: 0 0 1px 0;
     border-style: solid;
     border-color: var(--main-border);
-    padding: 21px;
+    padding: 10px;
     background-color: var(--second-main);
 }
 
@@ -19,6 +19,8 @@
 }
 
 .userImg {
+    width: 50px;
+    height: 50px;
     margin-right: 33px;
     max-width: 75px;
 }
@@ -70,7 +72,7 @@
 .textArea{
     display: flex;
     width: 100%;
-    padding: 21px;
+    padding: 10px;
     border-width: 1px 0 0 0;
     border-color: var(--main-border);
     border-style: solid;
@@ -104,13 +106,13 @@
 
 
 .userImg img{
-    width: 55px;
-    height:  55px;
+    width: 50px;
+    height:  50px;
     border-radius: 50%;
 }
 .messagesMe, .messagesFriend{
-    display: flex;
-    padding: 13px 27px 15px;
+    /* display: flex; */
+    padding: 10px 15px 12px 15px;
     max-width: 48%;
     border-radius: 8px;
     position: relative;
@@ -118,7 +120,7 @@
 
 .messageContainerMe, .messageContainerFriend{
     display: flex;
-    margin-bottom: 55px;
+    margin-bottom: 45px;
     /* position: relative; */
 }
 .messageContainerMe{
@@ -127,6 +129,7 @@
 
 .messageContainerFriend{
     justify-content: start;
+    word-wrap: break-word
 }
 
 .messagesMe{
@@ -162,7 +165,38 @@
     border-color: var(--main-border);
 }
 
-@media screen and (max-width:770px) {
+.back{
+    display: none;
+    width: 35px;
+    height: 35px;
+}
+
+@media screen and (max-width: 660px) {
+    .name{
+        font-size: 16px;
+    }
+
+    .messageContainerMe, .messageContainerFriend{
+        margin-bottom: 35px;
+        font-size: 14px;
+    }
+    .dateMessages{
+        font-size: 11px;
+    }
+    .messages{
+        
+        padding: 0px;
+    }
+}
+
+
+@media screen and (max-width: 500px) {
+    .back{
+        display: block;
+    }
+}
+
+/* @media screen and (max-width:770px) {
     .header{
         padding: 12px;
     }
@@ -175,9 +209,7 @@
         width: 40px;
         height: 40px;
     }
-    /* .name{
-        font-size: 14px;
-    } */
+    
 
     .textArea{
         padding: 10px;
@@ -248,4 +280,4 @@
         width: 36px;
         border-radius: 4px;
     }
-}
+} */

@@ -3,9 +3,9 @@ import classNames from "classnames";
 import style from './SideBar.module.css'
 
 
-export function Logo(){
+export function Logo({logoRef}){
     return(
-        <div className={classNames(style.logo)}>
+        <div ref={logoRef} className={classNames(style.logo)}>
             <img src={img} alt="Chat" className={classNames(style.logoImg, 'logo')}/>
         </div>
     )

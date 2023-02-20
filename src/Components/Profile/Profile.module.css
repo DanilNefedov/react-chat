@@ -173,12 +173,21 @@
     /* background-color: green; */
     margin-left: 10px;
 }
+.back{
+    display: none;
+    width: 35px;
+    height: 35px;
+    right: 15px;
+    top:10px
+}
 
 @media screen and (max-width: 870px) {
     .profile{
+        position: relative;
         overflow-y: auto;
         display: flex;
         justify-content: center;
+        height: calc(100vh - 71px);
     }
     .container{
         display: block;
@@ -193,6 +202,7 @@
     }
     .editUserInfo{
         display: block;
+        /* height: 65%; */
         width: 100%;
         padding: 0 20px 20px;
     }
@@ -208,7 +218,62 @@
     }
 }
 
-@media screen and (max-width: 770px){
+/* -----------------------------------------------------------------------460--------------------------------------------------------- */
+@media screen and (max-width: 500px) {
+    .back{
+        display: block;
+        position: absolute;
+    }
+}
+
+@media screen and (max-width : 460px){
+    .userInfo{
+        padding: 15px 10px 10px;
+    }
+    .photoSection, .nameUser, .deletePhoto{
+        margin-bottom: 10px;
+    }
+    .emailUser{
+        margin-bottom: 0;
+    }
+    .containerBtn{
+        margin-left: -3px;
+    }
+    .editUserInfo{
+        padding: 0 10px 10px 8px;
+    }
+    .infoSize{
+        font-size: 10px;
+        line-height: 10px;
+        bottom: -15px;
+    }
+    .editPhoto, .nameSection{
+        margin-bottom: 26px;
+    }
+
+    .nameSection, .emailSection{
+        flex-wrap: wrap;
+    }
+    .editEmail, .editName{
+        width: 70%;
+        margin-top: 8px;
+    }
+}
+
+@media screen and (max-width:375px) {
+    .userInfo, .editUserInfo{
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .userInfo{
+        padding-left: 6px;
+    }
+    .editEmail, .editName{
+       padding: 3px 5px;
+    }
+}
+
+/* @media screen and (max-width: 770px){
     .container{
         height: calc(100vh - 57px);
     }
@@ -254,7 +319,7 @@
         font-size: 14px;
         width: 137px;
     }
-}
+} */
 
 /* @media screen and (max-width: 450px) {
     .userPhoto img{
@@ -307,15 +372,3 @@
 
 
 
-@media screen and (max-width:375px) {
-    .userInfo, .editUserInfo{
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-    .userInfo{
-        padding-left: 6px;
-    }
-    .editEmail, .editName{
-       padding: 3px 5px;
-    }
-}

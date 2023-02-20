@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/react-chat/static/css/main.acceb287.css",
-    "main.js": "/react-chat/static/js/main.efdc361c.js",
+    "main.css": "/react-chat/static/css/main.0daecc79.css",
+    "main.js": "/react-chat/static/js/main.9d5b2811.js",
     "static/css/287.4b393db2.chunk.css": "/react-chat/static/css/287.4b393db2.chunk.css",
     "static/js/287.774a5d90.chunk.js": "/react-chat/static/js/287.774a5d90.chunk.js",
-    "static/css/298.193fad5a.chunk.css": "/react-chat/static/css/298.193fad5a.chunk.css",
-    "static/js/298.083b047e.chunk.js": "/react-chat/static/js/298.083b047e.chunk.js",
-    "static/css/737.e1539128.chunk.css": "/react-chat/static/css/737.e1539128.chunk.css",
-    "static/js/737.cd49a039.chunk.js": "/react-chat/static/js/737.cd49a039.chunk.js",
+    "static/css/298.99aa788a.chunk.css": "/react-chat/static/css/298.99aa788a.chunk.css",
+    "static/js/298.199c7e31.chunk.js": "/react-chat/static/js/298.199c7e31.chunk.js",
+    "static/css/365.4067c590.chunk.css": "/react-chat/static/css/365.4067c590.chunk.css",
+    "static/js/365.01d1d5f3.chunk.js": "/react-chat/static/js/365.01d1d5f3.chunk.js",
     "static/js/787.28cb0dcd.chunk.js": "/react-chat/static/js/787.28cb0dcd.chunk.js",
     "static/css/382.ba13d059.chunk.css": "/react-chat/static/css/382.ba13d059.chunk.css",
     "static/js/382.1b599abc.chunk.js": "/react-chat/static/js/382.1b599abc.chunk.js",
@@ -20,6 +20,7 @@
     "static/media/Poppins-SemiBold.woff2": "/react-chat/static/media/Poppins-SemiBold.3c3f3613b59d581739fc.woff2",
     "static/media/Poppins-Medium.woff2": "/react-chat/static/media/Poppins-Medium.563f976db73ca07d8fc3.woff2",
     "static/media/email.svg": "/react-chat/static/media/email.6810d75c8386a8ea7d241227a74ff391.svg",
+    "static/media/burger-menu.svg": "/react-chat/static/media/burger-menu.025b8b8607eac8adbb29be4bb78bd261.svg",
     "static/media/profile-dark.svg": "/react-chat/static/media/profile-dark.9eb04a0fe11c2d10e9722f48193128b4.svg",
     "static/media/profile-white.svg": "/react-chat/static/media/profile-white.a834aeec7482ed4c4c8291762d7fc7d3.svg",
     "static/media/download.svg": "/react-chat/static/media/download.a03a720eceda925bb61ccd9421ba3baf.svg",
@@ -40,14 +41,14 @@
     "static/media/logo.svg": "/react-chat/static/media/logo.a404c4b0ce14c566387dafe2c6850be8.svg",
     "static/media/done.svg": "/react-chat/static/media/done.07989f3acab39c07ec7701417d68ddf4.svg",
     "static/media/add.svg": "/react-chat/static/media/add.fcc2e62b8f34216f112ad5b485f24800.svg",
-    "main.acceb287.css.map": "/react-chat/static/css/main.acceb287.css.map",
-    "main.efdc361c.js.map": "/react-chat/static/js/main.efdc361c.js.map",
+    "main.0daecc79.css.map": "/react-chat/static/css/main.0daecc79.css.map",
+    "main.9d5b2811.js.map": "/react-chat/static/js/main.9d5b2811.js.map",
     "287.4b393db2.chunk.css.map": "/react-chat/static/css/287.4b393db2.chunk.css.map",
     "287.774a5d90.chunk.js.map": "/react-chat/static/js/287.774a5d90.chunk.js.map",
-    "298.193fad5a.chunk.css.map": "/react-chat/static/css/298.193fad5a.chunk.css.map",
-    "298.083b047e.chunk.js.map": "/react-chat/static/js/298.083b047e.chunk.js.map",
-    "737.e1539128.chunk.css.map": "/react-chat/static/css/737.e1539128.chunk.css.map",
-    "737.cd49a039.chunk.js.map": "/react-chat/static/js/737.cd49a039.chunk.js.map",
+    "298.99aa788a.chunk.css.map": "/react-chat/static/css/298.99aa788a.chunk.css.map",
+    "298.199c7e31.chunk.js.map": "/react-chat/static/js/298.199c7e31.chunk.js.map",
+    "365.4067c590.chunk.css.map": "/react-chat/static/css/365.4067c590.chunk.css.map",
+    "365.01d1d5f3.chunk.js.map": "/react-chat/static/js/365.01d1d5f3.chunk.js.map",
     "787.28cb0dcd.chunk.js.map": "/react-chat/static/js/787.28cb0dcd.chunk.js.map",
     "382.ba13d059.chunk.css.map": "/react-chat/static/css/382.ba13d059.chunk.css.map",
     "382.1b599abc.chunk.js.map": "/react-chat/static/js/382.1b599abc.chunk.js.map",
@@ -55,7 +56,7 @@
     "453.b026c72d.chunk.js.map": "/react-chat/static/js/453.b026c72d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.acceb287.css",
-    "static/js/main.efdc361c.js"
+    "static/css/main.0daecc79.css",
+    "static/js/main.9d5b2811.js"
   ]
 }

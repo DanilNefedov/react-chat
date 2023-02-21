@@ -21,10 +21,11 @@ function Form({ formProps, handleClick, state }) {
                 <h1 className={style.header}>CHAT</h1>
                 <h2 className={classNames(style.headerForm, 'header')}>{nameForm}</h2>
 
-                {nameForm === 'Registration' && <div className={style.name}>
+                {nameForm === 'Registration' && <><div className={style.name}>
                     <label htmlFor="name" className={classNames(style.headerName, 'head-name')}>Name:</label>
                     <input value={stateRegistration.name} onChange={(e) => dispatchRegistration({type:'name', payload:e.target.value})} type='name' placeholder="Enter your name"></input>
-                </div>}
+                    </div>
+                    <span className={style.infoReg}>*name length no more than 20 characters</span></>}
 
                 <div className={style.email}>
                     <label htmlFor="email" className={classNames(style.headerEmail, 'head-name')}>Email:</label>
@@ -34,6 +35,7 @@ function Form({ formProps, handleClick, state }) {
                     <label htmlFor="password" className={classNames(style.headerPass, 'head-name')}>Password:</label>
                     <input value={stateRegistration.password} onChange={(e) => dispatchRegistration({type:'password', payload:e.target.value})} type="password" placeholder="Enter your password" />
                 </div>
+                {nameForm === 'Registration' ? <span className={style.infoReg}>*password length of 6 or more characters</span> : <></>}
 
                 {nameForm === 'Registration' ?
                 <button onClick={(e) => {

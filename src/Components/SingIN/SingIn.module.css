@@ -101,6 +101,12 @@
 .errorReg .name input{
     border:1px solid var(--red);
 }
+.infoReg{
+    font-size: 11px;
+    display: block;
+    color:var(--desactive-text);
+    margin-top: 3px;
+}
 
 @media screen and (max-width: 770px) {
     .form{

@@ -37,7 +37,7 @@ export function Search({ text, setText, searchListRef, searchRef, navRef }) {
 
 
     const searchUsers = async () => {
-        const q = query(collection(db, "users"), where('name', '==', text));
+        const q = query(collection(db, "users"), where('name', '==', text.trim()));
         
         try {
             const querySnapshot = await getDocs(q);

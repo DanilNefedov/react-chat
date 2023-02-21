@@ -100,7 +100,7 @@ export function ChangeProfile ({ state, stateProfile}){
             }
         }
     }
-
+    
     return(
         <>
         {user.photo ?
@@ -135,7 +135,13 @@ export function ChangeProfile ({ state, stateProfile}){
         <div className={classNames(style.nameSection, 'name')}>
             <img className={classNames(style.iconBtn)} src={edit} alt="edit" />
             <span className={classNames(style.editField, 'head-name')}>Edit Name: </span>
-            <input value={stateProfile[0].name} onChange={(e) => stateProfile[1]({type: 'setName', payload: e.target.value})} placeholder="Enter name" type="text" className={stateProfile[0].nameClassError ? classNames('edit-field', style.editName, style.err) : classNames('edit-field', style.editName)} />
+            <input value={stateProfile[0].name} onChange={(e) => {
+                if(e.target.value.trim().length > 0){
+                    stateProfile[1]({type: 'setName', payload: e.target.value})
+                }else{
+                    stateProfile[1]({type: 'setName', payload: initialStateProfile.name})
+                }
+                }} placeholder="Enter name" type="text" className={stateProfile[0].nameClassError ? classNames('edit-field', style.editName, style.err) : classNames('edit-field', style.editName)} />
             <span className={style.infoSize}>*name length no more than 20 characters</span>
         </div>
         <div className={classNames(style.emailSection, "email")}>

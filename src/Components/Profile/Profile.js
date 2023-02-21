@@ -65,7 +65,7 @@ export default function Profile() {
                     }).catch(() => {
                         dispatchStateProfile({type: 'emailClassError', payload: true})
                     })
-                    if(stateProfile.name === ''){
+                    if(stateProfile.name.trim() === ''){
                         dispatchStateProfile({type:'nameClassError', payload: initialStateProfile.emailClassError})
                     }
                     dispatchStateErr({type: 'informationAboutError', payload: initialStateModal.informationAboutError})
@@ -81,7 +81,7 @@ export default function Profile() {
 
             if (stateProfile.photo) {
                 const storage = getStorage();
-                const storageRef = ref(storage, `avatar/${user.name}ID-${user.id}`);
+                const storageRef = ref(storage, `avatar/${user.name.trim()}ID-${user.id}`);
                 const uploadTask = uploadBytesResumable(storageRef, stateProfile.photo);
                 uploadTask.on('state_changed',
                     (snapshot) => {
@@ -117,7 +117,7 @@ export default function Profile() {
                                     await updateDoc(doc(db, 'chatsList', el.friendId), {
                                         [el.id + '.userInfo']: {
                                             id: user.id,
-                                            displayName: stateProfile.name !== '' ? stateProfile.name : user.name,
+                                            displayName: stateProfile.name.trim() !== '' ? stateProfile.name.trim() : user.name.trim(),
                                             photo: downloadURL
                                         }
                                     })
@@ -134,22 +134,22 @@ export default function Profile() {
                 if(stateProfile.email === ''){
                     dispatchStateProfile({type:'emailClassError', payload:initialStateProfile.emailClassError})
                 }
-                if(stateProfile.name === ''){
+                if(stateProfile.name.trim() === ''){
                     dispatchStateProfile({type:'nameClassError', payload: initialStateProfile.nameClassError})
                 }
                 
             }
 
-            if(stateProfile.name.length > 20){
+            if(stateProfile.name.trim().length > 20){
                 dispatchStateProfile({type:'nameClassError', payload: true})
                 if(stateProfile.email === ''){
                     dispatchStateProfile({type:'emailClassError', payload: initialStateProfile.emailClassError})
                 }
             }
 
-            if (stateProfile.name.length <= 20 && stateProfile.name !== '') {
+            if (stateProfile.name.trim().length <= 20 && stateProfile.name.trim() !== '') {
                 await updateProfile(auth.currentUser, {
-                    displayName: stateProfile.name !== '' ? stateProfile.name : user.name,
+                    displayName: stateProfile.name.trim() !== '' ? stateProfile.name.trim() : user.name.trim(),
                 }).then(() => {
                     dispatchStateProfile({type:'setName', payload:  initialStateProfile.name})
                     dispatchStateProfile({type:'nameClassError', payload:  initialStateProfile.nameClassError})
@@ -162,14 +162,14 @@ export default function Profile() {
 
 
                 await updateDoc(doc(db, 'users', user.id), {
-                    name: stateProfile.name !== '' ? stateProfile.name : user.name,
+                    name: stateProfile.name.trim() !== '' ? stateProfile.name.trim() : user.name.trim(),
                 })
                 friend.map(async (el) => {
                     if (el.friendId) {
                         await updateDoc(doc(db, 'chatsList', el.friendId), {
                             [el.id + '.userInfo']: {
                                 id: user.id,
-                                displayName: stateProfile.name !== '' ? stateProfile.name : user.name,
+                                displayName: stateProfile.name.trim() !== '' ? stateProfile.name.trim() : user.name.trim(),
                                 photo: user.photo
                             }
                         })
@@ -250,9 +250,11 @@ export default function Profile() {
     }
 
     return (
-        stateProfile.loadPhoto ? <Loader></Loader> : 
         <>
         <UserNavigation innerRef={navRef} searchRef={searchRef}/>
+        {stateProfile.loadPhoto ? <Loader></Loader> : 
+        
+        
         <section className={classNames(style.profile, 'profile')}>
 
             <div onClick={() => {navigate('/')}} className={style.back}>
@@ -268,11 +270,11 @@ export default function Profile() {
                         <div className={classNames(style.nameEmail, "name-email")}>
                             <p className={classNames(style.nameUser, "name-user")}>
                                 <span className={classNames(style.editAbout, "head-name")}>Name:</span>
-                                <span className="header">{user.name}</span>
+                                <span className={classNames(style.nameProfileUser, "header")}>{user.name}</span>
                             </p>
                             <p className={classNames(style.emailUser, "emailUser header")}>
                                 <span className={classNames(style.editAbout, "head-name")}> Email:</span>
-                                <span className="header">{user.email}</span>
+                                <span className={classNames(style.nameProfileUser, "header")}>{user.email}</span>
                             </p>
 
                             <DeleteProfile stateProfile={dispatchStateProfile}></DeleteProfile>
@@ -299,7 +301,7 @@ export default function Profile() {
             </Modal>
             {stateModalErr.activeModalWindow ? <ModuleError state={[stateModalErr, dispatchStateErr]}></ModuleError> : <></>}
         </section>
+        }
         </>
-        
     )
 }

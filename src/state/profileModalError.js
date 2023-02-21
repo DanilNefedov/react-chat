@@ -18,6 +18,7 @@ export function initProfile (initialStateProfile){
 }
 
 
+
 export function reducerProfile(state, action){
     switch(action.type){
         case "setPhoto":

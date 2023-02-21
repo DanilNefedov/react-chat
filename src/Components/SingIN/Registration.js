@@ -21,8 +21,10 @@ export function Registration () {
 
 
     const handleRegister = async (nameUser, email, password) =>{
+        const nameUserReg = nameUser.trim()
         const auth = getAuth();
-        if(nameUser.length > 20){
+        
+        if(nameUserReg.length > 20 || nameUserReg.length <= 0){
             dispatchModal({type:'errorClassName', payload:'errorReg'})
             return
         }
@@ -30,7 +32,7 @@ export function Registration () {
             await createUserWithEmailAndPassword(auth, email, password)
             .then(({user}) => {
                 updateProfile(auth.currentUser, {
-                    displayName: nameUser
+                    displayName: nameUserReg
                 }).then( async () => {
                     dispatch(setUser({
                         name:user.displayName,

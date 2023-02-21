@@ -181,6 +181,11 @@
     top:10px
 }
 
+.nameProfileUser{
+    max-width: 220px;
+    word-break: break-word;
+}
+
 @media screen and (max-width: 870px) {
     .profile{
         position: relative;
@@ -204,7 +209,7 @@
         display: block;
         /* height: 65%; */
         width: 100%;
-        padding: 0 20px 20px;
+        padding: 0 20px 120px 20px;
     }
     .containerEditUser, .containerUserInfo{
         width: 100%;
@@ -227,10 +232,10 @@
 }
 
 @media screen and (max-width : 460px){
-    .userInfo{
+    /* .userInfo{
         padding: 15px 10px 10px;
-    }
-    .photoSection, .nameUser, .deletePhoto{
+    } */
+    /* .photoSection, .nameUser, .deletePhoto{
         margin-bottom: 10px;
     }
     .emailUser{
@@ -238,18 +243,18 @@
     }
     .containerBtn{
         margin-left: -3px;
-    }
-    .editUserInfo{
+    } */
+    /* .editUserInfo{
         padding: 0 10px 120px 8px;
-    }
-    .infoSize{
+    } */
+    /* .infoSize{
         font-size: 10px;
         line-height: 10px;
         bottom: -15px;
     }
     .editPhoto, .nameSection{
         margin-bottom: 26px;
-    }
+    } */
 
     .nameSection, .emailSection{
         flex-wrap: wrap;
@@ -261,7 +266,7 @@
 }
 
 @media screen and (max-width:375px) {
-    .userInfo, .editUserInfo{
+    /* .userInfo, .editUserInfo{
         padding-left: 5px;
         padding-right: 5px;
     }
@@ -270,7 +275,7 @@
     }
     .editEmail, .editName{
        padding: 3px 5px;
-    }
+    } */
 }
 
 /* @media screen and (max-width: 770px){

@@ -14,6 +14,8 @@
     display: flex;
     justify-content: flex-end;
     position: relative;
+    align-items: center;
+    
 }
 .photoUser{
     width: 50px;
@@ -24,13 +26,22 @@
 }
 .nameUser{
     color: var(--white);
+    max-width: 220px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+    margin-left: 20px;
 }
 
 .search{
     display: none;
-    position: absolute;
+    margin-top: 5px;
+    /* position: absolute;
     left: 5px;
-    top:calc(50% - 8px) ;
+    top:calc(50% - 8px) ; */
     background-color: var(--main-bg);
     width: 17px;
     height: 17px;
@@ -43,6 +54,10 @@
         width: 20px;
         height: 20px;
         top:calc(50% - 10px) ;
+        
+    }
+    .container{
+        justify-content: space-between;
     }
 }
 
@@ -52,6 +67,19 @@
         width: calc(100% - 71px);
         margin-left: auto;
         border-width: 0 0 1px;
+    }
+}
+
+
+@media screen and (max-width:430px) {
+    .nameUser{
+        max-width: 150px;
+    }
+}
+
+@media screen and (max-width:360px) {
+    .nameUser{
+        max-width: 100px;
     }
 }
 /* @media screen and (max-width: 770px){

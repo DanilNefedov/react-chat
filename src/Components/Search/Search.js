@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import { Loader } from '../Loader/Loader';
 import React from 'react';
 import { initialStateModal, reducerModal } from '../../state/modalError';
+import { Empty } from '../Empty/Empty';
 
 const SearchList = React.lazy(() => import('./SearchList'))
 
@@ -20,6 +21,7 @@ export function Search({ text, setText, searchListRef, searchRef, navRef }) {
     const friend = useSelector(state => state.friend.friend)
     const myInfo = useSelector(state => state.user)
     const [user, setUser] = useState([]) 
+    const containerSearch = useRef()
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -66,10 +68,10 @@ export function Search({ text, setText, searchListRef, searchRef, navRef }) {
         const id = el.id;
         const photo = el.photoURL
         const combinedId = myInfo.id > id ? myInfo.id + id : id + myInfo.id
-        const find = friend.find(el => el.id === combinedId)
+        const findChat = friend.find(el => el.id === combinedId)
 
         try {
-            if (!find) {
+            if (!findChat) {
                 const friendId = id
                 dispatch(addFrined({ combinedId, name, friendId, photo }))
             }
@@ -121,9 +123,6 @@ export function Search({ text, setText, searchListRef, searchRef, navRef }) {
             console.error(error)
         }
     }
-
-    const context = useOutletContext()
-    const containerSearch = useRef()
     
     function resize() {
         if (containerSearch.current !== null && containerSearch.current !== undefined) {
@@ -162,7 +161,7 @@ export function Search({ text, setText, searchListRef, searchRef, navRef }) {
             <section ref={searchListRef} className={style.searchList} id="search-list">
 
                 {(user.length === 0) ? (
-                    <div className={style.empty}>Search list is empty</div>
+                    <Empty text={'Search list is empty'}></Empty>
                 ) : (
                     <div ref={containerSearch} className={classNames(style.containerSearchList, "container-search-list")}>
                         <Suspense fallback={<Loader></Loader>}>

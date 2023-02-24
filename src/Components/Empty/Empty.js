@@ -1,6 +1,6 @@
-export function Empty (){
+export function Empty ({text}){
 
     return(
-        <div className="empty">Search list is empty</div>
+        <div className="empty">{text}</div>
     )
 }

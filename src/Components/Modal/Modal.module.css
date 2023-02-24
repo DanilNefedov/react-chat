@@ -45,8 +45,8 @@
 }
 
 .exitBtn{
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     position: relative;
     margin: 15px;
     background-color: var(--second-main);
@@ -56,8 +56,8 @@
 .exitImg{
     position: absolute;
     top:0;
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
 }
 .err{
     border-color: var(--red);
@@ -73,10 +73,6 @@
 }
 
 @media screen and (max-width: 450px) {
-    .exitImg{
-        width: 25px;
-        height: 25px;
-    }
     .containerModal{
         padding: 15px 7px;
         width: 280px;

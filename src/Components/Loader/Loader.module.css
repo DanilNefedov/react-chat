@@ -61,3 +61,39 @@
         transform: translate(65px, -50%);
     }
 }
+
+
+
+@media screen and (max-width: 700px) {
+    .loader{
+        width: 50px;
+        height: 50px;
+    }
+    .loader::before{
+        width: 24px;
+        height: 24px;
+    }
+    @keyframes colorBallMoveX {
+        0% {
+            background-position: 0% 0;
+            transform: translate(-7.5px, -50%);
+        }
+    
+        15%,
+        25% {
+            background-position: 0% 0;
+            transform: translate(0px, -50%);
+        }
+    
+        75%,
+        85% {
+            background-position: 100% 0;
+            transform: translate(25px, -50%);
+        }
+    
+        100% {
+            background-position: 100% 0;
+            transform: translate(32.5px, -50%);
+        }
+    }
+}

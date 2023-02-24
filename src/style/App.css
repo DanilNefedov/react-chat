@@ -157,6 +157,7 @@ h6 {
 .empty{
     color: var(--white);
     text-align: center;
+    padding-top: 20px;
 }
 .modal{
     display: none;
@@ -193,6 +194,13 @@ h6 {
 }
 #profile-container{
     justify-content: flex-end;
+}
+
+.active-contact{
+    background-color: var(--desactive-violet);
+}
+.add-friends .active-contact:hover{
+    background-color: var(--main-violet);
 }
 
 @media screen and (max-width:770px) {

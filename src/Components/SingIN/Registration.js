@@ -38,7 +38,6 @@ export function Registration () {
                         name:user.displayName,
                         email:user.email,
                         id:user.uid,
-                        token:user.accessToken,
                         photo:null
                     }))
                     await setDoc(doc(db, 'users', user.uid),{

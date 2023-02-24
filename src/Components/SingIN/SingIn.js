@@ -29,7 +29,6 @@ export function SingIn (){
                 name:user.displayName,
                 email:user.email,
                 id:user.uid,
-                token:user.accessToken,
                 photo: user.photoURL
             }))
             goBack()

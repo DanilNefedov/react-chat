@@ -87,11 +87,11 @@
 .list:hover{
     background-color: #252632;
 }
-.empty{
+/* .empty{
     color: var(--white);
     text-align: center;
     padding-top: 20px;
-}
+} */
 #searchIcon::-webkit-search-cancel-button {
     -webkit-appearance: none;
     width: 20px;

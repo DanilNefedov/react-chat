@@ -167,8 +167,8 @@
 
 .back{
     display: none;
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
 }
 
 @media screen and (max-width: 660px) {

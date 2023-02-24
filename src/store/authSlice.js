@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     name:null,
     email:null,
-    token:null,
     id:null,
     photo:null
 }
@@ -15,7 +14,6 @@ const authSlice = createSlice({
         setUser(state, action) {
             state.name = action.payload.name;
             state.email = action.payload.email;
-            state.token = action.payload.token;
             state.id = action.payload.id;
             state.photo = action.payload.photo
         },
@@ -30,7 +28,6 @@ const authSlice = createSlice({
         removeUser(state) {
             state.name = null;
             state.email = null;
-            state.token = null;
             state.id = null;
             state.photo = null;
         }

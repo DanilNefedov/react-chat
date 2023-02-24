@@ -6,11 +6,13 @@ import { addFrined, addLastMessage, updatePhotoName, viewMessage } from '../../s
 import React, { Suspense, useReducer, useRef, useState } from 'react';
 import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 import { ModuleError } from '../ModalError/ModalError';
 import { Loader } from '../Loader/Loader';
 import { initialStateModal, reducerModal } from '../../state/modalError';
 import { UserNavigation } from '../UserNavigation/UserNavigation';
+import { Empty } from '../Empty/Empty';
+import addGroups from '../../img/add-groups.svg'
 
 
 const FriendsList = React.lazy(() => import('./FriendsList/FriendsList'))
@@ -55,7 +57,6 @@ export default function Friends() {
                         const view = el[1].viewMessage.view 
                         const idSender = el[1].idSender ? el[1].idSender.idSender : null
                         const newMess = el[1].viewNewMessage.viewNewMess 
-                        //console.log(newMess)
 
                         let minute = userDate.getMinutes().toString()
                         if (minute.length === 1) {
@@ -69,14 +70,10 @@ export default function Friends() {
                                 dispatch(addFrined({newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
                                 
                             } else if (find.timePublic !== timePublic) {
-                                const friendInfo = combinedId
-                                const messageText = lastMessages
-                                const datePush = date
-                                dispatch(addLastMessage({idSender,  view, friendInfo, messageText, datePush, timePublic }))
+                                dispatch(addLastMessage({idSender,  view, combinedId, lastMessages, date, timePublic }))
 
                             }else if (find.name !== name || find.photo !== photo) {
-                                const friendInfo = combinedId
-                                dispatch(updatePhotoName({ friendInfo, photo, name }))
+                                dispatch(updatePhotoName({ combinedId, photo, name }))
                             }
 
                         }else {
@@ -84,14 +81,10 @@ export default function Friends() {
                             if (!find) {
                                 dispatch(addFrined({newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
                             } else if (find.timePublic !== timePublic) {
-                                const friendInfo = combinedId
-                                const messageText = lastMessages
-                                const datePush = date
-                                dispatch(addLastMessage({idSender,  view, friendInfo, messageText, datePush, timePublic }))
+                                dispatch(addLastMessage({idSender,  view, combinedId, lastMessages, date, timePublic }))
 
                             }else if (find.name !== name || find.photo !== photo) {
-                                const friendInfo = combinedId
-                                dispatch(updatePhotoName({ friendInfo, photo, name }))
+                                dispatch(updatePhotoName({ combinedId, photo, name }))
                             }
                         }
                         dispatch(viewMessage({newMess, view,combinedId,idSender}))
@@ -165,6 +158,9 @@ export default function Friends() {
                         <h2 className={classNames(style.header, 'header')}>
                             Friends
                         </h2>
+                        <Link to='/groups' className={style.groupsAdd}>
+                            <img src={addGroups} alt="Add Groups" />
+                        </Link>
                     </div>
                     <div ref={containerFrineds} className={style.scrollMessages}>
                         <div className={classNames(style.containerFriendsList)}>
@@ -174,7 +170,7 @@ export default function Friends() {
                                         <FriendsList key={friend.id} friend={friend}></FriendsList>
                                     ))
                                 ):(
-                                    <div className={classNames(style.emptyBlock)}>Friend list is empty</div>
+                                    <Empty text={'Friend list is empty'}></Empty>
                                 )}
                             </Suspense>
                         </div>

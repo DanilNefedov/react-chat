@@ -3,6 +3,7 @@ import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../../store/messagesSlice";
+import { Empty } from "../Empty/Empty";
 import style from './MessagesMain.module.css'
 
 
@@ -88,7 +89,7 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                 </div>
             )
         ))) : (
-            <div className={classNames(style.empty)}>No Messages</div>
+            <Empty text={'No Messages'}></Empty>
         ))
     );
 }

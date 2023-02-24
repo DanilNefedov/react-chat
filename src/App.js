@@ -7,6 +7,7 @@ import {Registration} from './Components/SingIN/Registration';
 import React, { Suspense } from 'react';
 import { Loader } from './Components/Loader/Loader';
 import { Page404 } from './Components/404/Page404';
+import { Groups } from './Components/Groups/Groups';
 
 
 
@@ -34,6 +35,12 @@ function App() {
           <Route path='/profile' element={
             <Suspense fallback={<Loader></Loader>}>
               <Profile/>
+            </Suspense>
+          }/>
+
+          <Route path='/groups' element={
+            <Suspense fallback={<Loader></Loader>}>
+              <Groups/>
             </Suspense>
           }/>
         </Route>

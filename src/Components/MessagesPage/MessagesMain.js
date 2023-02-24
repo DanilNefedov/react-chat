@@ -111,20 +111,18 @@ export default function MessagesMain() {
 
                 if (findChat) {
                     const combinedId = findChat[0]
-                    const friendInfo = infoChat.id
                     const name = findChat[1].userInfo.displayName ? findChat[1].userInfo.displayName : ''
                     const photo = findChat[1].userInfo.photo
                     const view = findChat[1].viewMessage.view 
                     const idSender = findChat[1].idSender ? findChat[1].idSender.idSender : null
                     const newMess = findChat[1].viewNewMessage.viewNewMess 
-                    //console.log(findChat)
 
                     if (findChat[1].userInfo.acc === 'deleted') {
-                        dispatch(updatePhotoName({ name, photo, friendInfo }))
+                        dispatch(updatePhotoName({ name, photo, combinedId }))
                         setDeletedAcc(true)
                         return
                     } else {
-                        dispatch(updatePhotoName({ name, photo, friendInfo }))
+                        dispatch(updatePhotoName({ name, photo, combinedId }))
                         setDeletedAcc(false)
                     }
 

@@ -1,0 +1,59 @@
+.groups{
+    background-color: var(--second-main);
+    height: 100vh;
+    width: 100%;
+}
+.container{
+    display: flex;
+    justify-content: space-between;
+}
+.addFriends{
+    width: 50%;
+} 
+.headerContacs{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 50px;
+    border-bottom-width: 1px;
+    border-style: solid;
+    border-color: var(--main-border);
+}
+.header{
+    padding: 0 10px;
+}
+.groupParams{
+    border-right-width: 1px;
+    border-color: var(--main-border);
+    border-style: solid;
+    height: 100vh;
+    width: 50%;
+}
+.friend{
+    width: 100%;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.containerFriend{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+.photo{
+    width: 50px;
+    height: 50px;
+}
+.photo img{
+    width: 50px;
+    height: 50px;
+}
+.name{
+    margin-left: 15px;
+}
+.friend:hover{
+    background-color: #252632;
+}
+/* .activeClass{
+    background-color: var(--main-violet);
+} */

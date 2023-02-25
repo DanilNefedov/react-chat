@@ -1,3 +1,23 @@
+.nameEdit input:-webkit-autofill,
+.nameEdit input:-webkit-autofill:hover, 
+.nameEdit input:-webkit-autofill:focus, 
+.nameEdit input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px var(--main-bg) inset !important;
+    -webkit-text-fill-color:var(--white)!important;
+}
+.nameEdit input {
+    outline:none!important;
+    border: transparent!important; 
+    outline-offset: 0!important;
+}
+
+.nameEdit input{
+    border: 1px solid transparent!important;
+}
+.nameEdit .err{
+    border-color: var(--red)!important;
+}
+
 .groups{
     background-color: var(--second-main);
     height: 100vh;
@@ -29,6 +49,10 @@
     border-style: solid;
     height: 100vh;
     width: 50%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .friend{
     width: 100%;
@@ -54,6 +78,73 @@
 .friend:hover{
     background-color: #252632;
 }
-/* .activeClass{
-    background-color: var(--main-violet);
+
+
+.photoGroup{
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    margin-bottom: 15px;
+}
+.photoGroup img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+.edit, .nameEdit{
+    padding-bottom: 15px;    
+    position: relative;
+}
+/* .photoEdit{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 } */
+#fileGroup{
+    display: none;
+}
+.iconBtn{
+    width: 27px;
+    height: 27px;
+    position: absolute;
+    top: -3px;
+}
+.choiceFile{
+    cursor: pointer;
+    color: var(--desactive-text);
+    margin-left: 33px;
+}
+.choiceFile:hover{
+    color:var(--white);
+}
+
+.infoSize{
+    display: block;
+    font-size: 11px;
+    color: var(--desactive-text);
+    letter-spacing: 0.3px;
+}
+
+.btnAdd button{
+    background-color: var(--desactive-violet);
+    padding: 10px 20px;
+    border-radius: 3px;
+    color: var(--white);
+    line-height: 21px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+.btnAdd button:hover{
+    background-color: var(--main-violet);
+}
+
+#nameEdit{
+    background-color: var(--main-bg);
+    padding: 5px;
+    color: var(--white);
+}
+.nameGroup{
+    color:var(--desactive-text);
+    padding-bottom: 5px;
+}

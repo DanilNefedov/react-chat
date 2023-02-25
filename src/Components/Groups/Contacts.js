@@ -20,6 +20,7 @@ export function Contacts ({friends, indexBlock, addFriend}){
         }
         setSelected(newSelected);
     }
+   // console.log(state[0])
 
     return(
 

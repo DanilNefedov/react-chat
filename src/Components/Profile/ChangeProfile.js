@@ -123,7 +123,7 @@ export function ChangeProfile ({ state, stateProfile}){
             :
             <div className={classNames(style.editPhoto, "edit-photo")}>
                 <img className={classNames(style.iconBtn)} src={addPhoto} alt="add" />
-                <label className={style.downloadImg} htmlFor={style.loadPhoto}>Download Photo</label>
+                <label className={style.downloadImg} htmlFor={style.loadPhoto}>Add Photo</label>
                 <input id={style.loadPhoto} type="file" onChange={(e) => showPhoto(e)} accept='image/*, .png, .jpg, .web' />
                 {stateProfile[0].selectedPhoto ?
                     <span className={classNames(style.selected)}><img src={done} alt="done" /></span> :

@@ -8,8 +8,9 @@ import { Contacts } from "./Contacts";
 import { useSelector } from "react-redux";
 import { Empty } from "../Empty/Empty";
 import { initialStateGroup, reducerGroup } from "../../state/group";
+import { v4 as uuid } from 'uuid';
 import done from '../../img/done-contact.svg'
-
+import { doc, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 
 
 const selectedFriends = []
@@ -18,48 +19,76 @@ const selectedFriends = []
 export function Groups() {
     const navRef = useRef()
     const friends = useSelector(state => state.friend.friend)
-    const user = useSelector(user => user.user)
+    const myInfo = useSelector(user => user.user)
     const sortState = [...friends]
     const [stateGroup, dispatchStateGroup] = useReducer(reducerGroup, initialStateGroup)
+    const db = getFirestore();
 
     //------------------ CHANGE TO USEMEMO --------------------//
-    const addFriend = (el) =>{
+    const addFriend = (el) => {
         const index = selectedFriends.indexOf(el);
         if (index === -1) {
             selectedFriends.push(el);
-            dispatchStateGroup({type: 'users', payload: [...stateGroup.users, selectedFriends]})
+            dispatchStateGroup({ type: 'users', payload: selectedFriends })
         } else {
             selectedFriends.splice(index, 1);
-            dispatchStateGroup({type: 'users', payload:selectedFriends})
+            dispatchStateGroup({ type: 'users', payload: selectedFriends })
         }
     }
     //------------------ CHANGE TO USEMEMO --------------------//
     // console.log(user)
 
-    const addGroup = () =>{
-        console.log(stateGroup)
-        //const el = friendChoice
-       
+    const addGroup = async () => {
+        const combinedId = myInfo.id + uuid()
+        const users = stateGroup.users
 
+        await updateDoc(doc(db, 'chatsList', myInfo.id), {
+            [combinedId + '.group']: {
+                ['usersInfo']: {
+                    users:users,
+                    admin:myInfo
+                },
+                ['date']: serverTimestamp(),
+                ['viewMessage'] :{
+                    view: false,
+                    idSender:myInfo.id
+                },
+                ['idSender'] :{
+                    idSender:myInfo.id
+                },
+                ['viewNewMessage'] :{
+                    viewNewMess: true
+                }
+            }
 
-        // if(selectedFriends.length > 0 ){
-        //     dispatchStateGroup({type: 'users', payload: selectedFriends})
-        // }
-        
-        
-        // if(){
+        })
 
-        // }
-        // if(selectedFriends.length <= 0){
-        //     selectedFriends.length = 0;
-        //     console.log('w')
-        //     dispatchStateGroup({type: 'users', payload: selectedFriends})
-        // }
+        users.map(async user => {
+            const infoForFriends = users.filter(el => el.id !== user.id);
+            await updateDoc(doc(db, 'chatsList', user.friendId), {
+                [combinedId + '.group']: {
+                    ['userInfo']: {
+                        users: infoForFriends,
+                        admin: myInfo
+                    },
+                    ['date']: serverTimestamp(),
+                    ['viewMessage']: {//change
+                        view: false,
+                    },
+                    ['idSender']: {
+                        idSender: myInfo.id
+                    },
+                    ['viewNewMessage']: {
+                        viewNewMess: false
+                    }
+                }
+            })
 
-        // 
+        })
+
 
     }
-    
+
 
 
     return (
@@ -76,7 +105,7 @@ export function Groups() {
                             </h2>
                         </div>
                         <div className={style.contactContainer}>
-                             {(friends.length > 0) ? (
+                            {(friends.length > 0) ? (
                                 sortState.sort((a, b) => b.timePublic - a.timePublic).map((friend, indexBlock) => (
                                     <Contacts addFriend={addFriend} indexBlock={indexBlock} key={friend.id} friends={friend}></Contacts>
                                 ))
@@ -84,7 +113,7 @@ export function Groups() {
                                 <Empty text={'Contacts list is empty'}></Empty>
                             )}
                         </div>
-                       
+
                     </div>
                 </div>
             </section>

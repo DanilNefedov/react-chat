@@ -40,9 +40,11 @@ export default function Friends() {
         const unsub = onSnapshot(doc(db, "chatsList", myInfo.id), (doc) => {
             if (doc.data()) {
                 const data = Object.entries(doc.data())
+                console.log(data)
                 data.map(el => {
+                    
                     const combinedId = el[0]
-                    if (combinedId) {
+                    if (combinedId && !el[1].group) {
                         const find = friendList.find(el => el.id === combinedId)
                         const userInfo = el[1].userInfo
                         const userDate = el[1].date.toDate()//some error

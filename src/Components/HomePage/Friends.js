@@ -90,6 +90,16 @@ export default function Friends() {
                             }
                         }
                         dispatch(viewMessage({newMess, view,combinedId,idSender}))
+                    }
+                    if(combinedId && el[1].group){
+                        console.log(el[1].group)
+                        const lastMessages = el[1].group.lastMessage ? el[1].group.lastMessage.messageText : 'No messages'
+                        const name = el[1].group.infoGroup.name
+                        const userDate = el[1].group.date.toDate()
+                        const timePublic = userDate.getTime() ? userDate.getTime() : '--:--'
+                        const dateUserNow = new Date()
+                        const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth()+1}.${userDate.getFullYear()}`
+                        const findMyDayUser = `${dateUserNow.getDate()}.${dateUserNow.getMonth()+1}.${dateUserNow.getFullYear()}`
                     }  
                 })
                 dispatchModal({type:'resetModal', payload:initialStateModal})

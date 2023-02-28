@@ -42,11 +42,14 @@ export function Groups() {
         const combinedId = myInfo.id + uuid()
         const users = stateGroup.users
 
+        await setDoc(doc(db, 'chats', combinedId), { messages: [] })
+
         await updateDoc(doc(db, 'chatsList', myInfo.id), {
             [combinedId + '.group']: {
-                ['usersInfo']: {
+                ['infoGroup']: {
                     users:users,
-                    admin:myInfo
+                    admin:myInfo,
+                    name:stateGroup.name
                 },
                 ['date']: serverTimestamp(),
                 ['viewMessage'] :{
@@ -67,9 +70,10 @@ export function Groups() {
             const infoForFriends = users.filter(el => el.id !== user.id);
             await updateDoc(doc(db, 'chatsList', user.friendId), {
                 [combinedId + '.group']: {
-                    ['userInfo']: {
+                    ['infoGroup']: {
                         users: infoForFriends,
-                        admin: myInfo
+                        admin: myInfo,
+                        name:stateGroup.name
                     },
                     ['date']: serverTimestamp(),
                     ['viewMessage']: {//change

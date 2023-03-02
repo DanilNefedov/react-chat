@@ -13,7 +13,7 @@ export default function FriendsList({friend}) {
     const {id, name, lastMessages, date, photo, view, friendId, idSender, newMess} = friend
     const myInfo = useSelector(state => state.user)
     const db = getFirestore()
-
+    //console.log(friend)
 
     const delViewMess = async () => {
         try{
@@ -22,11 +22,21 @@ export default function FriendsList({friend}) {
                     viewNewMess: true
                 }
             })
-            await updateDoc(doc(db, 'chatsList', friendId), {
-                [id + '.viewMessage']: {
-                    view: true, 
-                }
-            })
+            if(friend.admin){
+                await updateDoc(doc(db, 'chatsList', friend.admin.id), {
+                    [id + '.viewMessage']: {
+                        view: true, 
+                    }
+                })
+            }else{
+                await updateDoc(doc(db, 'chatsList', friendId), {
+                    [id + '.viewMessage']: {
+                        view: true, 
+                    }
+                })
+            }
+            
+            
         } catch(err){
             console.error(err)
         }

@@ -81,9 +81,11 @@ export function Search({ text, setText, searchListRef, searchRef, navRef }) {
                 await setDoc(doc(db, 'chats', combinedId), { messages: [] })
 
                 await updateDoc(doc(db, 'chatsList', myInfo.id), {
-                    [combinedId + '.userInfo']: {
+                    [combinedId + '.chat']:{
                         id: id,
                         displayName: name,
+                    },
+                    [combinedId + '.photo'] : {
                         photo: photo
                     },
                     [combinedId + '.date']: serverTimestamp(),
@@ -97,12 +99,46 @@ export function Search({ text, setText, searchListRef, searchRef, navRef }) {
                     [combinedId + '.viewNewMessage'] :{
                         viewNewMess: true
                     }
+
+                    // [combinedId + '.userInfo']: {
+                    //     id: id,
+                    //     displayName: name,
+                    //     photo: photo
+                    // },
+                    // [combinedId + '.date']: serverTimestamp(),
+                    // [combinedId + '.viewMessage'] :{
+                    //     view: false,
+                    //     idSender:myInfo.id
+                    // },
+                    // [combinedId + '.idSender'] :{
+                    //     idSender:myInfo.id
+                    // },
+                    // [combinedId + '.viewNewMessage'] :{
+                    //     viewNewMess: true
+                    // }
                 })
 
                 await updateDoc(doc(db, 'chatsList', id), {
-                    [combinedId + '.userInfo']: {
+                    // [combinedId + '.userInfo']: {
+                    //     id: myInfo.id,
+                    //     displayName: myInfo.name,
+                    //     photo: myInfo.photo
+                    // },
+                    // [combinedId + '.date']: serverTimestamp(),
+                    // [combinedId + '.viewMessage'] :{
+                    //     view: false,
+                    // },
+                    // [combinedId + '.idSender'] :{
+                    //     idSender:myInfo.id
+                    // },
+                    // [combinedId + '.viewNewMessage'] :{
+                    //     viewNewMess: false
+                    // }
+                    [combinedId + '.chat']:{
                         id: myInfo.id,
                         displayName: myInfo.name,
+                    },
+                    [combinedId + '.photo'] : {
                         photo: myInfo.photo
                     },
                     [combinedId + '.date']: serverTimestamp(),

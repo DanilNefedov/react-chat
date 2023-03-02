@@ -39,6 +39,8 @@ export function Groups() {
     // console.log(user)
 
     const addGroup = async () => {
+        // const idForGroup = uuid().replace(/-/g, "");
+       
         const combinedId = myInfo.id + uuid()
         const users = stateGroup.users
 
@@ -46,45 +48,63 @@ export function Groups() {
 
         await updateDoc(doc(db, 'chatsList', myInfo.id), {
             [combinedId + '.group']: {
-                ['infoGroup']: {
-                    users:users,
-                    admin:myInfo,
-                    name:stateGroup.name
-                },
-                ['date']: serverTimestamp(),
-                ['viewMessage'] :{
-                    view: false,
-                    idSender:myInfo.id
-                },
-                ['idSender'] :{
-                    idSender:myInfo.id
-                },
-                ['viewNewMessage'] :{
-                    viewNewMess: true
-                }
+                users:users,
+                admin:myInfo,
+                name:stateGroup.name
+            },
+            [combinedId + '.photo']:{
+                photo: stateGroup.photo
+            },
+            [combinedId + '.date']: serverTimestamp(),
+            [combinedId + '.viewMessage'] :{
+                view: false,
+                idSender:myInfo.id
+            },
+            [combinedId + '.idSender'] :{
+                idSender:myInfo.id
+            },
+            [combinedId + '.viewNewMessage'] :{
+                viewNewMess: true
             }
-
         })
 
         users.map(async user => {
             const infoForFriends = users.filter(el => el.id !== user.id);
             await updateDoc(doc(db, 'chatsList', user.friendId), {
+                // [combinedId + '.group']: {
+                //     ['infoGroup']: {
+                //         users: infoForFriends,
+                //         admin: myInfo,
+                //         name:stateGroup.name
+                //     },
+                //     ['date']: serverTimestamp(),
+                //     ['viewMessage']: {//change
+                //         view: false,
+                //     },
+                //     ['idSender']: {
+                //         idSender: myInfo.id
+                //     },
+                //     ['viewNewMessage']: {
+                //         viewNewMess: false
+                //     }
+                // }
                 [combinedId + '.group']: {
-                    ['infoGroup']: {
-                        users: infoForFriends,
-                        admin: myInfo,
-                        name:stateGroup.name
-                    },
-                    ['date']: serverTimestamp(),
-                    ['viewMessage']: {//change
-                        view: false,
-                    },
-                    ['idSender']: {
-                        idSender: myInfo.id
-                    },
-                    ['viewNewMessage']: {
-                        viewNewMess: false
-                    }
+                    users:infoForFriends,
+                    admin:myInfo,
+                    name:stateGroup.name
+                },
+                [combinedId + '.photo']:{
+                    photo: stateGroup.photo
+                },
+                [combinedId + '.date']: serverTimestamp(),
+                [combinedId + '.viewMessage'] :{
+                    view: false,
+                },
+                [combinedId + '.idSender'] :{
+                    idSender:myInfo.id
+                },
+                [combinedId + '.viewNewMessage'] :{
+                    viewNewMess: false
                 }
             })
 

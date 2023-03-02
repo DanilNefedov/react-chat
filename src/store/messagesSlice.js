@@ -21,7 +21,8 @@ import { createSlice } from "@reduxjs/toolkit";
                             userId: action.payload.userId,
                             date: action.payload.datePush,
                             text: action.payload.messageText,
-                            messageId: action.payload.messageId
+                            messageId: action.payload.messageId,
+                            photo: action.payload.photo
                         })
                     }
                 }else{
@@ -32,7 +33,8 @@ import { createSlice } from "@reduxjs/toolkit";
                                 userId: action.payload.userId,
                                 date: action.payload.datePush,
                                 text: action.payload.messageText,
-                                messageId: action.payload.messageId
+                                messageId: action.payload.messageId,
+                                photo: action.payload.photo
                             }
                         ]
                     })

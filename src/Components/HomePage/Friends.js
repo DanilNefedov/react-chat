@@ -13,6 +13,7 @@ import { initialStateModal, reducerModal } from '../../state/modalError';
 import { UserNavigation } from '../UserNavigation/UserNavigation';
 import { Empty } from '../Empty/Empty';
 import addGroups from '../../img/add-groups.svg'
+import { addGroup, addLastMessagesGroup, viewMessageGroup } from '../../store/groupSlice';
 
 
 const FriendsList = React.lazy(() => import('./FriendsList/FriendsList'))
@@ -30,47 +31,48 @@ export default function Friends() {
     const db = getFirestore();
     const dispatch = useDispatch()
     const friendList = useSelector(state => state.friend.friend)
-    const sortState = [...friendList]
+    const groupList = useSelector(state => state.group.group)
+    //console.log(friendList, groupList)
+    const sortState = [...friendList, ...groupList]
     const headRef = useRef()
     const searchRef = useRef();
-    const searchListRef = useRef();       
+    const searchListRef = useRef();
     const refSearch = useRef(null)
 
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "chatsList", myInfo.id), (doc) => {
             if (doc.data()) {
                 const data = Object.entries(doc.data())
-                console.log(data)
+                //console.log(data)
                 data.map(el => {
-                    
                     const combinedId = el[0]
-                    if (combinedId && !el[1].group) {
+                    const infoChat = el[1]
+                    const lastMessages = infoChat.lastMessage ? infoChat.lastMessage.messageText : 'No messages'
+                    const photo = infoChat.photo.photo
+                    const userDate = infoChat.date.toDate()
+                    const timePublic = userDate.getTime() ? userDate.getTime() : '--:--'
+                    const dateUserNow = new Date()
+                    const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth() + 1}.${userDate.getFullYear()}`
+                    const findMyDayUser = `${dateUserNow.getDate()}.${dateUserNow.getMonth() + 1}.${dateUserNow.getFullYear()}`
+                    const view = infoChat.viewMessage.view
+                    const idSender = infoChat.idSender ? infoChat.idSender.idSender : null
+                    const newMess = infoChat.viewNewMessage.viewNewMess
+                    let minute = userDate.getMinutes().toString()
+                    if (minute.length === 1) {
+                        minute = `0${minute}`
+                    }
+                    // console.log(photo)
+                    if (combinedId && infoChat.chat) {
                         const find = friendList.find(el => el.id === combinedId)
-                        const userInfo = el[1].userInfo
-                        const userDate = el[1].date.toDate()//some error
-                        const friendId = userInfo.id
-                        const name = userInfo.displayName
-                        const photo = userInfo.photo
-                        const lastMessages = el[1].lastMessage ? el[1].lastMessage.messageText : 'No messages'
-                        const timePublic = userDate.getTime() ? userDate.getTime() : '--:--'
-                        const dateUserNow = new Date()
-                        const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth()+1}.${userDate.getFullYear()}`
-                        const findMyDayUser = `${dateUserNow.getDate()}.${dateUserNow.getMonth()+1}.${dateUserNow.getFullYear()}`
-                        const view = el[1].viewMessage.view 
-                        const idSender = el[1].idSender ? el[1].idSender.idSender : null
-                        const newMess = el[1].viewNewMessage.viewNewMess 
+                        const friendId = infoChat.chat.id
+                        const name = infoChat.chat.displayName
 
-                        let minute = userDate.getMinutes().toString()
-                        if (minute.length === 1) {
-                            minute = `0${minute}`
-                        }
-                        
                         if(findMyDayBase === findMyDayUser){
                             const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
 
                             if (!find) {
                                 dispatch(addFrined({newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
-                                
+
                             } else if (find.timePublic !== timePublic) {
                                 dispatch(addLastMessage({idSender,  view, combinedId, lastMessages, date, timePublic }))
 
@@ -90,20 +92,35 @@ export default function Friends() {
                             }
                         }
                         dispatch(viewMessage({newMess, view,combinedId,idSender}))
+
+                    } else if (infoChat.group) {
+                        //console.log(lastMessages)
+                        const find = groupList.find(el => el.id === combinedId)
+                        const users = infoChat.group.users
+                        const admin = infoChat.group.admin
+                        const name = infoChat.group.name
+                        if(findMyDayBase === findMyDayUser){//change to variables and "?:"
+                            const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
+                            if(!find){
+                                dispatch(addGroup({combinedId, users, photo, name, admin, lastMessages, date, timePublic, view, idSender, newMess}))
+                            }else if(find.timePublic !== timePublic){
+                                dispatch(addLastMessagesGroup({idSender,  view, combinedId, lastMessages, date, timePublic }))
+                            }
+                        }else if(findMyDayBase !== findMyDayUser ){
+                            const date = findMyDayBase
+                            if(!find){
+                                dispatch(addGroup({combinedId, users, photo, name, admin, lastMessages, date, timePublic, view, idSender, newMess}))
+                            }else if(find.timePublic !== timePublic){
+                                dispatch(addLastMessagesGroup({idSender,  view, combinedId, lastMessages, date, timePublic }))
+                            }
+                        }
+                        dispatch(viewMessageGroup({newMess, view,combinedId,idSender}))
                     }
-                    if(combinedId && el[1].group){
-                        console.log(el[1].group)
-                        const lastMessages = el[1].group.lastMessage ? el[1].group.lastMessage.messageText : 'No messages'
-                        const name = el[1].group.infoGroup.name
-                        const userDate = el[1].group.date.toDate()
-                        const timePublic = userDate.getTime() ? userDate.getTime() : '--:--'
-                        const dateUserNow = new Date()
-                        const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth()+1}.${userDate.getFullYear()}`
-                        const findMyDayUser = `${dateUserNow.getDate()}.${dateUserNow.getMonth()+1}.${dateUserNow.getFullYear()}`
-                    }  
+
                 })
                 dispatchModal({type:'resetModal', payload:initialStateModal})
-            } else {
+            }
+            else {
                 dispatchModal({type:'activeModalWindow', payload:true})
                 return 
             }
@@ -112,8 +129,8 @@ export default function Friends() {
         return () => {
             unsub()
         }
-    }, [ friendList]) 
-
+    }, [friendList, groupList])//friendList
+    //console.log(groupList)
     function resize() {
         if (containerFrineds.current !== null) {
             const containerFrinedsHeight = containerFrineds.current.offsetHeight
@@ -138,18 +155,18 @@ export default function Friends() {
     }, [friendList])
 
 
-    useEffect(()=>{
+    useEffect(() => {
         const searchBlock = refSearch.current
         const searchActiveBlock = searchRefUser.current
-        const onClick = e => {    
-            if(!searchBlock.contains(e.target)){
-                if(searchActiveBlock !== undefined && !searchActiveBlock.contains(e.target)){
+        const onClick = e => {
+            if (!searchBlock.contains(e.target)) {
+                if (searchActiveBlock !== undefined && !searchActiveBlock.contains(e.target)) {
                     setActiveModal(false)
                 }
-            } 
+            }
         }
 
-        if(!activeModal){
+        if (!activeModal) {
             document.addEventListener('click', onClick);
         }
         return () => document.removeEventListener('click', onClick);
@@ -157,42 +174,43 @@ export default function Friends() {
 
 
     return (
-    <>
-        <UserNavigation setActiveModal={setActiveModal} innerRef={navRef} searchRefUser={searchRefUser}/>
-        <section className="home">
-            <div ref={refSearch} className={activeModal ? classNames(style.searchFriends, "search-friends, active-modal-search") : classNames(style.searchFriends, "search-friends")}>
-                <Search navRef={navRef} searchListRef={searchListRef} searchRef={searchRef}  text={text} setText={setText}  />
-            </div> 
-            <section className={style.friends} ref={friendsScroll}>
-
-                <div className={classNames(style.container, 'container')}>
-                    <div ref={headRef} className={classNames(style.head, 'head')}>
-                        <h2 className={classNames(style.header, 'header')}>
-                            Friends
-                        </h2>
-                        <Link to='/groups' className={style.groupsAdd}>
-                            <img src={addGroups} alt="Add Groups" />
-                        </Link>
-                    </div>
-                    <div ref={containerFrineds} className={style.scrollMessages}>
-                        <div className={classNames(style.containerFriendsList)}>
-                            <Suspense fallback={<Loader></Loader>}>
-                                {(friendList.length > 0 ) ? (
-                                    sortState.sort((a,b) => b.timePublic - a.timePublic).map((friend) => ( 
-                                        <FriendsList key={friend.id} friend={friend}></FriendsList>
-                                    ))
-                                ):(
-                                    <Empty text={'Friend list is empty'}></Empty>
-                                )}
-                            </Suspense>
-                        </div>
-                        
-                    </div>
+        <>
+            <UserNavigation setActiveModal={setActiveModal} innerRef={navRef} searchRefUser={searchRefUser} />
+            <section className="home">
+                <div ref={refSearch} className={activeModal ? classNames(style.searchFriends, "search-friends, active-modal-search") : classNames(style.searchFriends, "search-friends")}>
+                    <Search navRef={navRef} searchListRef={searchListRef} searchRef={searchRef} text={text} setText={setText} />
                 </div>
+                <section className={style.friends} ref={friendsScroll}>
+
+                    <div className={classNames(style.container, 'container')}>
+                        <div ref={headRef} className={classNames(style.head, 'head')}>
+                            <h2 className={classNames(style.header, 'header')}>
+                                Friends
+                            </h2>
+                            <Link to='/groups' className={style.groupsAdd}>
+                                <img src={addGroups} alt="Add Groups" />
+                            </Link>
+                        </div>
+                        <div ref={containerFrineds} className={style.scrollMessages}>
+                            <div className={classNames(style.containerFriendsList)}>
+                                <Suspense fallback={<Loader></Loader>}>
+                                    {(friendList.length > 0 || groupList.length > 0) ? (
+                                        sortState.sort((a, b) => b.timePublic - a.timePublic).map((friend) => (
+                                            // console.log(friend)
+                                            <FriendsList key={friend.id} friend={friend}></FriendsList>
+                                        ))
+                                    ) : (
+                                        <Empty text={'Friend list is empty'}></Empty>
+                                    )}
+                                </Suspense>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+                {stateModal.activeModalWindow ? <ModuleError state={[stateModal, dispatchModal]}></ModuleError> : <></>}
             </section>
-            {stateModal.activeModalWindow ? <ModuleError state={[stateModal, dispatchModal]}></ModuleError> : <></>}
-        </section>
-    </>
-        
+        </>
+
     );
 }

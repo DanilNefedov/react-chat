@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../../store/messagesSlice";
 import { Empty } from "../Empty/Empty";
 import style from './MessagesMain.module.css'
+import img from '../../img/user-M.png'
 
 
 export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
@@ -12,6 +13,7 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
     const messagesState = useSelector(state => state.message.messages)
     const user = useSelector(state => state.user)
     const findChat = messagesState.find(el => el.chatId === infoChat.id)
+    //console.log(findChat, messagesState)
 
     const db = getFirestore()
     const dispatch = useDispatch()
@@ -38,12 +40,14 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                 //console.log('www')
                 const data = doc.data()
                 const chatId = infoChat.id
+                //console.log(data)
 
                 data.messages.map(el => {
                     const userId = el.userId
                     const messageText = el.messageText
                     const messageId = el.id
                     const date = el.date
+                    const photo = el.photo
                     const dayMess = dayArr[date.toDate().getDay()]//
                     const hoursMess = date.toDate().getHours()//
                     let minute = date.toDate().getMinutes().toString()//
@@ -52,7 +56,7 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                     }
                     const datePush = `${dayMess} ${hoursMess}:${minute}`
 
-                    dispatch(addMessage({ chatId, userId, messageText, datePush, messageId }))
+                    dispatch(addMessage({ chatId, userId, messageText, datePush, messageId, photo }))
 
                 })
             } else {
@@ -76,16 +80,19 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                     <span className={classNames("message", style.messagesMe)}>
                         {el.text}
                         <span className={classNames(style.dateMessages, style.dateMe)}>{el.date}</span>
+                        
                     </span>
-                    
+                    <span><img className={style.photoSender} src={el.photo ? el.photo : img} alt="Photo user" /></span>
                 </div>
             ):(
                 <div key={el.messageId} className={style.messageContainerFriend}>
+                    <span><img className={style.photoSender} src={el.photo ? el.photo : img} alt="Photo user" /></span>
                     <span className={classNames("message", style.messagesFriend)}>
                         {el.text}
                         <span className={classNames(style.dateMessages, style.dateFriend)}>{el.date}</span>
                     </span>
                     
+
                 </div>
             )
         ))) : (

@@ -11,7 +11,7 @@ export function UserNavigation({innerRef, searchRefUser, setActiveModal}){
     
     return(
         <nav className={classNames(style.userNav, 'user-navigation' )} ref={innerRef}>
-            <div id={locationName === '/profile' ?  'profile-container' : ''}  className={ classNames(style.container, 'container')}>
+            <div id={locationName === '/profile' ||  locationName === '/groups'?  'profile-container' : ''}  className={ classNames(style.container, 'container')}>
                 {
                 locationName === '/' ? <Search setActiveModal={setActiveModal} searchRefUser={searchRefUser}/> : <></>  
                 }

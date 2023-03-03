@@ -79,6 +79,24 @@
     background-color: #252632;
 }
 
+.addUsers{
+    display: flex;
+    align-items: center;
+    padding-bottom: 15px;
+}
+.blockAddUsersImg{
+    width: 27px;
+    height: 27px;
+}
+.blockAddUsersImg img{
+    width: 27px;
+    height: 27px;
+}
+.btnAddUsers{
+    margin-left: 5px;
+    color: var(--desactive-text);
+}
+
 
 .photoGroup{
     width: 150px;
@@ -114,7 +132,7 @@
     color: var(--desactive-text);
     margin-left: 33px;
 }
-.choiceFile:hover{
+.choiceFile:hover, .btnAddUsers:hover{
     color:var(--white);
 }
 
@@ -147,4 +165,40 @@
 .nameGroup{
     color:var(--desactive-text);
     padding-bottom: 5px;
+}
+.backBtn{
+    display: none;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    left: 20px;
+}
+.backBtn img{
+    width: 30px;
+    height: 30px;
+}
+
+
+
+@media screen and (max-width:500px) {
+    .backBtn{
+        display: block;
+    }
+    /* .container{
+        display: block;
+    } */
+    .groupParams{
+        width: 100%;
+    }
+    .addFriends{
+        width: 100%;
+        display: none;
+    }
+    .activeContainer .groupParams{
+        display: none;
+    }
+
+    .activeContainer .addFriends{
+        display: block;
+    }
 }

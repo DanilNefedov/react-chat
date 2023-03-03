@@ -19,8 +19,9 @@ export function Contacts ({friends, indexBlock, addFriend}){
         newSelected.push(indexBlock);
         }
         setSelected(newSelected);
+
     }
-   // console.log(state[0])
+//    console.log(selected)
 
     return(
 

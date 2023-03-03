@@ -2,9 +2,12 @@ import style from './Groups.module.css'
 import classNames from 'classnames';
 import img from '../../img/group-av.png'
 import download from '../../img/download.svg'
+import addUsers from '../../img/add.svg'
+import { useState } from 'react';
 
 
-export function EditGroups({addGroup, state}) {
+export function EditGroups({addGroup, state, active}) {
+    // const [activeContacts, setActiveContacs] = useState(false)
     // console.log(state)
 
     const showPhoto = (e) =>{
@@ -39,6 +42,10 @@ export function EditGroups({addGroup, state}) {
                         <label className={style.choiceFile} htmlFor={style.fileGroup}>Add photo</label>
                         <span className={style.infoSize}>*.png, .jpg, .web</span>
                     </div>
+                </div>
+                <div className={style.addUsers}>
+                    <span className={style.blockAddUsersImg}><img src={addUsers} alt="Add Users" /></span>
+                    <p onClick={() => active(true)} className={style.btnAddUsers}>Add Users</p>
                 </div>
                 <div className={style.nameEdit}>
                     <p className={style.nameGroup}>Add name: </p>

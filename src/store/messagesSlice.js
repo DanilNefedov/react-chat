@@ -22,7 +22,8 @@ import { createSlice } from "@reduxjs/toolkit";
                             date: action.payload.datePush,
                             text: action.payload.messageText,
                             messageId: action.payload.messageId,
-                            photo: action.payload.photo
+                            photo: action.payload.photo,
+                            //name:action.payload.name
                         })
                     }
                 }else{
@@ -34,7 +35,8 @@ import { createSlice } from "@reduxjs/toolkit";
                                 date: action.payload.datePush,
                                 text: action.payload.messageText,
                                 messageId: action.payload.messageId,
-                                photo: action.payload.photo
+                                photo: action.payload.photo,
+                                //name:action.payload.name
                             }
                         ]
                     })

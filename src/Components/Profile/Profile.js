@@ -28,6 +28,7 @@ export default function Profile() {
 
     const user = useSelector(state => state.user)
     const friend = useSelector(state => state.friend.friend)
+    const messages = useSelector(state => state.message)
     const [stateModalErr, dispatchStateErr] = useReducer(reducerModal, initialStateModal)
     const [stateProfile, dispatchStateProfile] = useReducer(reducerProfile, initialStateProfile)
     const auth = getAuth();
@@ -111,7 +112,7 @@ export default function Profile() {
                             await updateDoc(doc(db, 'users', user.id), {
                                 photoURL: downloadURL
                             })
-
+                            console.log(messages)
                             friend.map(async (el) => {
                                 if (el.friendId) {//try catch
                                     await updateDoc(doc(db, 'chatsList', el.friendId), {

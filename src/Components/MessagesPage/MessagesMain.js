@@ -41,6 +41,7 @@ export default function MessagesMain() {
         const messageText = text
         setMessageText('')
 
+
         if (messageText !== '') {
             const messageId = uuid()
             const date = Timestamp.now()
@@ -51,7 +52,8 @@ export default function MessagesMain() {
                     messageText,
                     userId: user.id,
                     date: date,
-                    photo: user.photo
+                    photo: user.photo,
+                    //name:user.name
                 })
             })
 

@@ -11,12 +11,14 @@ import { initialStateGroup, reducerGroup } from "../../state/group";
 import { v4 as uuid } from 'uuid';
 import done from '../../img/done-contact.svg'
 import { doc, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import back from '../../img/back-dark.svg'
 
 
 const selectedFriends = []
 
 
 export function Groups() {
+    const [activeContacts, setActiveContacs] = useState(false)
     const navRef = useRef()
     const friends = useSelector(state => state.friend.friend)
     const myInfo = useSelector(user => user.user)
@@ -36,7 +38,7 @@ export function Groups() {
         }
     }
     //------------------ CHANGE TO USEMEMO --------------------//
-    // console.log(user)
+    console.log(selectedFriends)
 
     const addGroup = async () => {
         // const idForGroup = uuid().replace(/-/g, "");
@@ -71,23 +73,7 @@ export function Groups() {
         users.map(async user => {
             const infoForFriends = users.filter(el => el.id !== user.id);
             await updateDoc(doc(db, 'chatsList', user.friendId), {
-                // [combinedId + '.group']: {
-                //     ['infoGroup']: {
-                //         users: infoForFriends,
-                //         admin: myInfo,
-                //         name:stateGroup.name
-                //     },
-                //     ['date']: serverTimestamp(),
-                //     ['viewMessage']: {//change
-                //         view: false,
-                //     },
-                //     ['idSender']: {
-                //         idSender: myInfo.id
-                //     },
-                //     ['viewNewMessage']: {
-                //         viewNewMess: false
-                //     }
-                // }
+               
                 [combinedId + '.group']: {
                     users:infoForFriends,
                     admin:myInfo,
@@ -109,7 +95,7 @@ export function Groups() {
             })
 
         })
-
+        //dispatchStateGroup({type: 'init', payload:initialStateGroup})
 
     }
 
@@ -120,10 +106,11 @@ export function Groups() {
             <UserNavigation innerRef={navRef} />
 
             <section className={style.groups}>
-                <div className={classNames(style.container, 'container')}>
-                    <EditGroups state={[stateGroup, dispatchStateGroup]} addGroup={addGroup}></EditGroups>
+                <div className={activeContacts ? classNames(style.container, style.activeContainer, 'container') : classNames(style.container, 'container')}>
+                    <EditGroups active={setActiveContacs} state={[stateGroup, dispatchStateGroup]} addGroup={addGroup}></EditGroups>
                     <div className={classNames(style.addFriends, 'add-friends')}>
                         <div className={style.headerContacs}>
+                            <span onClick={() => setActiveContacs(false)} className={style.backBtn}><img src={back} alt="Back" /></span>
                             <h2 className={classNames(style.header, 'header')}>
                                 Contacts
                             </h2>

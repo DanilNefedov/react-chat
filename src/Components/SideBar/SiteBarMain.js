@@ -27,7 +27,7 @@ export function SideBarMain() {
 
     return (
         <>
-        {location === '/' || location === '/profile' ? <section ref={burgerRef} onClick={() => setActiveBurger(true)} className={style.burger}>
+        {location === '/' || location === '/profile' || location === '/groups' ? <section ref={burgerRef} onClick={() => setActiveBurger(true)} className={style.burger}>
            <img src={burder} alt="burger menu" />
         </section> : <></>}
         

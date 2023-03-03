@@ -9,7 +9,7 @@ import img from '../../img/user-M.png'
 
 
 export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
-  
+    const friend = useSelector(state => state.friend.friend)
     const messagesState = useSelector(state => state.message.messages)
     const user = useSelector(state => state.user)
     const findChat = messagesState.find(el => el.chatId === infoChat.id)
@@ -33,7 +33,7 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
 
 
     useEffect(() => {
-        //console.log('w')
+        // console.log(user)
         const unsub = onSnapshot(doc(db, 'chats', infoChat.id), (doc) => {
             //console.log('ww')
             if (doc.data()) {
@@ -48,6 +48,9 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                     const messageId = el.id
                     const date = el.date
                     const photo = el.photo
+                    const name = el.name.substring(0, 1)
+                    //const nameMess = name
+                    //console.log(name)
                     const dayMess = dayArr[date.toDate().getDay()]//
                     const hoursMess = date.toDate().getHours()//
                     let minute = date.toDate().getMinutes().toString()//
@@ -56,7 +59,7 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                     }
                     const datePush = `${dayMess} ${hoursMess}:${minute}`
 
-                    dispatch(addMessage({ chatId, userId, messageText, datePush, messageId, photo }))
+                    dispatch(addMessage({name, chatId, userId, messageText, datePush, messageId, photo }))
 
                 })
             } else {
@@ -74,7 +77,7 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
     return (
 
         (messagesState.length > 0 && findChat ? (findChat.messages.map(el => (
-
+            //console.log(el)
             el.userId === user.id ? (
                 <div key={el.messageId} className={style.messageContainerMe}>
                     <span className={classNames("message", style.messagesMe)}>
@@ -82,11 +85,21 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                         <span className={classNames(style.dateMessages, style.dateMe)}>{el.date}</span>
                         
                     </span>
-                    <span><img className={style.photoSender} src={el.photo ? el.photo : img} alt="Photo user" /></span>
+                    <span className={style.infoSender}>
+                        <span className={style.imgSenderBlock}>
+                            <img className={style.photoSender} src={el.photo ? el.photo : img} alt="Photo user" />
+                        </span>
+                        <span className={el.photo ? style.desactiveName : style.nameSender}>{el.name}</span>
+                    </span>
                 </div>
             ):(
                 <div key={el.messageId} className={style.messageContainerFriend}>
-                    <span><img className={style.photoSender} src={el.photo ? el.photo : img} alt="Photo user" /></span>
+                    <span className={style.infoSender}>
+                        <span className={style.imgSenderBlock}>
+                            <img className={style.photoSender} src={el.photo ? el.photo : img} alt="Photo user" />
+                        </span>
+                        <span className={el.photo ? style.desactiveName : style.nameSender}>{el.name}</span>
+                    </span>
                     <span className={classNames("message", style.messagesFriend)}>
                         {el.text}
                         <span className={classNames(style.dateMessages, style.dateFriend)}>{el.date}</span>

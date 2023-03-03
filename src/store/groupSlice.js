@@ -10,7 +10,7 @@ const groupSlice = createSlice({
     initialState,
     reducers:{
         addGroup(state, action){
-            console.log(action.payload.lastMessages)
+            //console.log(action.payload.lastMessages)
             state.group.push({
                 id:action.payload.combinedId,
                 users:action.payload.users,

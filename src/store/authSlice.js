@@ -22,6 +22,15 @@ const authSlice = createSlice({
             state.name = action.payload.name
             state.email = action.payload.email
         },
+        updateName(state, action){
+            state.name = action.payload.name
+        },
+        updateEmailStore(state, action){
+            state.email = action.payload.email
+        },
+        updatePhoto(state, action){
+            state.photo = action.payload.photo
+        },
         removePhoto(state){
             state.photo = null
         },
@@ -34,6 +43,6 @@ const authSlice = createSlice({
     }
 })
 
-export const {setUser, removeUser, updateUser, removePhoto} = authSlice.actions
+export const {setUser, removeUser, updateUser, removePhoto, updateName, updateEmailStore, updatePhoto} = authSlice.actions
 
 export default authSlice.reducer;

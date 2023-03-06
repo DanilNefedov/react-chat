@@ -49,8 +49,8 @@ export default function Friends() {
                     const infoChat = el[1]
                     const lastMessages = infoChat.lastMessage ? infoChat.lastMessage.messageText : 'No messages'
                     const photo = infoChat.photo.photo
-                    console.log(infoChat)
-                    const userDate = infoChat.date.toDate() 
+                    //console.log(infoChat)
+                    const userDate = infoChat.date.toDate()
                     const timePublic = userDate.getTime() ? userDate.getTime() : '--:--'
                     const dateUserNow = new Date()
                     const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth() + 1}.${userDate.getFullYear()}`
@@ -66,64 +66,64 @@ export default function Friends() {
                     if (combinedId && infoChat.chat) {
                         const find = friendList.find(el => el.id === combinedId)
                         const friendId = infoChat.chat.id
-                        const name = infoChat.chat.displayName
+                        const name = infoChat.name.name
 
-                        if(findMyDayBase === findMyDayUser){
+                        if (findMyDayBase === findMyDayUser) {
                             const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
 
                             if (!find) {
-                                dispatch(addFrined({newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
+                                dispatch(addFrined({ newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
 
                             } else if (find.timePublic !== timePublic) {
-                                dispatch(addLastMessage({idSender,  view, combinedId, lastMessages, date, timePublic }))
+                                dispatch(addLastMessage({ idSender, view, combinedId, lastMessages, date, timePublic }))
 
-                            }else if (find.name !== name || find.photo !== photo) {
+                            } else if (find.name !== name || find.photo !== photo) {
                                 dispatch(updatePhotoName({ combinedId, photo, name }))
                             }
 
-                        }else {
+                        } else {
                             const date = findMyDayBase
                             if (!find) {
-                                dispatch(addFrined({newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
+                                dispatch(addFrined({ newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
                             } else if (find.timePublic !== timePublic) {
-                                dispatch(addLastMessage({idSender,  view, combinedId, lastMessages, date, timePublic }))
+                                dispatch(addLastMessage({ idSender, view, combinedId, lastMessages, date, timePublic }))
 
-                            }else if (find.name !== name || find.photo !== photo) {
+                            } else if (find.name !== name || find.photo !== photo) {
                                 dispatch(updatePhotoName({ combinedId, photo, name }))
                             }
                         }
-                        dispatch(viewMessage({newMess, view,combinedId,idSender}))
+                        dispatch(viewMessage({ newMess, view, combinedId, idSender }))
 
                     } else if (infoChat.group) {
                         //console.log(lastMessages)
                         const find = groupList.find(el => el.id === combinedId)
                         const users = infoChat.group.users
                         const admin = infoChat.group.admin
-                        const name = infoChat.group.name
-                        if(findMyDayBase === findMyDayUser){//change to variables and "?:"
+                        const name = infoChat.name.name
+                        if (findMyDayBase === findMyDayUser) {//change to variables and "?:"
                             const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
-                            if(!find){
-                                dispatch(addGroup({combinedId, users, photo, name, admin, lastMessages, date, timePublic, view, idSender, newMess}))
-                            }else if(find.timePublic !== timePublic){
-                                dispatch(addLastMessagesGroup({idSender,  view, combinedId, lastMessages, date, timePublic }))
+                            if (!find) {
+                                dispatch(addGroup({ combinedId, users, photo, name, admin, lastMessages, date, timePublic, view, idSender, newMess }))
+                            } else if (find.timePublic !== timePublic) {
+                                dispatch(addLastMessagesGroup({ idSender, view, combinedId, lastMessages, date, timePublic }))
                             }
-                        }else if(findMyDayBase !== findMyDayUser ){
+                        } else if (findMyDayBase !== findMyDayUser) {
                             const date = findMyDayBase
-                            if(!find){
-                                dispatch(addGroup({combinedId, users, photo, name, admin, lastMessages, date, timePublic, view, idSender, newMess}))
-                            }else if(find.timePublic !== timePublic){
-                                dispatch(addLastMessagesGroup({idSender,  view, combinedId, lastMessages, date, timePublic }))
+                            if (!find) {
+                                dispatch(addGroup({ combinedId, users, photo, name, admin, lastMessages, date, timePublic, view, idSender, newMess }))
+                            } else if (find.timePublic !== timePublic) {
+                                dispatch(addLastMessagesGroup({ idSender, view, combinedId, lastMessages, date, timePublic }))
                             }
                         }
-                        dispatch(viewMessageGroup({newMess, view,combinedId,idSender}))
+                        dispatch(viewMessageGroup({ newMess, view, combinedId, idSender }))
                     }
 
                 })
-                dispatchModal({type:'resetModal', payload:initialStateModal})
+                dispatchModal({ type: 'resetModal', payload: initialStateModal })
             }
             else {
-                dispatchModal({type:'activeModalWindow', payload:true})
-                return 
+                dispatchModal({ type: 'activeModalWindow', payload: true })
+                return
             }
 
         });
@@ -177,13 +177,17 @@ export default function Friends() {
     return (
         <>
             <UserNavigation setActiveModal={setActiveModal} innerRef={navRef} searchRefUser={searchRefUser} />
+
+
             <section className="home">
                 <div ref={refSearch} className={activeModal ? classNames(style.searchFriends, "search-friends, active-modal-search") : classNames(style.searchFriends, "search-friends")}>
                     <Search navRef={navRef} searchListRef={searchListRef} searchRef={searchRef} text={text} setText={setText} />
                 </div>
+
                 <section className={style.friends} ref={friendsScroll}>
 
                     <div className={classNames(style.container, 'container')}>
+
                         <div ref={headRef} className={classNames(style.head, 'head')}>
                             <h2 className={classNames(style.header, 'header')}>
                                 Friends
@@ -209,6 +213,7 @@ export default function Friends() {
                         </div>
                     </div>
                 </section>
+
                 {stateModal.activeModalWindow ? <ModuleError state={[stateModal, dispatchModal]}></ModuleError> : <></>}
             </section>
         </>

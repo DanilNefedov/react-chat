@@ -4,10 +4,10 @@ import style from './Profile.module.css'
 import { useReducer, useRef, useState } from "react"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { deleteUser, EmailAuthProvider, getAuth, reauthenticateWithCredential, signOut, updateEmail, updateProfile } from "firebase/auth";
-import { removeUser } from "../../store/authSlice"
+import { removeUser, updateEmailStore, updateName, updatePhoto, updateUser } from "../../store/authSlice"
 import { deleteDoc, deleteField, doc, getFirestore, updateDoc } from "firebase/firestore"
 import { Modal } from "../Modal/Modal"
-import { removeFrined } from "../../store/friendSlice"
+import { removeFrined, updatePhotoFriend } from "../../store/friendSlice"
 import { removeMessage } from "../../store/messagesSlice"
 import { ModuleError } from "../ModalError/ModalError"
 import { ProfilePhoto } from "./ProfilePhoto"
@@ -29,16 +29,17 @@ export default function Profile() {
     const user = useSelector(state => state.user)
     const friend = useSelector(state => state.friend.friend)
     const messages = useSelector(state => state.message)
+    const group = useSelector(state => state.group.group)
     const [stateModalErr, dispatchStateErr] = useReducer(reducerModal, initialStateModal)
     const [stateProfile, dispatchStateProfile] = useReducer(reducerProfile, initialStateProfile)
     const auth = getAuth();
     const dispatch = useDispatch()
     const db = getFirestore();
-
+    //console.log(friend)
     const submiteUpdates = async (event) => {
         event.preventDefault()
 
-        try {
+        try { 
             if (stateProfile.email !== '') {
                 const credential = EmailAuthProvider.credential(
                     auth.currentUser.email,
@@ -51,6 +52,7 @@ export default function Profile() {
                         await updateProfile(auth.currentUser, {
                             email: stateProfile.email !== '' ? stateProfile.email : user.email,
                         }).then(() => {
+                            dispatch(updateEmailStore({email:stateProfile.email}))
                             dispatchStateProfile({type:'setEmail', payload: initialStateProfile.email})
                             dispatchStateErr({type: 'resetModal', payload: initialStateModal})
                         }).catch(() => {
@@ -103,7 +105,7 @@ export default function Profile() {
                                 photoURL: downloadURL
                             }).then(() => {
                                 dispatchStateErr({type: 'resetModal', payload: initialStateModal})
-                                
+                                // dispatch(updatePhoto({photo:downloadURL}))
                             }).catch(() => {
                                 dispatchStateErr({type: 'activeModalWindow', payload: true})
                                 dispatchStateErr({type:'errorClassName', payload:'Error in photo update'})
@@ -112,13 +114,11 @@ export default function Profile() {
                             await updateDoc(doc(db, 'users', user.id), {
                                 photoURL: downloadURL
                             })
-                            console.log(messages)
+                            //console.log(messages)
                             friend.map(async (el) => {
                                 if (el.friendId) {//try catch
                                     await updateDoc(doc(db, 'chatsList', el.friendId), {
-                                        [el.id + '.userInfo']: {
-                                            id: user.id,
-                                            displayName: stateProfile.name.trim() !== '' ? stateProfile.name.trim() : user.name.trim(),
+                                        [el.id + '.photo']: {
                                             photo: downloadURL
                                         }
                                     })
@@ -152,6 +152,7 @@ export default function Profile() {
                 await updateProfile(auth.currentUser, {
                     displayName: stateProfile.name.trim() !== '' ? stateProfile.name.trim() : user.name.trim(),
                 }).then(() => {
+                    dispatch(updateName({name:stateProfile.name.trim()}))
                     dispatchStateProfile({type:'setName', payload:  initialStateProfile.name})
                     dispatchStateProfile({type:'nameClassError', payload:  initialStateProfile.nameClassError})
                     dispatchStateErr({type: 'resetModal', payload: initialStateModal})
@@ -167,11 +168,10 @@ export default function Profile() {
                 })
                 friend.map(async (el) => {
                     if (el.friendId) {
+                        console.log(el)
                         await updateDoc(doc(db, 'chatsList', el.friendId), {
-                            [el.id + '.userInfo']: {
-                                id: user.id,
-                                displayName: stateProfile.name.trim() !== '' ? stateProfile.name.trim() : user.name.trim(),
-                                photo: user.photo
+                            [el.id + '.name']: {
+                                name: stateProfile.name.trim() !== '' ? stateProfile.name.trim() : user.name.trim(),
                             }
                         })
                     }
@@ -189,7 +189,7 @@ export default function Profile() {
         }
         
     }
-
+    console.log(group)
     const deleteAccount = (event) => {
         event.preventDefault()
         const user = auth.currentUser;
@@ -203,6 +203,7 @@ export default function Profile() {
             deleteUser(user).then(async () => {
                 await deleteDoc(doc(db, "users", user.uid));
 
+                
                 friend.map(async el => {
                     await updateDoc(doc(db, 'chatsList', user.uid), {
                         [el.id]: deleteField(),
@@ -212,11 +213,16 @@ export default function Profile() {
 
                 friend.map(async el => {
                     await updateDoc(doc(db, 'chatsList', el.friendId), {
-                        [el.id + '.userInfo']: {
-                            photo: null,
-                            displayName: 'Deleted',
-                            acc: 'deleted'
+                        [el.id + '.name']:{
+                            name:'Deleted'
                         },
+                        [el.id + '.photo']:{
+                            photo:null
+                        },
+                        [el.id + 'acc']:{
+                            acc:'deleted'
+                        } 
+                        
                     });
                 })
 

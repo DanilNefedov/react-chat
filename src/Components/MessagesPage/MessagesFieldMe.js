@@ -40,7 +40,7 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                 //console.log('www')
                 const data = doc.data()
                 const chatId = infoChat.id
-                //console.log(data)
+                console.log(data)
 
                 data.messages.map(el => {
                     const userId = el.userId
@@ -49,8 +49,9 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                     const date = el.date
                     const photo = el.photo
                     const name = el.name.substring(0, 1)
+
                     //const nameMess = name
-                    //console.log(name)
+                    console.log(el.name)
                     const dayMess = dayArr[date.toDate().getDay()]//
                     const hoursMess = date.toDate().getHours()//
                     let minute = date.toDate().getMinutes().toString()//

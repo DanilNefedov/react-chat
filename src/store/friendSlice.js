@@ -35,7 +35,10 @@ const friendSlice = createSlice({
             const friend = state.friend.find(el => el.id === action.payload.combinedId)
             friend.photo = action.payload.photo
             friend.name = action.payload.name
-            
+        },
+        updatePhotoFriend(state, action){
+            const friend = state.friend.find(el => el.id === action.payload.combinedId)
+            friend.photo = action.payload.photo
         },
         viewMessage(state, action){
             const friend = state.friend.find(el => el.id === action.payload.combinedId)
@@ -50,6 +53,6 @@ const friendSlice = createSlice({
 })
 
 
-export const {addFrined, addLastMessage, updatePhoto, updatePhotoName, viewMessage, removeFrined} = friendSlice.actions;
+export const {updatePhotoFriend, addFrined, addLastMessage, updatePhoto, updatePhotoName, viewMessage, removeFrined} = friendSlice.actions;
 
 export default friendSlice.reducer;

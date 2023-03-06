@@ -19,20 +19,27 @@ const selectedFriends = []
 
 export function Groups() {
     const [activeContacts, setActiveContacs] = useState(false)
+   // const [test, setTest] = useState([])
     const navRef = useRef()
     const friends = useSelector(state => state.friend.friend)
     const myInfo = useSelector(user => user.user)
     const sortState = [...friends]
     const [stateGroup, dispatchStateGroup] = useReducer(reducerGroup, initialStateGroup)
     const db = getFirestore();
-
+    // selectedFriends = []
     //------------------ CHANGE TO USEMEMO --------------------//
     const addFriend = (el) => {
+        // selectedFriends = []
         const index = selectedFriends.indexOf(el);
+        //console.log(index, test)
         if (index === -1) {
+            //console.log('w')
             selectedFriends.push(el);
+            //setTest([...test, index])
             dispatchStateGroup({ type: 'users', payload: selectedFriends })
         } else {
+            //console.log('ww')
+            //setTest([])
             selectedFriends.splice(index, 1);
             dispatchStateGroup({ type: 'users', payload: selectedFriends })
         }
@@ -51,8 +58,10 @@ export function Groups() {
         await updateDoc(doc(db, 'chatsList', myInfo.id), {
             [combinedId + '.group']: {
                 users:users,
-                admin:myInfo,
-                name:stateGroup.name
+                admin:myInfo
+            },
+            [combinedId + '.name'] : {
+                name: stateGroup.name
             },
             [combinedId + '.photo']:{
                 photo: stateGroup.photo
@@ -77,7 +86,9 @@ export function Groups() {
                 [combinedId + '.group']: {
                     users:infoForFriends,
                     admin:myInfo,
-                    name:stateGroup.name
+                },
+                [combinedId + '.name'] : {
+                    name: stateGroup.name
                 },
                 [combinedId + '.photo']:{
                     photo: stateGroup.photo

@@ -53,7 +53,7 @@ export default function MessagesMain() {
                     userId: user.id,
                     date: date,
                     photo: user.photo,
-                    //name:user.name
+                    name:user.name
                 })
             })
 

@@ -38,11 +38,14 @@ const groupSlice = createSlice({
             group.timePublic = action.payload.timePublic
             group.view = action.payload.view
             group.idSender = action.payload.idSender
+        },
+        removeGroup(state){
+            state.group = []
         }
         
     }
 })
 
 
-export const {addGroup, viewMessageGroup, addLastMessagesGroup} = groupSlice.actions
+export const {removeGroup, addGroup, viewMessageGroup, addLastMessagesGroup} = groupSlice.actions
 export default groupSlice.reducer;

@@ -45,19 +45,25 @@ export function Groups() {
         }
     }
     //------------------ CHANGE TO USEMEMO --------------------//
-    console.log(selectedFriends)
+    console.log(stateGroup.users)
+    // stateGroup.users.map(user => console.log(user))
 
     const addGroup = async () => {
-        // const idForGroup = uuid().replace(/-/g, "");
-       
         const combinedId = myInfo.id + uuid()
         const users = stateGroup.users
+        // const idForGroup = uuid().replace(/-/g, "");
+        const userObj = {};
+        users.forEach(user => {
+            userObj[user.friendId] = user;
+        });
+
+        
 
         await setDoc(doc(db, 'chats', combinedId), { messages: [] })
 
         await updateDoc(doc(db, 'chatsList', myInfo.id), {
             [combinedId + '.group']: {
-                users:users,
+                users:userObj,
                 admin:myInfo
             },
             [combinedId + '.name'] : {
@@ -80,11 +86,10 @@ export function Groups() {
         })
 
         users.map(async user => {
-            const infoForFriends = users.filter(el => el.id !== user.id);
+
             await updateDoc(doc(db, 'chatsList', user.friendId), {
-               
                 [combinedId + '.group']: {
-                    users:infoForFriends,
+                    users:userObj,
                     admin:myInfo,
                 },
                 [combinedId + '.name'] : {

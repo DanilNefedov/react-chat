@@ -51,7 +51,7 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                     const name = el.name.substring(0, 1)
 
                     //const nameMess = name
-                    console.log(el.name)
+                    console.log(el)
                     const dayMess = dayArr[date.toDate().getDay()]//
                     const hoursMess = date.toDate().getHours()//
                     let minute = date.toDate().getMinutes().toString()//

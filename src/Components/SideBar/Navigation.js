@@ -12,6 +12,7 @@ import exitWhite from '../../img/exit-white.svg'
 import classNames from "classnames";
 import { removeFrined } from '../../store/friendSlice';
 import { removeMessage } from '../../store/messagesSlice';
+import { removeGroup } from '../../store/groupSlice';
 
 
 
@@ -27,6 +28,7 @@ export function Navigation({modalBurger}){
            dispatch(removeUser())
            dispatch(removeFrined())
            dispatch(removeMessage())
+           dispatch(removeGroup())
         }).catch((error) => {
             console.error(error)
         });

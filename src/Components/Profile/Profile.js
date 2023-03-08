@@ -19,6 +19,7 @@ import { initialStateModal, reducerModal } from "../../state/modalError";
 import { UserNavigation } from "../UserNavigation/UserNavigation";
 import { useNavigate } from "react-router-dom";
 import back from '../../img/back-dark.svg'
+import { removeGroup } from "../../store/groupSlice";
 
 export default function Profile() {
     const navRef = useRef()
@@ -189,7 +190,20 @@ export default function Profile() {
         }
         
     }
-    console.log(group)
+    
+    group.map( async el => {
+        //console.log(el)
+        const findUsers = Object.entries(el.users).find(elem => elem[0] === user.id)
+        if(el.admin.id === user.id){
+
+            console.log(el.admin.id)
+        }
+        if(findUsers){
+            const name =findUsers[0]
+            console.log(name)
+        }
+    })
+    
     const deleteAccount = (event) => {
         event.preventDefault()
         const user = auth.currentUser;
@@ -205,10 +219,10 @@ export default function Profile() {
 
                 
                 friend.map(async el => {
-                    await updateDoc(doc(db, 'chatsList', user.uid), {
-                        [el.id]: deleteField(),
-                        acc: 'deleted'
-                    });
+                    // await updateDoc(doc(db, 'chatsList', user.uid), {
+                    //     [el.id]: deleteField(),
+                    //     acc: 'deleted'
+                    // });
                 })
 
                 friend.map(async el => {
@@ -219,17 +233,57 @@ export default function Profile() {
                         [el.id + '.photo']:{
                             photo:null
                         },
-                        [el.id + 'acc']:{
-                            acc:'deleted'
-                        } 
+                        // [el.id + 'acc']:{
+                        //     acc:'deleted'
+                        // } 
                         
                     });
+                })
+
+                group.map( async el => {
+                    // const findAdmin = el.admin.find(admin => admin.id === user.uid)
+                    const findUsers = Object.entries(el.users).find(elem => elem[0] === user.uid)
+                   
+                    // console.log(el.admin)
+                    if (el.admin.id === user.uid) {// for 1 admin
+                        await updateDoc(doc(db, 'chatsList', el.admin.id), {
+                            ['.group']:{
+                                ['.admin']:null
+                            }
+
+                        })
+                    }
+                    if(findUsers){
+                        const nameField = findUsers[0]
+                        console.log(el.id)
+                        await updateDoc(doc(db, 'chatsList', el.id), {
+                            ['.group']:{
+                                ['.users']:{
+                                    [nameField]:null
+                                }
+                                    //[nameField]:null
+                                    // email:null,
+                                    // id:null,
+                                    // name:'Deleted',
+                                    // photo:null
+                                
+                            }
+
+                        })
+                    }
+                    // el.users.map( async user =>{
+                    //     await updateDoc(doc(db, 'chatsList', el.id)), {
+
+                    //     }
+                    // })
+                    
                 })
 
                 signOut(auth).then(() => {
                     dispatch(removeUser())
                     dispatch(removeFrined())
                     dispatch(removeMessage())
+                    dispatch(removeGroup())
                     dispatchStateErr({type: 'resetModal', payload: initialStateModal})
                     dispatchStateProfile({type:"resetProfile", payload: initialStateProfile})
                     //setModuleErr(false)

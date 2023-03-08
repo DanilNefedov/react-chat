@@ -50,7 +50,7 @@ export default function Friends() {
                     const lastMessages = infoChat.lastMessage ? infoChat.lastMessage.messageText : 'No messages'
                     const photo = infoChat.photo.photo
                     //console.log(infoChat)
-                    const userDate = infoChat.date.toDate()
+                    const userDate = infoChat.date.toDate()//err deletd friend must update Date
                     const timePublic = userDate.getTime() ? userDate.getTime() : '--:--'
                     const dateUserNow = new Date()
                     const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth() + 1}.${userDate.getFullYear()}`

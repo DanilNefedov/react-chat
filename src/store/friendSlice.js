@@ -20,7 +20,8 @@ const friendSlice = createSlice({
                 photo: action.payload.photo,
                 view:action.payload.view,
                 idSender: action.payload.idSender,
-                newMess: action.payload.newMess
+                newMess: action.payload.newMess,
+                deleted:action.payload.deleted
             })
         },
         addLastMessage(state, action){
@@ -46,6 +47,12 @@ const friendSlice = createSlice({
             friend.idSender = action.payload.idSender
             friend.newMess = action.payload.newMess
         },
+        deletedFriend(state,action){
+            const friend = state.friend.find(el => el.id === action.payload.combinedId)
+            friend.name = action.payload.name
+            friend.deleted = action.payload.deleted
+            friend.photo = action.payload.photo
+        },
         removeFrined(state){
             state.friend = []
         }
@@ -53,6 +60,6 @@ const friendSlice = createSlice({
 })
 
 
-export const {updatePhotoFriend, addFrined, addLastMessage, updatePhoto, updatePhotoName, viewMessage, removeFrined} = friendSlice.actions;
+export const {deletedFriend, updatePhotoFriend, addFrined, addLastMessage, updatePhoto, updatePhotoName, viewMessage, removeFrined} = friendSlice.actions;
 
 export default friendSlice.reducer;

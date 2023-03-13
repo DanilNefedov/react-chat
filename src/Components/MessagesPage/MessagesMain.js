@@ -117,9 +117,6 @@ export default function MessagesMain() {
                     })
                 }
             }
-            
-
-
         }
 
     }
@@ -137,7 +134,7 @@ export default function MessagesMain() {
         const unsub = onSnapshot(doc(db, "chatsList", user.id), (doc) => {
             
             const data = doc.data() ?  Object.entries(doc.data()) : false
-            //console.log(data)
+            console.log("data")
             if (data) {
 
                 const findChat = data.find(el => el[0] === infoChat.id)
@@ -151,7 +148,7 @@ export default function MessagesMain() {
                     const idSender = findChat[1].idSender ? findChat[1].idSender.idSender : null
                     const newMess = findChat[1].viewNewMessage.viewNewMess 
 
-                    if (findChat[1].userInfo.acc === 'deleted') {
+                    if (findChat[1].userInfo.deleted === 'deleted') {
                         dispatch(updatePhotoName({ name, photo, combinedId }))
                         setDeletedAcc(true)
                         return
@@ -180,7 +177,8 @@ export default function MessagesMain() {
         return () => {
             unsub()
         }
-    }, [friend.name, friend.photo, friend.email])
+    }, [friend.name, friend.photo])
+    console.log(infoChat)
 
     useEffect(()=>{
         if (scrollRef.current !== null) {
@@ -188,7 +186,7 @@ export default function MessagesMain() {
             const footerHeight = footerRef.current.offsetHeight
             const windowHeight = window.visualViewport.height
 
-            const sum =   nameHeight + footerHeight
+            const sum = nameHeight + footerHeight
 
             const res = windowHeight - sum
 

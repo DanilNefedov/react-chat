@@ -43,6 +43,7 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                 console.log(data)
 
                 data.messages.map(el => {
+                    // console.log(el)
                     const userId = el.userId
                     const messageText = el.messageText
                     const messageId = el.id

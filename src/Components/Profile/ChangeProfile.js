@@ -23,20 +23,20 @@ export function ChangeProfile ({ state, stateProfile}){
     const db = getFirestore();
     const auth = getAuth();
 
-    useEffect(() => {
-        const unsub = onSnapshot(doc(db, "users", user.id), (doc) => {
-            const data = doc.data()
-            if (data) {
-                const name = data.name
-                const photo = data.photoURL
-                const email = data.email
-                dispatch(updateUser({ name, photo, email }))
-            }
-        });
-        return () => {
-            unsub()
-        }
-    }, [user.name, user.photoURL, user.email])
+    // useEffect(() => {
+    //     const unsub = onSnapshot(doc(db, "users", user.id), (doc) => {
+    //         const data = doc.data()
+    //         if (data) {
+    //             const name = data.name
+    //             const photo = data.photoURL
+    //             const email = data.email
+    //             dispatch(updateUser({ name, photo, email }))
+    //         }
+    //     });
+    //     return () => {
+    //         unsub()
+    //     }
+    // }, [user.name, user.photoURL, user.email])
 
 
     const deletePhoto = (e) => {
@@ -46,7 +46,7 @@ export function ChangeProfile ({ state, stateProfile}){
             const desertRef = ref(storage, user.photo);
 
             deleteObject(desertRef).then(async () => {
-                dispatch(removePhoto())
+                
                 await updateDoc(doc(db, 'users', user.id), {
                     photoURL: null
                 })
@@ -55,7 +55,7 @@ export function ChangeProfile ({ state, stateProfile}){
                     photoURL: ''
                 }).then(() => {
                     state[1]({type: 'resetModal', payload: initialStateModal})
-
+                    dispatch(removePhoto())
                 }).catch(() => {
                     state[1]({type: 'activeModalWindow', payload: true})
                     state[1]({type:'errorClassName', payload:'Error during photo deletion'})

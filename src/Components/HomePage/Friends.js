@@ -2,7 +2,7 @@ import style from './Friends.module.css';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '../Search/Search'
-import { addFrined, addLastMessage, updatePhotoName, viewMessage } from '../../store/friendSlice'
+import { addFrined, addLastMessage, deletedFriend, updatePhotoName, viewMessage } from '../../store/friendSlice'
 import React, { Suspense, useReducer, useRef, useState } from 'react';
 import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
@@ -67,18 +67,21 @@ export default function Friends() {
                         const find = friendList.find(el => el.id === combinedId)
                         const friendId = infoChat.chat.id
                         const name = infoChat.name.name
+                        const deleted = infoChat.deleted ? infoChat.deleted.deleted : false
 
                         if (findMyDayBase === findMyDayUser) {
                             const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
 
                             if (!find) {
-                                dispatch(addFrined({ newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
+                                dispatch(addFrined({deleted, newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
 
                             } else if (find.timePublic !== timePublic) {
                                 dispatch(addLastMessage({ idSender, view, combinedId, lastMessages, date, timePublic }))
 
                             } else if (find.name !== name || find.photo !== photo) {
                                 dispatch(updatePhotoName({ combinedId, photo, name }))
+                            } else  if (find && deleted){
+                                dispatch(deletedFriend({combinedId, deleted, name, photo}))
                             }
 
                         } else {
@@ -90,6 +93,8 @@ export default function Friends() {
 
                             } else if (find.name !== name || find.photo !== photo) {
                                 dispatch(updatePhotoName({ combinedId, photo, name }))
+                            } else  if (find && deleted){
+                                dispatch(deletedFriend({combinedId, deleted, name, photo}))
                             }
                         }
                         dispatch(viewMessage({ newMess, view, combinedId, idSender }))
@@ -192,9 +197,12 @@ export default function Friends() {
                             <h2 className={classNames(style.header, 'header')}>
                                 Friends
                             </h2>
+                            {(friendList.length > 0 ) ?
                             <Link to='/groups' className={style.groupsAdd}>
                                 <img src={addGroups} alt="Add Groups" />
-                            </Link>
+                            </Link> :
+                            <></>}
+                            
                         </div>
                         <div ref={containerFrineds} className={style.scrollMessages}>
                             <div className={classNames(style.containerFriendsList)}>

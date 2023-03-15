@@ -2,10 +2,11 @@ import classNames from "classnames"
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage } from "../../store/messagesSlice";
+import { addMessage, updateNamePhoto } from "../../store/messagesSlice";
 import { Empty } from "../Empty/Empty";
 import style from './MessagesMain.module.css'
 import img from '../../img/user-M.png'
+import { Photo } from "./Photo";
 
 
 export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
@@ -13,7 +14,7 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
     const messagesState = useSelector(state => state.message.messages)
     const user = useSelector(state => state.user)
     const findChat = messagesState.find(el => el.chatId === infoChat.id)
-    //console.log(findChat, messagesState)
+    // console.log(friend)
 
     const db = getFirestore()
     const dispatch = useDispatch()
@@ -40,10 +41,10 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                 //console.log('www')
                 const data = doc.data()
                 const chatId = infoChat.id
-                console.log(data)
+                // console.log(data)
 
                 data.messages.map(el => {
-                    // console.log(el)
+                    //console.log(el)
                     const userId = el.userId
                     const messageText = el.messageText
                     const messageId = el.id
@@ -52,7 +53,7 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                     const name = el.name.substring(0, 1)
 
                     //const nameMess = name
-                    console.log(el)
+                    //console.log(findChat)
                     const dayMess = dayArr[date.toDate().getDay()]//
                     const hoursMess = date.toDate().getHours()//
                     let minute = date.toDate().getMinutes().toString()//
@@ -60,8 +61,21 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                         minute = `0${minute}`
                     }
                     const datePush = `${dayMess} ${hoursMess}:${minute}`
-
+                    //console.log(findChat)
+                    //console.log('www')
+                    const find = messagesState.find(el => el.chatId === chatId)
                     dispatch(addMessage({name, chatId, userId, messageText, datePush, messageId, photo }))
+                    //console.log(find)
+                    if(find && find.messages){
+                        const photoUser = find.messages.find(el => el.userId === userId)
+                        // console.log(photoUser.photo !== photo)
+                        if(photoUser.photo !== photo ){
+                            //err in if
+                            // console.log('fff')
+                            dispatch(updateNamePhoto({messageId, chatId, name, photo}))
+                        }
+                    }
+                    console.log(messagesState)
 
                 })
             } else {
@@ -72,14 +86,14 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
         return () => {
             unsub()
         }
-    }, [infoChat.id])
-
+    }, [messagesState, messagesState.map(el => el.messages.map(el => el.photo))])
+    // console.log(findChat)
 
 
     return (
 
         (messagesState.length > 0 && findChat ? (findChat.messages.map(el => (
-            //console.log(el)
+            // console.log(el, el.photo)
             el.userId === user.id ? (
                 <div key={el.messageId} className={style.messageContainerMe}>
                     <span className={classNames("message", style.messagesMe)}>
@@ -88,18 +102,20 @@ export function MessagesFieldMe({ setSizeWindow, infoChat, scrollRef}) {
                         
                     </span>
                     <span className={style.infoSender}>
-                        <span className={style.imgSenderBlock}>
+                        <Photo about={el}></Photo>
+                        {/* <span className={style.imgSenderBlock}>
                             <img className={style.photoSender} src={el.photo ? el.photo : img} alt="Photo user" />
-                        </span>
+                        </span> */}
                         <span className={el.photo ? style.desactiveName : style.nameSender}>{el.name}</span>
                     </span>
                 </div>
             ):(
                 <div key={el.messageId} className={style.messageContainerFriend}>
                     <span className={style.infoSender}>
-                        <span className={style.imgSenderBlock}>
+                        <Photo about={el}></Photo>
+                        {/* <span className={style.imgSenderBlock}>
                             <img className={style.photoSender} src={el.photo ? el.photo : img} alt="Photo user" />
-                        </span>
+                        </span> */}
                         <span className={el.photo ? style.desactiveName : style.nameSender}>{el.name}</span>
                     </span>
                     <span className={classNames("message", style.messagesFriend)}>

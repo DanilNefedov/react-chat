@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRef, useState } from 'react';
 import { SendMessages } from './SendMessages';
-import { MessagesFieldMe } from './MessagesFieldMe';
+import { MessagesFieldMe } from './MessagesField';
 import { arrayUnion, doc, getDoc, getFirestore, onSnapshot, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
 import img from '../../img/user-M.png'
@@ -29,7 +29,7 @@ export default function MessagesMain() {
 
     const [link] = Object.values(useParams())
     const infoChat = friend.find(el => el.id === link) ? friend.find(el => el.id === link) : group.find(el => el.id === link)
-    //console.log(infoChat.id)
+    // console.log(infoChat, friend)
 
     const dispatch = useDispatch()
 
@@ -45,8 +45,11 @@ export default function MessagesMain() {
         if (messageText !== '') {
             const messageId = uuid()
             const date = Timestamp.now()
+            const userIdMess = user.id
 
             await updateDoc(doc(db, 'chats', infoChat.id), {
+                // nameChat: infoChat.name,
+                // photoChat: infoChat.photo,
                 messages: arrayUnion({
                     id: messageId,
                     messageText,
@@ -55,6 +58,16 @@ export default function MessagesMain() {
                     photo: user.photo,
                     name:user.name
                 })
+                // ['messages']:arrayUnion({ 
+                    
+                //         id: messageId,
+                //         messageText,
+                //         userId: user.id,
+                //         date: date,
+                //         photo: user.photo,
+                //         name:user.name
+                    
+                // })
             })
 
             await updateDoc(doc(db, 'chatsList', user.id), {
@@ -134,21 +147,21 @@ export default function MessagesMain() {
         const unsub = onSnapshot(doc(db, "chatsList", user.id), (doc) => {
             
             const data = doc.data() ?  Object.entries(doc.data()) : false
-            console.log("data")
+            // console.log("data")
             if (data) {
 
                 const findChat = data.find(el => el[0] === infoChat.id)
                 //console.log(findChat)
-                if (findChat && findChat.chat) {
-                //     // console.log(findChat)
+                if (findChat && findChat[1].chat) {
+                    // console.log('w')
                     const combinedId = findChat[0]
-                    const name = findChat[1].userInfo.displayName ? findChat[1].userInfo.displayName : ''
-                    const photo = findChat[1].userInfo.photo
+                    const name = findChat[1].name ? findChat[1].name.name : ''
+                    const photo = findChat[1].photo.photo
                     const view = findChat[1].viewMessage.view 
                     const idSender = findChat[1].idSender ? findChat[1].idSender.idSender : null
                     const newMess = findChat[1].viewNewMessage.viewNewMess 
 
-                    if (findChat[1].userInfo.deleted === 'deleted') {
+                    if (findChat[1].deleted ) {//change
                         dispatch(updatePhotoName({ name, photo, combinedId }))
                         setDeletedAcc(true)
                         return
@@ -158,7 +171,7 @@ export default function MessagesMain() {
                     }
 
                     dispatch(viewMessage({newMess, view,combinedId,idSender}))
-                }else if(findChat && findChat.group){
+                }else if(findChat && findChat[1].group){
                     const combinedId = findChat[0]
                     // const name =findChat[1].group.name
                     // const photo = findChat[1].photo.photo
@@ -178,7 +191,7 @@ export default function MessagesMain() {
             unsub()
         }
     }, [friend.name, friend.photo])
-    console.log(infoChat)
+    // console.log(infoChat)
 
     useEffect(()=>{
         if (scrollRef.current !== null) {

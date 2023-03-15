@@ -26,6 +26,7 @@ const friendSlice = createSlice({
         },
         addLastMessage(state, action){
             const friend = state.friend.find(el => el.id === action.payload.combinedId)
+            //console.log(friend)
             friend.lastMessages = action.payload.lastMessages
             friend.date = action.payload.date
             friend.timePublic = action.payload.timePublic

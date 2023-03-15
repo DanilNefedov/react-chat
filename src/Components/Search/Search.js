@@ -78,7 +78,7 @@ export function Search({ text, setText, searchListRef, searchRef, navRef }) {
             const res = await getDoc(doc(db, 'chats', combinedId))
             if (!res.exists()) {
 
-                await setDoc(doc(db, 'chats', combinedId), { messages: [] })
+                await setDoc(doc(db, 'chats', combinedId), {messages: [] })
 
                 await updateDoc(doc(db, 'chatsList', myInfo.id), {
                     [combinedId + '.chat']:{

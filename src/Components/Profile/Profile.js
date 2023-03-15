@@ -5,7 +5,7 @@ import { useReducer, useRef, useState } from "react"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { deleteUser, EmailAuthProvider, getAuth, reauthenticateWithCredential, signOut, updateEmail, updateProfile } from "firebase/auth";
 import { removeUser, updateEmailStore, updateName, updatePhoto, updateUser } from "../../store/authSlice"
-import { deleteDoc, deleteField, doc, getFirestore, updateDoc } from "firebase/firestore"
+import { deleteDoc, deleteField, doc, getDoc, getFirestore, updateDoc } from "firebase/firestore"
 import { Modal } from "../Modal/Modal"
 import { removeFrined, updatePhotoFriend } from "../../store/friendSlice"
 import { removeMessage } from "../../store/messagesSlice"
@@ -29,14 +29,14 @@ export default function Profile() {
 
     const user = useSelector(state => state.user)
     const friend = useSelector(state => state.friend.friend)
-    const messages = useSelector(state => state.message)
+    const messages = useSelector(state => state.message.messages)
     const group = useSelector(state => state.group.group)
     const [stateModalErr, dispatchStateErr] = useReducer(reducerModal, initialStateModal)
     const [stateProfile, dispatchStateProfile] = useReducer(reducerProfile, initialStateProfile)
     const auth = getAuth();
     const dispatch = useDispatch()
     const db = getFirestore();
-    //console.log(friend)
+    //console.log(friend, group)
     const submiteUpdates = async (event) => {
         event.preventDefault()
 
@@ -115,8 +115,24 @@ export default function Profile() {
                             await updateDoc(doc(db, 'users', user.id), {
                                 photoURL: downloadURL
                             })
-                            //console.log(messages)
+                            // console.log(messages)
                             friend.map(async (el) => {
+
+                                const docSnap = await getDoc(doc(db, 'chats', el.id));
+                                if (docSnap.exists()){
+                                    const array = docSnap.data().messages;
+                                    const updatedArray = array.map((element) =>{
+                                        if (element.userId === user.id) {
+                                            return { ...element, photo: downloadURL };
+                                        }else{
+                                            return element;
+                                        }
+                                    })
+
+                                    await updateDoc(doc(db, 'chats', el.id), { messages: updatedArray });
+                                }
+                                
+
                                 if (el.friendId) {//try catch
                                     await updateDoc(doc(db, 'chatsList', el.friendId), {
                                         [el.id + '.photo']: {
@@ -127,6 +143,7 @@ export default function Profile() {
                                 if (el.friendId === undefined) {
                                     return
                                 }
+
                             })
                             dispatchStateProfile({ type: 'selectedPhoto', payload: initialStateProfile.selectedPhoto })
                         });

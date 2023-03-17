@@ -55,8 +55,9 @@ export function Groups() {
         const userObj = {};
         users.forEach(user => {
             userObj[user.friendId] = user;
+            // userObj[myInfo.id]=myInfo
         });
-        // console.log(userObj)
+        console.log(userObj)
         
 
         await setDoc(doc(db, 'chats', combinedId), { messages: [] })

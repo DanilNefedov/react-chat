@@ -8,7 +8,7 @@ import { removeUser, updateEmailStore, updateName, updatePhoto, updateUser } fro
 import { deleteDoc, deleteField, doc, getDoc, getFirestore, updateDoc } from "firebase/firestore"
 import { Modal } from "../Modal/Modal"
 import { removeFrined, updatePhotoFriend } from "../../store/friendSlice"
-import { removeMessage } from "../../store/messagesSlice"
+import { removeMessage, updateNamePhoto } from "../../store/messagesSlice"
 import { ModuleError } from "../ModalError/ModalError"
 import { ProfilePhoto } from "./ProfilePhoto"
 import { DeleteProfile } from "./DeleteProfile"
@@ -107,6 +107,27 @@ export default function Profile() {
                             }).then(() => {
                                 dispatchStateErr({ type: 'resetModal', payload: initialStateModal })
                                 dispatch(updatePhoto({photo:downloadURL}))
+                                
+                                friend.map( async (el) =>{
+                                    const docSnap = await getDoc(doc(db, 'chats', el.id));
+                                    if (docSnap.exists()){
+                                        const array = docSnap.data().messages;
+                                        const updatedArray = array.map((element) =>{
+                                            if (element.userId === user.id) {
+                                                const messageId = element.id
+                                                const chatId = el.id
+                                                const photo = downloadURL
+                                                dispatch(updateNamePhoto({chatId, messageId, photo}))
+                                                return { ...element, photo: downloadURL };
+                                            }else{
+                                                return element;
+                                            }
+                                        })
+
+                                        await updateDoc(doc(db, 'chats', el.id), { messages: updatedArray });
+                                    }
+                                })
+
                             }).catch(() => {
                                 dispatchStateErr({ type: 'activeModalWindow', payload: true })
                                 dispatchStateErr({ type: 'errorClassName', payload: 'Error in photo update' })
@@ -117,22 +138,6 @@ export default function Profile() {
                             })
                             // console.log(messages)
                             friend.map(async (el) => {
-
-                                const docSnap = await getDoc(doc(db, 'chats', el.id));
-                                if (docSnap.exists()){
-                                    const array = docSnap.data().messages;
-                                    const updatedArray = array.map((element) =>{
-                                        if (element.userId === user.id) {
-                                            return { ...element, photo: downloadURL };
-                                        }else{
-                                            return element;
-                                        }
-                                    })
-
-                                    await updateDoc(doc(db, 'chats', el.id), { messages: updatedArray });
-                                }
-                                
-
                                 if (el.friendId) {//try catch
                                     await updateDoc(doc(db, 'chatsList', el.friendId), {
                                         [el.id + '.photo']: {
@@ -174,6 +179,22 @@ export default function Profile() {
                     dispatchStateProfile({ type: 'setName', payload: initialStateProfile.name })
                     dispatchStateProfile({ type: 'nameClassError', payload: initialStateProfile.nameClassError })
                     dispatchStateErr({ type: 'resetModal', payload: initialStateModal })
+
+                    friend.map( async (el) =>{
+                        const docSnap = await getDoc(doc(db, 'chats', el.id));
+                        if (docSnap.exists()){
+                            const array = docSnap.data().messages;
+                            const updatedArray = array.map((element) =>{
+                                if (element.userId === user.id) {
+                                    return { ...element, name: stateProfile.name };
+                                }else{
+                                    return element;
+                                }
+                            })
+
+                            await updateDoc(doc(db, 'chats', el.id), { messages: updatedArray });
+                        }
+                    })
                 }).catch((error) => {
                     dispatchStateErr({ type: 'activeModalWindow', payload: true })
                     dispatchStateErr({ type: 'errorClassName', payload: 'Error updating name or photo' })

@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRef, useState } from 'react';
 import { SendMessages } from './SendMessages';
-import { MessagesFieldMe } from './MessagesField';
 import { arrayUnion, doc, getDoc, getFirestore, onSnapshot, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
 import img from '../../img/user-M.png'
@@ -12,6 +11,7 @@ import { useEffect } from 'react';
 import { updatePhotoName, viewMessage } from '../../store/friendSlice';
 import back from '../../img/back-dark.svg'
 import { viewMessageGroup } from '../../store/groupSlice';
+import { MessagesField } from './MessagesField';
 
 
 
@@ -29,7 +29,7 @@ export default function MessagesMain() {
 
     const [link] = Object.values(useParams())
     const infoChat = friend.find(el => el.id === link) ? friend.find(el => el.id === link) : group.find(el => el.id === link)
-    // console.log(infoChat, friend)
+    // console.log(infoChat)
 
     const dispatch = useDispatch()
 
@@ -48,8 +48,7 @@ export default function MessagesMain() {
             const userIdMess = user.id
 
             await updateDoc(doc(db, 'chats', infoChat.id), {
-                // nameChat: infoChat.name,
-                // photoChat: infoChat.photo,
+
                 messages: arrayUnion({
                     id: messageId,
                     messageText,
@@ -58,16 +57,6 @@ export default function MessagesMain() {
                     photo: user.photo,
                     name:user.name
                 })
-                // ['messages']:arrayUnion({ 
-                    
-                //         id: messageId,
-                //         messageText,
-                //         userId: user.id,
-                //         date: date,
-                //         photo: user.photo,
-                //         name:user.name
-                    
-                // })
             })
 
             await updateDoc(doc(db, 'chatsList', user.id), {
@@ -88,11 +77,10 @@ export default function MessagesMain() {
             })
 
             if(infoChat.users){
-                infoChat.users.map(async el => {
-                    const res = await getDoc(doc(db, 'chatsList', el.friendId))
-                    //console.log(el)
+                for(const key in infoChat.users){
+                    const res = await getDoc(doc(db, 'chatsList', key))
                     if (res.exists()) {
-                        await updateDoc(doc(db, 'chatsList', el.friendId), {
+                        await updateDoc(doc(db, 'chatsList', key), {
                             [infoChat.id + '.lastMessage']: {
                                 messageText
                             },
@@ -108,10 +96,11 @@ export default function MessagesMain() {
                             }
                         })
                     }
-                })
+                }
+                
            }else{
                 const res = await getDoc(doc(db, 'chatsList', infoChat.friendId))
-                //console.log(res)
+                console.log('w')
                 if (res.exists()) {
                     await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
                         [infoChat.id + '.lastMessage']: {
@@ -230,7 +219,7 @@ export default function MessagesMain() {
                 </header>
 
                 <section ref={scrollRef} id='scroll' className={style.messages}>
-                    <MessagesFieldMe setSizeWindow={setSizeWindow} scrollRef={scrollRef} infoChat={infoChat}></MessagesFieldMe>
+                    <MessagesField setSizeWindow={setSizeWindow} scrollRef={scrollRef} infoChat={infoChat}></MessagesField>
                 </section>
                 {deletedAcc
                     ?

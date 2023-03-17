@@ -11,7 +11,9 @@
     padding: 10px;
     background-color: var(--second-main);
 }
-
+.or{
+    color:white;
+}
 .user {
     display: flex;
     justify-content: space-between;

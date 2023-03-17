@@ -30,13 +30,15 @@ export function SendMessages({setSizeWindow, sendMess, text, setMessageText, han
                 }
             })
             if(infoChat.users){
-                infoChat.users.map(async el => {
-                    await updateDoc(doc(db, 'chatsList', el.friendId), {
-                        [el.id + '.viewMessage']: {
+                for(const key in infoChat.users){
+                    // console.log(infoChat.users[key])
+                    await updateDoc(doc(db, 'chatsList', key), {
+                        [infoChat.users[key].id + '.viewMessage']: {
                             view: true, 
                         }
                     })
-                })
+                }
+               
             }else{
                 await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
                     [infoChat.id + '.viewMessage']: {

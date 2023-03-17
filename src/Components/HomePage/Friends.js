@@ -49,8 +49,8 @@ export default function Friends() {
                     const infoChat = el[1]
                     const lastMessages = infoChat.lastMessage ? infoChat.lastMessage.messageText : 'No messages'
                     const photo = infoChat.photo.photo
-                    //console.log(infoChat)
-                    const userDate = infoChat.date.toDate()//err deletd friend must update Date
+                    
+                    const userDate = infoChat.date.toDate()//err delete friend must update Date
                     const timePublic = userDate.getTime() ? userDate.getTime() : '--:--'
                     const dateUserNow = new Date()
                     const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth() + 1}.${userDate.getFullYear()}`
@@ -105,14 +105,18 @@ export default function Friends() {
                         const users = infoChat.group.users
                         const admin = infoChat.group.admin
                         const name = infoChat.name.name
+                        console.log(findMyDayBase === findMyDayUser)
                         if (findMyDayBase === findMyDayUser) {//change to variables and "?:"
                             const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
+                            // console.log('2')
                             if (!find) {
                                 dispatch(addGroup({ combinedId, users, photo, name, admin, lastMessages, date, timePublic, view, idSender, newMess }))
-                            } else if (find.timePublic !== timePublic) {
+                            } else if (find && find.timePublic !== timePublic) {
+                                // console.log('w')
                                 dispatch(addLastMessagesGroup({ idSender, view, combinedId, lastMessages, date, timePublic }))
                             }
                         } else if (findMyDayBase !== findMyDayUser) {
+                            // console.log('2')
                             const date = findMyDayBase
                             if (!find) {
                                 dispatch(addGroup({ combinedId, users, photo, name, admin, lastMessages, date, timePublic, view, idSender, newMess }))

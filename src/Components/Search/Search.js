@@ -100,6 +100,9 @@ export function Search({ text, setText, searchListRef, searchRef, navRef }) {
                     },
                     [combinedId + '.viewNewMessage'] :{
                         viewNewMess: true
+                    },
+                    [combinedId + '.deleted']:{
+                        deleted:false
                     }
                 })
 
@@ -122,6 +125,9 @@ export function Search({ text, setText, searchListRef, searchRef, navRef }) {
                     },
                     [combinedId + '.viewNewMessage'] :{
                         viewNewMess: false
+                    },
+                    [combinedId + '.deleted']:{
+                        deleted:false
                     }
                 })
             }

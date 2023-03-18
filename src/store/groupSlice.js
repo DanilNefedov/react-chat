@@ -16,7 +16,6 @@ const groupSlice = createSlice({
                 users:action.payload.users,
                 photo:action.payload.photo,
                 name:action.payload.name,
-                admin:action.payload.admin,
                 lastMessages: action.payload.lastMessages,
                 date:action.payload.date,
                 timePublic: action.payload.timePublic,

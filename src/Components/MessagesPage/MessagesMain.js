@@ -142,7 +142,7 @@ export default function MessagesMain() {
                 const findChat = data.find(el => el[0] === infoChat.id)
                 //console.log(findChat)
                 if (findChat && findChat[1].chat) {
-                    // console.log('w')
+                    // console.log(findChat[1].deleted )
                     const combinedId = findChat[0]
                     const name = findChat[1].name ? findChat[1].name.name : ''
                     const photo = findChat[1].photo.photo
@@ -150,7 +150,7 @@ export default function MessagesMain() {
                     const idSender = findChat[1].idSender ? findChat[1].idSender.idSender : null
                     const newMess = findChat[1].viewNewMessage.viewNewMess 
 
-                    if (findChat[1].deleted ) {//change
+                    if (findChat[1].deleted.deleted ) {//change
                         dispatch(updatePhotoName({ name, photo, combinedId }))
                         setDeletedAcc(true)
                         return

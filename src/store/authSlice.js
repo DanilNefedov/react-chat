@@ -4,7 +4,7 @@ const initialState = {
     name:null,
     email:null,
     id:null,
-    photo:null
+    photo:null,
 }
 
 const authSlice = createSlice({

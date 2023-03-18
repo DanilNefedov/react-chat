@@ -43,13 +43,13 @@ export default function Friends() {
         const unsub = onSnapshot(doc(db, "chatsList", myInfo.id), (doc) => {
             if (doc.data()) {
                 const data = Object.entries(doc.data())
-                //console.log(data)
+                // console.log(data)
                 data.map(el => {
                     const combinedId = el[0]
                     const infoChat = el[1]
                     const lastMessages = infoChat.lastMessage ? infoChat.lastMessage.messageText : 'No messages'
                     const photo = infoChat.photo.photo
-                    
+                    console.log(infoChat, infoChat.photo)
                     const userDate = infoChat.date.toDate()//err delete friend must update Date
                     const timePublic = userDate.getTime() ? userDate.getTime() : '--:--'
                     const dateUserNow = new Date()
@@ -62,38 +62,36 @@ export default function Friends() {
                     if (minute.length === 1) {
                         minute = `0${minute}`
                     }
-                    // console.log(photo)
                     if (combinedId && infoChat.chat) {
                         const find = friendList.find(el => el.id === combinedId)
                         const friendId = infoChat.chat.id
                         const name = infoChat.name.name
-                        const deleted = infoChat.deleted ? infoChat.deleted.deleted : false
-
+                        const deleted = infoChat.deleted.deleted
                         if (findMyDayBase === findMyDayUser) {
                             const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
-
-                            if (!find) {
+                            // console.log(find.lastMessages, lastMessages)
+                            if (!find ) {
                                 dispatch(addFrined({deleted, newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
-
-                            } else if (find.timePublic !== timePublic) {
-                                dispatch(addLastMessage({ idSender, view, combinedId, lastMessages, date, timePublic }))
-
+                            } else if (find && find.timePublic !== timePublic ) {
+                                dispatch(addLastMessage({deleted, idSender, view, combinedId, lastMessages, date, timePublic }))
                             } else if (find.name !== name || find.photo !== photo) {
                                 dispatch(updatePhotoName({ combinedId, photo, name }))
-                            } else  if (find && deleted){
+                            } else if (find && deleted){
                                 dispatch(deletedFriend({combinedId, deleted, name, photo}))
                             }
 
                         } else {
                             const date = findMyDayBase
-                            if (!find) {
-                                dispatch(addFrined({ newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
-                            } else if (find.timePublic !== timePublic) {
-                                dispatch(addLastMessage({ idSender, view, combinedId, lastMessages, date, timePublic }))
-
-                            } else if (find.name !== name || find.photo !== photo) {
+                            if (!find ) {
+                                dispatch(addFrined({deleted, newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
+                            } 
+                            if (find && find.lastMessages !== lastMessages ) {
+                                dispatch(addLastMessage({deleted, idSender, view, combinedId, lastMessages, date, timePublic }))
+                            } 
+                            if (find.name !== name || find.photo !== photo) {
                                 dispatch(updatePhotoName({ combinedId, photo, name }))
-                            } else  if (find && deleted){
+                            } 
+                            if (find && deleted){
                                 dispatch(deletedFriend({combinedId, deleted, name, photo}))
                             }
                         }
@@ -103,23 +101,18 @@ export default function Friends() {
                         //console.log(lastMessages)
                         const find = groupList.find(el => el.id === combinedId)
                         const users = infoChat.group.users
-                        const admin = infoChat.group.admin
                         const name = infoChat.name.name
-                        console.log(findMyDayBase === findMyDayUser)
                         if (findMyDayBase === findMyDayUser) {//change to variables and "?:"
                             const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
-                            // console.log('2')
                             if (!find) {
-                                dispatch(addGroup({ combinedId, users, photo, name, admin, lastMessages, date, timePublic, view, idSender, newMess }))
+                                dispatch(addGroup({ combinedId, users, photo, name, lastMessages, date, timePublic, view, idSender, newMess }))
                             } else if (find && find.timePublic !== timePublic) {
-                                // console.log('w')
                                 dispatch(addLastMessagesGroup({ idSender, view, combinedId, lastMessages, date, timePublic }))
                             }
                         } else if (findMyDayBase !== findMyDayUser) {
-                            // console.log('2')
                             const date = findMyDayBase
                             if (!find) {
-                                dispatch(addGroup({ combinedId, users, photo, name, admin, lastMessages, date, timePublic, view, idSender, newMess }))
+                                dispatch(addGroup({ combinedId, users, photo, name, lastMessages, date, timePublic, view, idSender, newMess }))
                             } else if (find.timePublic !== timePublic) {
                                 dispatch(addLastMessagesGroup({ idSender, view, combinedId, lastMessages, date, timePublic }))
                             }
@@ -140,7 +133,7 @@ export default function Friends() {
             unsub()
         }
     }, [friendList, groupList])//friendList
-    //console.log(groupList)
+
     function resize() {
         if (containerFrineds.current !== null) {
             const containerFrinedsHeight = containerFrineds.current.offsetHeight

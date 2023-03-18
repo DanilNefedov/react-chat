@@ -19,7 +19,7 @@ const selectedFriends = []
 
 export function Groups() {
     const [activeContacts, setActiveContacs] = useState(false)
-   // const [test, setTest] = useState([])
+    // const [test, setTest] = useState([])
     const navRef = useRef()
     const friends = useSelector(state => state.friend.friend)
     const myInfo = useSelector(user => user.user)
@@ -29,59 +29,80 @@ export function Groups() {
     // selectedFriends = []
     //------------------ CHANGE TO USEMEMO --------------------//
     const addFriend = (el) => {
-        // selectedFriends = []
         const index = selectedFriends.indexOf(el);
-        //console.log(index, test)
         if (index === -1) {
-            //console.log('w')
             selectedFriends.push(el);
-            //setTest([...test, index])
             dispatchStateGroup({ type: 'users', payload: selectedFriends })
         } else {
-            //console.log('ww')
-            //setTest([])
             selectedFriends.splice(index, 1);
             dispatchStateGroup({ type: 'users', payload: selectedFriends })
         }
     }
     //------------------ CHANGE TO USEMEMO --------------------//
-    console.log(stateGroup.users)
-    // stateGroup.users.map(user => console.log(user))
+
 
     const addGroup = async () => {
         const combinedId = myInfo.id + uuid()
         const users = stateGroup.users
-        // const idForGroup = uuid().replace(/-/g, "");
+        const filteredUsers = users.map((obj) => {
+            const copiedObg = {...obj}
+            const newKey = 'id'
+            
+            Object.keys(copiedObg).forEach(key =>{
+                if(key === 'friendId'){
+                    copiedObg[newKey] = copiedObg[key]
+                }
+            })
+
+            delete copiedObg.date
+            delete copiedObg.friendId
+            delete copiedObg.idSender
+            delete copiedObg.lastMessages
+            delete copiedObg.newMess
+            delete copiedObg.timePublic
+            delete copiedObg.view
+
+            return copiedObg
+        })
         const userObj = {};
-        users.forEach(user => {
-            userObj[user.friendId] = user;
-            // userObj[myInfo.id]=myInfo
-        });
-        console.log(userObj)
         
+        const copiedObgMyInfo = {...myInfo}
+        Object.keys(copiedObgMyInfo).forEach(el => {
+            if(el === 'email'){
+                delete copiedObgMyInfo.email
+                
+            }
+            copiedObgMyInfo.admin = true
+            copiedObgMyInfo.deleted = false
+        })
+
+        userObj[copiedObgMyInfo.id] = { ...copiedObgMyInfo}
+        filteredUsers.forEach(user => {
+            userObj[user.id] = { ...user, admin: false };
+        });
+
 
         await setDoc(doc(db, 'chats', combinedId), { messages: [] })
 
         await updateDoc(doc(db, 'chatsList', myInfo.id), {
             [combinedId + '.group']: {
-                users:userObj,
-                admin:myInfo
+                users: userObj,
             },
-            [combinedId + '.name'] : {
+            [combinedId + '.name']: {
                 name: stateGroup.name
             },
-            [combinedId + '.photo']:{
+            [combinedId + '.photo']: {
                 photo: stateGroup.photo
             },
             [combinedId + '.date']: serverTimestamp(),
-            [combinedId + '.viewMessage'] :{
+            [combinedId + '.viewMessage']: {
                 view: false,
-                idSender:myInfo.id
+                idSender: myInfo.id
             },
-            [combinedId + '.idSender'] :{
-                idSender:myInfo.id
+            [combinedId + '.idSender']: {
+                idSender: myInfo.id
             },
-            [combinedId + '.viewNewMessage'] :{
+            [combinedId + '.viewNewMessage']: {
                 viewNewMess: true
             }
         })
@@ -90,23 +111,22 @@ export function Groups() {
 
             await updateDoc(doc(db, 'chatsList', user.friendId), {
                 [combinedId + '.group']: {
-                    users:userObj,
-                    admin:myInfo,
+                    users: userObj,
                 },
-                [combinedId + '.name'] : {
+                [combinedId + '.name']: {
                     name: stateGroup.name
                 },
-                [combinedId + '.photo']:{
+                [combinedId + '.photo']: {
                     photo: stateGroup.photo
                 },
                 [combinedId + '.date']: serverTimestamp(),
-                [combinedId + '.viewMessage'] :{
+                [combinedId + '.viewMessage']: {
                     view: false,
                 },
-                [combinedId + '.idSender'] :{
-                    idSender:myInfo.id
+                [combinedId + '.idSender']: {
+                    idSender: myInfo.id
                 },
-                [combinedId + '.viewNewMessage'] :{
+                [combinedId + '.viewNewMessage']: {
                     viewNewMess: false
                 }
             })

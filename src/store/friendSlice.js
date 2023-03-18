@@ -32,6 +32,7 @@ const friendSlice = createSlice({
             friend.timePublic = action.payload.timePublic
             friend.view = action.payload.view
             friend.idSender = action.payload.idSender
+            friend.deleted = action.payload.deleted
         },
         updatePhotoName(state,action){
             const friend = state.friend.find(el => el.id === action.payload.combinedId)

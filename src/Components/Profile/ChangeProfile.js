@@ -23,22 +23,6 @@ export function ChangeProfile ({ state, stateProfile}){
     const db = getFirestore();
     const auth = getAuth();
 
-    // useEffect(() => {
-    //     const unsub = onSnapshot(doc(db, "users", user.id), (doc) => {
-    //         const data = doc.data()
-    //         if (data) {
-    //             const name = data.name
-    //             const photo = data.photoURL
-    //             const email = data.email
-    //             dispatch(updateUser({ name, photo, email }))
-    //         }
-    //     });
-    //     return () => {
-    //         unsub()
-    //     }
-    // }, [user.name, user.photoURL, user.email])
-
-
     const deletePhoto = (e) => {
         e.preventDefault()
         if (user.photo !== null) {

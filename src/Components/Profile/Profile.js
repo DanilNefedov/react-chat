@@ -291,30 +291,41 @@ export default function Profile() {
 
                     });
                 })
-
-                group.map(async el => {
-                    const findUsers = Object.entries(el.users).find(elem => elem[0] === user.uid)
-
-                    if (el.admin.id === user.uid) {// for 1 admin
-                        Object.entries(el.users).map(async user => {
-                            await updateDoc(doc(db, 'chatsList', user[0]), {
-                                [el.id + '.group' + '.admin']:  null
-                            })
-                        })
-                    }
-                    if (findUsers) {
-                        const nameField = findUsers[0]
-                        Object.entries(el.users).map(async userGroup => {
-                            if(userGroup[0] !== user.uid){
-                                await updateDoc(doc(db, 'chatsList', userGroup[0]), {
-                                    [el.id + '.group' + '.users' + `.${nameField}`]: null
-                                })
+                friend.map( async (el) =>{
+                    const docSnap = await getDoc(doc(db, 'chats', el.id));
+                    if (docSnap.exists()){
+                        const array = docSnap.data().messages;
+                        const updatedArray = array.map((element) =>{
+                            if (element.userId !== user.id) {
+                                element.photo = null
+                                element.name = 'Deleted'
+                                element.deleted = true
+                                return { ...element};
+                            }else{
+                                return element;
                             }
                         })
-                        await updateDoc(doc(db, 'chatsList', el.admin.id), {
-                            [el.id + '.group' + '.users' + `.${nameField}`]: null
+
+                        await updateDoc(doc(db, 'chats', el.id), { messages: updatedArray });
+                    }
+                })
+
+                group.map(async el => {//через chats в бд
+                    const docSnap = await getDoc(doc(db, 'chats', el.id));
+                    if (docSnap.exists()){
+                        const array = docSnap.data().messages;
+                        const updatedArray = array.map((element) =>{
+                            if (element.userId !== user.id) {
+                                element.photo = null
+                                element.name = 'Deleted'
+                                element.deleted = true
+                                return { ...element};
+                            }else{
+                                return element;
+                            }
                         })
-                        
+            
+                        await updateDoc(doc(db, 'chats', el.id), { messages: updatedArray });
                     }
                 })
 

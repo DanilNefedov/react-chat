@@ -55,7 +55,8 @@ export default function MessagesMain() {
                     userId: user.id,
                     date: date,
                     photo: user.photo,
-                    name:user.name
+                    name:user.name,
+                    deleted:false
                 })
             })
 
@@ -133,14 +134,14 @@ export default function MessagesMain() {
 
 
     useEffect(() => {
-        const unsub = onSnapshot(doc(db, "chatsList", user.id), (doc) => {
+        const unsub = onSnapshot(doc(db, "chatsList", user.id), (doc) => {//ERROR update Deleted status
             
             const data = doc.data() ?  Object.entries(doc.data()) : false
             // console.log("data")
             if (data) {
 
                 const findChat = data.find(el => el[0] === infoChat.id)
-                //console.log(findChat)
+                console.log(findChat)
                 if (findChat && findChat[1].chat) {
                     // console.log(findChat[1].deleted )
                     const combinedId = findChat[0]
@@ -179,8 +180,8 @@ export default function MessagesMain() {
         return () => {
             unsub()
         }
-    }, [friend.name, friend.photo])
-    // console.log(infoChat)
+    }, [infoChat])
+    // console.log(infoChat, friend)
 
     useEffect(()=>{
         if (scrollRef.current !== null) {

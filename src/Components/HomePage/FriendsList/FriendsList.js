@@ -18,18 +18,17 @@ export default function FriendsList({friend}) {
 
     // }
 
-    const delViewMess = async () => {
+    const delViewMess = async () => {//someting err
         try{
             await updateDoc(doc(db, 'chatsList', myInfo.id), {
                 [id + '.viewNewMessage'] :{
                     viewNewMess: true
                 }
             })
-            if(friend.users ){
-               
+            if(friend.users && friend.deleted === false){
                 Object.entries(friend.users).map(async el => {
-                    // console.log(friendId)
                     if(el[0] !== myInfo.id){
+                        console.log('w')
                         await updateDoc(doc(db, 'chatsList', el[0]), {
                             [friend.id + '.viewMessage']: {
                                 view: true, 
@@ -37,9 +36,10 @@ export default function FriendsList({friend}) {
                         })
                     }
                 })   
+            }else{
+                return
             }
-            
-            
+           
         } catch(err){
             console.error(err)
         }

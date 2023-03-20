@@ -81,6 +81,7 @@ export function Groups() {
             userObj[user.id] = { ...user, admin: false };
         });
 
+        // console.log(userObj)
 
         await setDoc(doc(db, 'chats', combinedId), { messages: [] })
 

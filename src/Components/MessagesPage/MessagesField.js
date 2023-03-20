@@ -45,8 +45,8 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef }) {
                     const messageText = el.messageText
                     const messageId = el.id
                     const date = el.date
-                    const photo = el.photo
-                    // const name = el.name.substring(0, 1)
+                    const photo = el.photo 
+                    // console.log(photo)
                     const name = el.name 
                     const dayMess = dayArr[date.toDate().getDay()]//
                     const hoursMess = date.toDate().getHours()//
@@ -59,13 +59,18 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef }) {
 
                     if (findChat && findChat.messages) {
                         const userMess = findChat.messages.find(el => el.messageId === messageId)
-                        if (userMess.photo !== photo) {
-                            dispatch(updatePhotoMessages({ messageId, chatId, photo }))
+                        if(userMess !== undefined && userMess.photo !== undefined && photo !== undefined){//some err "cant reading undefined of photo"
+                            if (userMess.photo !== photo) {
+                                dispatch(updatePhotoMessages({ messageId, chatId, photo }))
+                            }
                         }
                         
-                        if (userMess.name !== name) {
-                            dispatch(updateNameMessages({ messageId, chatId, name }))
+                        if(userMess !== undefined && userMess.name !== undefined && name !== undefined){//some err "cant reading undefined of name"
+                            if (userMess.name !== name) {
+                                dispatch(updateNameMessages({ messageId, chatId, name }))
+                            }
                         }
+                        
                         
                     }
                     dispatch(addMessage({ name, chatId, userId, messageText, datePush, messageId, photo }))

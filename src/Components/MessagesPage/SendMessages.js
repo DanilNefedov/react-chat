@@ -32,11 +32,14 @@ export function SendMessages({setSizeWindow, sendMess, text, setMessageText, han
             if(infoChat.users){
                 for(const key in infoChat.users){
                     // console.log(infoChat.users[key])
-                    await updateDoc(doc(db, 'chatsList', key), {
-                        [infoChat.users[key].id + '.viewMessage']: {
-                            view: true, 
-                        }
-                    })
+                    if(infoChat.users[key].id !== myInfo.id){
+                        await updateDoc(doc(db, 'chatsList', key), {
+                            [infoChat.id + '.viewMessage']: {
+                                view: true, 
+                            }
+                        })
+                    }
+                    
                 }
                
             }else{

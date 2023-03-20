@@ -8,7 +8,6 @@ import { removeUser, updateEmailStore, updateName, updatePhoto, updateUser } fro
 import { deleteDoc, deleteField, doc, getDoc, getFirestore, updateDoc } from "firebase/firestore"
 import { Modal } from "../Modal/Modal"
 import { removeFrined, updatePhotoFriend } from "../../store/friendSlice"
-import { removeMessage, updateNamePhoto } from "../../store/messagesSlice"
 import { ModuleError } from "../ModalError/ModalError"
 import { ProfilePhoto } from "./ProfilePhoto"
 import { DeleteProfile } from "./DeleteProfile"
@@ -20,6 +19,7 @@ import { UserNavigation } from "../UserNavigation/UserNavigation";
 import { useNavigate } from "react-router-dom";
 import back from '../../img/back-dark.svg'
 import { removeGroup } from "../../store/groupSlice";
+import { removeMessage, updatePhotoMessages } from "../../store/messagesSlice";
 
 export default function Profile() {
     const navRef = useRef()
@@ -107,7 +107,6 @@ export default function Profile() {
                             }).then(() => {
                                 dispatchStateErr({ type: 'resetModal', payload: initialStateModal })
                                 dispatch(updatePhoto({photo:downloadURL}))
-                                
                                 friend.map( async (el) =>{
                                     const docSnap = await getDoc(doc(db, 'chats', el.id));
                                     if (docSnap.exists()){
@@ -117,7 +116,27 @@ export default function Profile() {
                                                 const messageId = element.id
                                                 const chatId = el.id
                                                 const photo = downloadURL
-                                                dispatch(updateNamePhoto({chatId, messageId, photo}))
+                                                dispatch(updatePhotoMessages({chatId, messageId, photo}))
+                                                return { ...element, photo: downloadURL };
+                                            }else{
+                                                return element;
+                                            }
+                                        })
+
+                                        await updateDoc(doc(db, 'chats', el.id), { messages: updatedArray });
+                                    }
+                                })
+                                group.map( async (el) =>{
+                                    const docSnap = await getDoc(doc(db, 'chats', el.id));
+                                    if (docSnap.exists()){
+                                        const array = docSnap.data().messages;
+                                        // console.log(array)
+                                        const updatedArray = array.map((element) =>{
+                                            if (element.userId === user.id) {
+                                                const messageId = element.id
+                                                const chatId = el.id
+                                                const photo = downloadURL
+                                                dispatch(updatePhotoMessages({chatId, messageId, photo}))
                                                 return { ...element, photo: downloadURL };
                                             }else{
                                                 return element;
@@ -181,6 +200,21 @@ export default function Profile() {
                     dispatchStateErr({ type: 'resetModal', payload: initialStateModal })
 
                     friend.map( async (el) =>{
+                        const docSnap = await getDoc(doc(db, 'chats', el.id));
+                        if (docSnap.exists()){
+                            const array = docSnap.data().messages;
+                            const updatedArray = array.map((element) =>{
+                                if (element.userId === user.id) {
+                                    return { ...element, name: stateProfile.name };
+                                }else{
+                                    return element;
+                                }
+                            })
+
+                            await updateDoc(doc(db, 'chats', el.id), { messages: updatedArray });
+                        }
+                    })
+                    group.map( async (el) =>{
                         const docSnap = await getDoc(doc(db, 'chats', el.id));
                         if (docSnap.exists()){
                             const array = docSnap.data().messages;

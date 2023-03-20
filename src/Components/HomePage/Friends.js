@@ -48,8 +48,8 @@ export default function Friends() {
                     const combinedId = el[0]
                     const infoChat = el[1]
                     const lastMessages = infoChat.lastMessage ? infoChat.lastMessage.messageText : 'No messages'
-                    const photo = infoChat.photo.photo
-                    console.log(infoChat, infoChat.photo)
+                    const photo = infoChat.photo.photo 
+                    // console.log(infoChat, infoChat.photo)
                     const userDate = infoChat.date.toDate()//err delete friend must update Date
                     const timePublic = userDate.getTime() ? userDate.getTime() : '--:--'
                     const dateUserNow = new Date()

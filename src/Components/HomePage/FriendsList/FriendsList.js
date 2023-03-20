@@ -13,10 +13,10 @@ export default function FriendsList({friend}) {
     const {id, name, lastMessages, date, photo, view, friendId, idSender, newMess} = friend
     const myInfo = useSelector(state => state.user)
     const db = getFirestore()
-    if(friend.users){
-        console.log(friend.users)
+    // if(friend.users){
+    //     console.log(friend.users)
 
-    }
+    // }
 
     const delViewMess = async () => {
         try{
@@ -28,7 +28,7 @@ export default function FriendsList({friend}) {
             if(friend.users ){
                
                 Object.entries(friend.users).map(async el => {
-                    console.log(friendId)
+                    // console.log(friendId)
                     if(el[0] !== myInfo.id){
                         await updateDoc(doc(db, 'chatsList', el[0]), {
                             [friend.id + '.viewMessage']: {

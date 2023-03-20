@@ -13,7 +13,6 @@ import { createSlice } from "@reduxjs/toolkit";
         reducers: {
             addMessage(state, action) {
                 const oldFriend = state.messages.find(el => el.chatId === action.payload.chatId)
-                // console.log('ww')
                 if(oldFriend){
                     const oldMess = oldFriend.messages.find(el => el.messageId === action.payload.messageId)
                     if(!oldMess){
@@ -43,23 +42,25 @@ import { createSlice } from "@reduxjs/toolkit";
                 }
                 
             },
-            updateNamePhoto(state, action){
-                // console.log(action.payload.name)
+            updatePhotoMessages(state, action){
                 const oldFriend = state.messages.find(el => el.chatId === action.payload.chatId)
                 if(oldFriend){
                     oldFriend.messages.map((elem) => {
-                        // console.log()
                         if(elem.messageId === action.payload.messageId){
-                            // console.log(elem.photo)
-                            return{ 
-                                photo:action.payload.photo, 
-                                name:action.payload.name
-                            }
+                            elem.photo = action.payload.photo
                         }
                     })
                 }
-                
-
+            },
+            updateNameMessages(state, action){
+                const oldFriend = state.messages.find(el => el.chatId === action.payload.chatId)
+                if(oldFriend){
+                    oldFriend.messages.map((elem) => {
+                        if(elem.messageId === action.payload.messageId){
+                            elem.name = action.payload.name
+                        }
+                    })
+                }
             },
             removeMessage(state){
                 state.messages = []
@@ -70,6 +71,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 
-    export const {updateNamePhoto, addMessage, addMessagesOldFriend, removeMessage} = messagesSlice.actions;
+    export const {updateNameMessages, updatePhotoMessages, addMessage, addMessagesOldFriend, removeMessage} = messagesSlice.actions;
 
     export default messagesSlice.reducer;

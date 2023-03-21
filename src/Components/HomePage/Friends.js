@@ -84,14 +84,11 @@ export default function Friends() {
                             const date = findMyDayBase
                             if (!find ) {
                                 dispatch(addFrined({deleted, newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
-                            } 
-                            if (find && find.lastMessages !== lastMessages ) {
+                            } else if (find && find.lastMessages !== lastMessages ) {
                                 dispatch(addLastMessage({deleted, idSender, view, combinedId, lastMessages, date, timePublic }))
-                            } 
-                            if (find.name !== name || find.photo !== photo) {
+                            } else if (find.name !== name || find.photo !== photo) {
                                 dispatch(updatePhotoName({ combinedId, photo, name }))
-                            } 
-                            if (find && deleted){
+                            } else if (find && deleted){
                                 dispatch(deletedFriend({combinedId, deleted, name, photo}))
                             }
                         }

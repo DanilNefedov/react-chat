@@ -9,7 +9,7 @@ import style from './MessagesMain.module.css';
 export function SendMessages({setSizeWindow, sendMess, text, setMessageText, handleEvent, innerRef, infoChat}) {
     const myInfo = useSelector(state => state.user)
     const db = getFirestore()
-    console.log(infoChat)
+    // console.log(infoChat)
 
     useEffect(() =>{
         window.addEventListener("resize", keyboardDidShow )
@@ -29,19 +29,21 @@ export function SendMessages({setSizeWindow, sendMess, text, setMessageText, han
                     viewNewMess: true
                 }
             })
-            if(infoChat.users){
-                for(const key in infoChat.users){
-                    console.log(infoChat.users[key])
-                    if(infoChat.users[key].id !== myInfo.id){
-                        await updateDoc(doc(db, 'chatsList', key), {
-                            [infoChat.id + '.viewMessage']: {
-                                view: true, 
-                            }
-                        })
+            if(infoChat.users ){
+                // if(infoChat.users.deleted === false){
+                    // console.log(infoChat.users.deleted)
+                    for(const key in infoChat.users){               //!!!! rewrite !!!!!
+                        // console.log(infoChat.users[key])
+                        if(infoChat.users[key].id !== myInfo.id){
+                            await updateDoc(doc(db, 'chatsList', key), {
+                                [infoChat.id + '.viewMessage']: {
+                                    view: true, 
+                                }
+                            })
+                        }
+                        
                     }
-                    
-                }
-               
+                // }    
             }else{
                 await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
                     [infoChat.id + '.viewMessage']: {

@@ -40,7 +40,7 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef }) {
                 // console.log(data)
 
                 data.messages.map(el => {
-                    // console.log(el)
+                    console.log(el)
                     const userId = el.userId
                     const messageText = el.messageText
                     const messageId = el.id
@@ -84,7 +84,7 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef }) {
             unsub()
         }
     }, [findChat])
-    // console.log(findChat)
+    console.log(findChat)
     
 
     return (

@@ -101,7 +101,7 @@ export default function MessagesMain() {
                 
            }else{
                 const res = await getDoc(doc(db, 'chatsList', infoChat.friendId))
-                console.log('w')
+                // console.log('w')
                 if (res.exists()) {
                     await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
                         [infoChat.id + '.lastMessage']: {
@@ -141,7 +141,7 @@ export default function MessagesMain() {
             if (data) {
 
                 const findChat = data.find(el => el[0] === infoChat.id)
-                console.log(findChat)
+                // console.log(findChat)
                 if (findChat && findChat[1].chat) {
                     // console.log(findChat[1].deleted )
                     const combinedId = findChat[0]

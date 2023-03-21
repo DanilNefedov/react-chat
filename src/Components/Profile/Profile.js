@@ -263,6 +263,7 @@ export default function Profile() {
 
     }
 
+
     const deleteAccount = (event) => {
         event.preventDefault()
         const user = auth.currentUser;
@@ -276,6 +277,7 @@ export default function Profile() {
             deleteUser(user).then(async () => {
                 await deleteDoc(doc(db, "users", user.uid));
                 await deleteDoc(doc(db, "chatsList", user.uid));
+
 
                 friend.map(async el => {
                     await updateDoc(doc(db, 'chatsList', el.friendId), {
@@ -310,12 +312,27 @@ export default function Profile() {
                     }
                 })
 
-                group.map(async el => {//через chats в бд
+                group.map(async el => {//          !!!!!!!WORK
+                    const userArr = Object.entries(el.users)
+                    userArr.map(async userArr => {
+                        if(userArr[0] !== user.id && userArr[1].deleted === false){
+                            await updateDoc(doc(db, 'chatsList', userArr[0]), {
+                                [`${el.id}.group.users.${user.uid}.name`]:'Deleted',
+                                [`${el.id}.group.users.${user.uid}.photo`]:null,
+                                [`${el.id}.group.users.${user.uid}.deleted`]:true
+                            });
+                        
+                        }
+                    })
+                })
+
+
+                group.map(async el => {
                     const docSnap = await getDoc(doc(db, 'chats', el.id));
                     if (docSnap.exists()){
                         const array = docSnap.data().messages;
                         const updatedArray = array.map((element) =>{
-                            if (element.userId !== user.id) {
+                            if (element.userId === user.uid) {
                                 element.photo = null
                                 element.name = 'Deleted'
                                 element.deleted = true
@@ -328,6 +345,8 @@ export default function Profile() {
                         await updateDoc(doc(db, 'chats', el.id), { messages: updatedArray });
                     }
                 })
+
+
 
                 signOut(auth).then(() => {
                     dispatch(removeUser())

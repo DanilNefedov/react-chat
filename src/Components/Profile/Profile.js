@@ -29,7 +29,6 @@ export default function Profile() {
 
     const user = useSelector(state => state.user)
     const friend = useSelector(state => state.friend.friend)
-    const messages = useSelector(state => state.message.messages)
     const group = useSelector(state => state.group.group)
     const [stateModalErr, dispatchStateErr] = useReducer(reducerModal, initialStateModal)
     const [stateProfile, dispatchStateProfile] = useReducer(reducerProfile, initialStateProfile)
@@ -312,7 +311,7 @@ export default function Profile() {
                     }
                 })
 
-                group.map(async el => {//          !!!!!!!WORK
+                group.map(async el => {//          !!!!!!!WORK some error
                     const userArr = Object.entries(el.users)
                     userArr.map(async userArr => {
                         if(userArr[0] !== user.id && userArr[1].deleted === false){

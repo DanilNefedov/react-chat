@@ -10,7 +10,7 @@ import img from '../../img/user-M.png'
 import { useEffect } from 'react';
 import { updatePhotoName, viewMessage } from '../../store/friendSlice';
 import back from '../../img/back-dark.svg'
-import { viewMessageGroup } from '../../store/groupSlice';
+import { deletedUser, viewMessageGroup } from '../../store/groupSlice';
 import { MessagesField } from './MessagesField';
 
 
@@ -163,25 +163,28 @@ export default function MessagesMain() {
                     dispatch(viewMessage({newMess, view,combinedId,idSender}))
                 }else if(findChat && findChat[1].group){
                     const combinedId = findChat[0]
-                    // const name =findChat[1].group.name
-                    // const photo = findChat[1].photo.photo
+                    const usersArr = Object.entries(findChat[1].group.users)
+                    const users = findChat[1].group.users
+                    const infoUsers = Object.entries(infoChat.users)
 
                     const view = findChat[1].viewMessage.view 
                     const idSender = findChat[1].idSender ? findChat[1].idSender.idSender : null
                     const newMess = findChat[1].viewNewMessage.viewNewMess 
-
+                
+                    for(let i = 0; i < usersArr.length; i++){
+                        if(usersArr[i][1].deleted !== infoUsers[i][1].deleted){
+                            dispatch(deletedUser({combinedId, users}))
+                        }
+                    }
                     dispatch(viewMessageGroup({newMess, view,combinedId,idSender}))
                 }
             }
-           
-            
-
         });
         return () => {
             unsub()
         }
     }, [infoChat])
-    // console.log(infoChat, friend)
+    // console.log(infoChat)
 
     useEffect(()=>{
         if (scrollRef.current !== null) {

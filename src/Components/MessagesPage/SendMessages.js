@@ -30,20 +30,16 @@ export function SendMessages({setSizeWindow, sendMess, text, setMessageText, han
                 }
             })
             if(infoChat.users ){
-                // if(infoChat.users.deleted === false){
-                    // console.log(infoChat.users.deleted)
-                    for(const key in infoChat.users){               //!!!! rewrite !!!!!
-                        // console.log(infoChat.users[key])
-                        if(infoChat.users[key].id !== myInfo.id){
-                            await updateDoc(doc(db, 'chatsList', key), {
-                                [infoChat.id + '.viewMessage']: {
-                                    view: true, 
-                                }
-                            })
-                        }
-                        
+                const usersGroup = Object.entries(infoChat.users)
+                usersGroup.map( async el => {
+                    if(el[1].delete === false && el[0] !== myInfo.id){
+                        await updateDoc(doc(db, 'chatsList', el[0]), {
+                            [infoChat.id + '.viewMessage']: {
+                                view: true, 
+                            }
+                        })
                     }
-                // }    
+                })
             }else{
                 await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
                     [infoChat.id + '.viewMessage']: {

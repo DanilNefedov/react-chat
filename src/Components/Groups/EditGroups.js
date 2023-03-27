@@ -11,17 +11,13 @@ export function EditGroups({addGroup, state, active}) {
     // console.log(state)
 
     const showPhoto = (e) =>{
-        // photo[1]('w')
-        //e.preventDefault()
         if(window.FileReader){
-            state[1]({type: 'photo', payload: e.target.files[0]})//отдельный стейт
+            state[1]({type: 'photo', payload: e.target.files[0]})
             const selectedFile = e.target.files[0];
-            //photo[1](selectedFile)
             const reader = new FileReader();
             if(selectedFile && selectedFile.type.match('image.*')){
                 reader.onload = function (e) {
-                    state[1]({type: 'photo', payload: e.target.result})
-                    // photo[1](e.target.result)
+                    state[1]({type: 'selectedPhotoGroup', payload: e.target.result})
                 };
                 reader.readAsDataURL(selectedFile)
             }
@@ -33,7 +29,7 @@ export function EditGroups({addGroup, state, active}) {
             <div className={style.containerEdit}>
                 <div className={style.photoEdit}>
                     <div className={style.photoGroup}>
-                        {state[0].photo !== null ? <img src={state[0].photo} alt="Photo group" /> : <img src={img} alt="Photo group" />}
+                        {state[0].selectedPhoto !== null ? <img src={state[0].selectedPhoto} alt="Photo group" /> : <img src={img} alt="Photo group" />}
                         {/* <img src={img} alt="Photo group" /> */}
                     </div>
                     <div className={style.edit}>

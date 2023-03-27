@@ -2,7 +2,7 @@ export const initialStateGroup = {
     users:[],
     photo:null,
     name:'',
-
+    selectedPhoto:null
 }
 
 
@@ -24,6 +24,11 @@ export function reducerGroup(state, action){
             return{
                 ...state, 
                 photo: action.payload
+            }
+        case "selectedPhotoGroup":
+            return{
+                ...state,
+                selectedPhoto: action.payload
             }
         case 'name':
             return{

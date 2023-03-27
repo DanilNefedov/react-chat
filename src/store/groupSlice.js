@@ -38,6 +38,14 @@ const groupSlice = createSlice({
             group.view = action.payload.view
             group.idSender = action.payload.idSender
         },
+        updatePhotoGroup(state, action){
+            const group = state.group.find(el => el.id === action.payload.combinedId)
+            group.photo = action.payload.photo
+        },
+        deletedUser(state, action){
+            const group = state.group.find(el => el.id === action.payload.combinedId)
+            group.users = action.payload.users
+        },
         removeGroup(state){
             state.group = []
         }
@@ -46,5 +54,5 @@ const groupSlice = createSlice({
 })
 
 
-export const {removeGroup, addGroup, viewMessageGroup, addLastMessagesGroup} = groupSlice.actions
+export const {updatePhotoGroup, deletedUser, removeGroup, addGroup, viewMessageGroup, addLastMessagesGroup} = groupSlice.actions
 export default groupSlice.reducer;

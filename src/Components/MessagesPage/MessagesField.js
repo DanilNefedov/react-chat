@@ -40,7 +40,6 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef }) {
                 // console.log(data)
 
                 data.messages.map(el => {
-                    console.log(el)
                     const userId = el.userId
                     const messageText = el.messageText
                     const messageId = el.id
@@ -84,7 +83,7 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef }) {
             unsub()
         }
     }, [findChat])
-    console.log(findChat)
+    // console.log(findChat)
     
 
     return (
@@ -93,7 +92,7 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef }) {
             el.userId === user.id ? (
                 <div key={el.messageId} className={style.messageContainerMe}>
                     <span className={classNames("message", style.messagesMe)}>
-                        <span className={style.nameSenderText}>{el.name}</span>
+                        {/* <span className={style.nameSenderText}>{el.name}</span> */}
                         <span>{el.text}</span>
                         <span className={classNames(style.dateMessages, style.dateMe)}>{el.date}</span>
 
@@ -102,7 +101,7 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef }) {
                         <span className={style.imgSenderBlock}>
                             <img className={style.photoSender} src={el.photo ? el.photo : img} alt="Photo user" />
                         </span>
-                        <span className={el.photo ? style.desactiveName : style.nameSender}>{el.name}</span>
+                        {/* <span className={el.photo ? style.desactiveName : style.nameSender}>{el.name}</span> */}
                     </span>
                 </div>
             ):(
@@ -111,10 +110,10 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef }) {
                         <span className={style.imgSenderBlock}>
                         </span>
                         <img className={style.photoSender} src={el.photo ? el.photo : img} alt="Photo user" />
-                        <span className={el.photo ? style.desactiveName : style.nameSender}>{el.name}</span>
+                        {/* <span className={el.photo ? style.desactiveName : style.nameSender}>{el.name}</span> */}
                     </span>
                     <span className={classNames("message", style.messagesFriend)}>
-                        <span className={style.nameSenderText}>{el.name}</span>
+                        {/* <span className={style.nameSenderText}>{el.name}</span> */}
                         <span>{el.text}</span>
                         <span className={classNames(style.dateMessages, style.dateFriend)}>{el.date}</span>
                     </span>

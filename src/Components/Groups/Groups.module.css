@@ -82,7 +82,7 @@
 }
 
 .addUsers{
-    display: flex;
+    display: none;
     align-items: center;
     padding-bottom: 15px;
 }
@@ -202,5 +202,8 @@
 
     .activeContainer .addFriends{
         display: block;
+    }
+    .addUsers{
+        display: flex;
     }
 }

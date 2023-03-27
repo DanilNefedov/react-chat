@@ -12,9 +12,11 @@ import { v4 as uuid } from 'uuid';
 import done from '../../img/done-contact.svg'
 import { doc, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import back from '../../img/back-dark.svg'
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { selectedFriends } from "../HomePage/Friends";
 
 
-const selectedFriends = []
+
 
 
 export function Groups() {
@@ -39,78 +41,90 @@ export function Groups() {
         }
     }
     //------------------ CHANGE TO USEMEMO --------------------//
-
+    // console.log(selectedFriends)
 
     const addGroup = async () => {
         const combinedId = myInfo.id + uuid()
         const users = stateGroup.users
-        const filteredUsers = users.map((obj) => {
-            const copiedObg = {...obj}
-            const newKey = 'id'
-            
-            Object.keys(copiedObg).forEach(key =>{
-                if(key === 'friendId'){
-                    copiedObg[newKey] = copiedObg[key]
+
+        if (users.length > 0 && stateGroup.name !== '') {
+            const filteredUsers = users.map((obj) => {
+                const copiedObg = { ...obj }
+                const newKey = 'id'
+
+                Object.keys(copiedObg).forEach(key => {
+                    if (key === 'friendId') {
+                        copiedObg[newKey] = copiedObg[key]
+                    }
+                })
+
+                delete copiedObg.date
+                delete copiedObg.friendId
+                delete copiedObg.idSender
+                delete copiedObg.lastMessages
+                delete copiedObg.newMess
+                delete copiedObg.timePublic
+                delete copiedObg.view
+
+                return copiedObg
+            })
+            const userObj = {};
+
+            const copiedObgMyInfo = { ...myInfo }
+            Object.keys(copiedObgMyInfo).forEach(el => {
+                if (el === 'email') {
+                    delete copiedObgMyInfo.email
+
                 }
+                copiedObgMyInfo.admin = true
+                copiedObgMyInfo.deleted = false
             })
 
-            delete copiedObg.date
-            delete copiedObg.friendId
-            delete copiedObg.idSender
-            delete copiedObg.lastMessages
-            delete copiedObg.newMess
-            delete copiedObg.timePublic
-            delete copiedObg.view
+            userObj[copiedObgMyInfo.id] = { ...copiedObgMyInfo }
+            filteredUsers.forEach(user => {
+                userObj[user.id] = { ...user, admin: false };
+            });
 
-            return copiedObg
-        })
-        const userObj = {};
-        
-        const copiedObgMyInfo = {...myInfo}
-        Object.keys(copiedObgMyInfo).forEach(el => {
-            if(el === 'email'){
-                delete copiedObgMyInfo.email
-                
+
+            if (stateGroup.photo !== null) {
+                const storage = getStorage();
+                const storageRef = ref(storage, `groups/${stateGroup.name.trim()}ID-${combinedId}`);
+                const uploadTask = uploadBytesResumable(storageRef, stateGroup.photo);
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        console.log(progress);
+    
+                    },
+                    (error) => {
+                        console.log(error)
+                    },
+                    () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+    
+                            await updateDoc(doc(db, 'chatsList', myInfo.id), {
+                                [combinedId + '.photo']: {
+                                    photo: downloadURL
+                                }
+                            })
+    
+                            users.map(async user => {
+                                await updateDoc(doc(db, 'chatsList', user.friendId), {
+                                    [combinedId + '.photo']: {
+                                        photo: downloadURL
+                                    }
+                                })
+    
+                            })
+                        });
+                    }
+                );
             }
-            copiedObgMyInfo.admin = true
-            copiedObgMyInfo.deleted = false
-        })
 
-        userObj[copiedObgMyInfo.id] = { ...copiedObgMyInfo}
-        filteredUsers.forEach(user => {
-            userObj[user.id] = { ...user, admin: false };
-        });
+            
+            await setDoc(doc(db, 'chats', combinedId), { messages: [] })
 
-        // console.log(userObj)
-
-        await setDoc(doc(db, 'chats', combinedId), { messages: [] })
-
-        await updateDoc(doc(db, 'chatsList', myInfo.id), {
-            [combinedId + '.group']: {
-                users: userObj,
-            },
-            [combinedId + '.name']: {
-                name: stateGroup.name
-            },
-            [combinedId + '.photo']: {
-                photo: stateGroup.photo
-            },
-            [combinedId + '.date']: serverTimestamp(),
-            [combinedId + '.viewMessage']: {
-                view: false,
-                idSender: myInfo.id
-            },
-            [combinedId + '.idSender']: {
-                idSender: myInfo.id
-            },
-            [combinedId + '.viewNewMessage']: {
-                viewNewMess: true
-            }
-        })
-
-        users.map(async user => {
-
-            await updateDoc(doc(db, 'chatsList', user.friendId), {
+            await updateDoc(doc(db, 'chatsList', myInfo.id), {
                 [combinedId + '.group']: {
                     users: userObj,
                 },
@@ -118,21 +132,50 @@ export function Groups() {
                     name: stateGroup.name
                 },
                 [combinedId + '.photo']: {
-                    photo: stateGroup.photo
+                    photo: null
                 },
                 [combinedId + '.date']: serverTimestamp(),
                 [combinedId + '.viewMessage']: {
                     view: false,
+                    idSender: myInfo.id
                 },
                 [combinedId + '.idSender']: {
                     idSender: myInfo.id
                 },
                 [combinedId + '.viewNewMessage']: {
-                    viewNewMess: false
+                    viewNewMess: true
                 }
             })
 
-        })
+            users.map(async user => {
+
+                await updateDoc(doc(db, 'chatsList', user.friendId), {
+                    [combinedId + '.group']: {
+                        users: userObj,
+                    },
+                    [combinedId + '.name']: {
+                        name: stateGroup.name
+                    },
+                    [combinedId + '.photo']: {
+                        photo: null
+                    },
+                    [combinedId + '.date']: serverTimestamp(),
+                    [combinedId + '.viewMessage']: {
+                        view: false,
+                    },
+                    [combinedId + '.idSender']: {
+                        idSender: myInfo.id
+                    },
+                    [combinedId + '.viewNewMessage']: {
+                        viewNewMess: false
+                    }
+                })
+
+            })
+        }else{
+            console.log('w')
+        }
+
         //dispatchStateGroup({type: 'init', payload:initialStateGroup})
 
     }
@@ -156,7 +199,7 @@ export function Groups() {
                         <div className={style.contactContainer}>
                             {(friends.length > 0) ? (
                                 sortState.sort((a, b) => b.timePublic - a.timePublic).map((friend, indexBlock) => (
-                                    <Contacts addFriend={addFriend} indexBlock={indexBlock} key={friend.id} friends={friend}></Contacts>
+                                    friend.deleted === false ? <Contacts addFriend={addFriend} indexBlock={indexBlock} key={friend.id} friends={friend}></Contacts> : false
                                 ))
                             ) : (
                                 <Empty text={'Contacts list is empty'}></Empty>

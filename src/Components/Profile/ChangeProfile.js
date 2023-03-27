@@ -7,7 +7,7 @@ import edit from '../../img/edit.svg'
 import emailImg from '../../img/email.svg'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { doc, getFirestore, onSnapshot, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, getFirestore, onSnapshot, updateDoc } from 'firebase/firestore'
 import { removePhoto, updateUser } from '../../store/authSlice'
 import { deleteObject, getStorage, ref } from 'firebase/storage'
 import { getAuth, updateProfile } from 'firebase/auth'
@@ -16,7 +16,7 @@ import { initialStateModal } from '../../state/modalError'
 import { initialStateProfile } from '../../state/profileModalError'
 
 export function ChangeProfile ({ state, stateProfile}){
-
+    const group = useSelector(state => state.group.group)
     const user = useSelector(state => state.user)
     const friend = useSelector(state => state.friend.friend)
     const dispatch = useDispatch()
@@ -44,13 +44,28 @@ export function ChangeProfile ({ state, stateProfile}){
                     state[1]({type: 'activeModalWindow', payload: true})
                     state[1]({type:'errorClassName', payload:'Error during photo deletion'})
                 });
-
+                group.map(async el => {
+                    const docSnap = await getDoc(doc(db, 'chats', el.id));
+                    
+                    if (docSnap.exists()){
+                        const array = docSnap.data().messages;
+                        const updatedArray = array.map((element) =>{
+                            console.log(element)
+                            if (element.userId === user.id) {
+                                element.photo = null
+                                return { ...element};
+                            }else{
+                                return element;
+                            }
+                        })
+            
+                        await updateDoc(doc(db, 'chats', el.id), { messages: updatedArray });
+                    }
+                })
                 friend.map(async (el) => {
                     try{
                         await updateDoc(doc(db, 'chatsList', el.friendId), {
-                            [el.id + '.userInfo']: {
-                                id: user.id,
-                                displayName: stateProfile[0].name !== '' ? stateProfile[0].name : user.name,
+                            [el.id + '.photo' ]: {
                                 photo: null
                             }
                         })

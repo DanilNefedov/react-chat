@@ -13,10 +13,12 @@ import { initialStateModal, reducerModal } from '../../state/modalError';
 import { UserNavigation } from '../UserNavigation/UserNavigation';
 import { Empty } from '../Empty/Empty';
 import addGroups from '../../img/add-groups.svg'
-import { addGroup, addLastMessagesGroup, viewMessageGroup } from '../../store/groupSlice';
+import { addGroup, addLastMessagesGroup, updatePhotoGroup, viewMessageGroup } from '../../store/groupSlice';
 
 
 const FriendsList = React.lazy(() => import('./FriendsList/FriendsList'))
+
+export let selectedFriends = []
 
 
 export default function Friends() {
@@ -49,7 +51,6 @@ export default function Friends() {
                     const infoChat = el[1]
                     const lastMessages = infoChat.lastMessage ? infoChat.lastMessage.messageText : 'No messages'
                     const photo = infoChat.photo.photo 
-                    // console.log(infoChat, infoChat.photo)
                     const userDate = infoChat.date.toDate()//err delete friend must update Date
                     const timePublic = userDate.getTime() ? userDate.getTime() : '--:--'
                     const dateUserNow = new Date()
@@ -105,6 +106,8 @@ export default function Friends() {
                                 dispatch(addGroup({ combinedId, users, photo, name, lastMessages, date, timePublic, view, idSender, newMess }))
                             } else if (find && find.timePublic !== timePublic) {
                                 dispatch(addLastMessagesGroup({ idSender, view, combinedId, lastMessages, date, timePublic }))
+                            }else if(find.photo !== photo){
+                                dispatch(updatePhotoGroup({photo, combinedId}))
                             }
                         } else if (findMyDayBase !== findMyDayUser) {
                             const date = findMyDayBase
@@ -112,6 +115,8 @@ export default function Friends() {
                                 dispatch(addGroup({ combinedId, users, photo, name, lastMessages, date, timePublic, view, idSender, newMess }))
                             } else if (find.timePublic !== timePublic) {
                                 dispatch(addLastMessagesGroup({ idSender, view, combinedId, lastMessages, date, timePublic }))
+                            }else if(find.photo !== photo){
+                                dispatch(updatePhotoGroup({photo, combinedId}))
                             }
                         }
                         dispatch(viewMessageGroup({ newMess, view, combinedId, idSender }))
@@ -192,7 +197,7 @@ export default function Friends() {
                                 Friends
                             </h2>
                             {(friendList.length > 0 ) ?
-                            <Link to='/groups' className={style.groupsAdd}>
+                            <Link onClick={() => {selectedFriends = []}} to='/groups' className={style.groupsAdd}>
                                 <img src={addGroups} alt="Add Groups" />
                             </Link> :
                             <></>}

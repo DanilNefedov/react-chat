@@ -91,18 +91,13 @@ export function Search({ text, setText, searchListRef, searchRef, navRef }) {
                         photo: photo
                     },
                     [combinedId + '.date']: serverTimestamp(),
-                    [combinedId + '.viewMessage'] :{
-                        view: false,
-                        idSender:myInfo.id
-                    },
-                    [combinedId + '.idSender'] :{
-                        idSender:myInfo.id
-                    },
-                    [combinedId + '.viewNewMessage'] :{
-                        viewNewMess: true
-                    },
                     [combinedId + '.deleted']:{
                         deleted:false
+                    },
+                    [combinedId + '.viewMessage']:{
+                        newMessView: true,
+                        idSender:myInfo.id,
+                        viewMess:false
                     }
                 })
 
@@ -117,17 +112,13 @@ export function Search({ text, setText, searchListRef, searchRef, navRef }) {
                         photo: myInfo.photo
                     },
                     [combinedId + '.date']: serverTimestamp(),
-                    [combinedId + '.viewMessage'] :{
-                        view: false,
-                    },
-                    [combinedId + '.idSender'] :{
-                        idSender:myInfo.id
-                    },
-                    [combinedId + '.viewNewMessage'] :{
-                        viewNewMess: false
-                    },
                     [combinedId + '.deleted']:{
                         deleted:false
+                    },
+                    [combinedId + '.viewMessage']:{
+                        newMessView: false,
+                        idSender:myInfo.id,
+                        viewMess:false
                     }
                 })
             }

@@ -34,7 +34,6 @@ export default function Friends() {
     const dispatch = useDispatch()
     const friendList = useSelector(state => state.friend.friend)
     const groupList = useSelector(state => state.group.group)
-    //console.log(friendList, groupList)
     const sortState = [...friendList, ...groupList]
     const headRef = useRef()
     const searchRef = useRef();
@@ -56,9 +55,10 @@ export default function Friends() {
                     const dateUserNow = new Date()
                     const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth() + 1}.${userDate.getFullYear()}`
                     const findMyDayUser = `${dateUserNow.getDate()}.${dateUserNow.getMonth() + 1}.${dateUserNow.getFullYear()}`
-                    const view = infoChat.viewMessage.view
-                    const idSender = infoChat.idSender ? infoChat.idSender.idSender : null
-                    const newMess = infoChat.viewNewMessage.viewNewMess
+                    const viewMess = infoChat.viewMessage
+                    const view = viewMess.viewMess
+                    const idSender = viewMess.idSender 
+                    const newMess = viewMess.newMessView
                     let minute = userDate.getMinutes().toString()
                     if (minute.length === 1) {
                         minute = `0${minute}`
@@ -135,6 +135,7 @@ export default function Friends() {
             unsub()
         }
     }, [friendList, groupList])//friendList
+    // console.log(groupList)
 
     function resize() {
         if (containerFrineds.current !== null) {

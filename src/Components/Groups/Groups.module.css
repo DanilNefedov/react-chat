@@ -1,36 +1,42 @@
 .nameEdit input:-webkit-autofill,
-.nameEdit input:-webkit-autofill:hover, 
-.nameEdit input:-webkit-autofill:focus, 
-.nameEdit input:-webkit-autofill:active{
+.nameEdit input:-webkit-autofill:hover,
+.nameEdit input:-webkit-autofill:focus,
+.nameEdit input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px var(--main-bg) inset !important;
-    -webkit-text-fill-color:var(--white)!important;
+    -webkit-text-fill-color: var(--white) !important;
 }
+
 .nameEdit input {
-    outline:none!important;
-    border: transparent!important; 
-    outline-offset: 0!important;
+    outline: none !important;
+    border: transparent !important;
+    outline-offset: 0 !important;
 }
 
-.nameEdit input{
-    border: 1px solid transparent!important;
-}
-.nameEdit .err{
-    border-color: var(--red)!important;
+.nameEdit input {
+    border: 1px solid transparent !important;
 }
 
-.groups{
+.nameEdit .err {
+    border-color: var(--red) !important;
+}
+
+.groups {
     background-color: var(--second-main);
     height: 100vh;
     width: 100%;
+    position: relative;
 }
-.container{
+
+.container {
     display: flex;
     justify-content: space-between;
 }
-.addFriends{
+
+.addFriends {
     width: 50%;
-} 
-.headerContacs{
+}
+
+.headerContacs {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -40,10 +46,12 @@
     border-style: solid;
     border-color: var(--main-border);
 }
-.header{
+
+.header {
     padding: 0 10px;
 }
-.groupParams{
+
+.groupParams {
     border-right-width: 1px;
     border-color: var(--main-border);
     border-style: solid;
@@ -54,98 +62,115 @@
     flex-direction: column;
     align-items: center;
 }
-.friend{
+
+.friend {
     width: 100%;
     cursor: pointer;
     transition: 0.2s;
 }
-.containerFriend{
+
+.containerFriend {
     display: flex;
     align-items: center;
     padding: 10px;
 }
-.photo{
+
+.photo {
     width: 50px;
     height: 50px;
     border-radius: 50%;
 }
-.photo img{
+
+.photo img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
 }
-.name{
+
+.name {
     margin-left: 15px;
 }
-.friend:hover{
+
+.friend:hover {
     background-color: #252632;
 }
 
-.addUsers{
+.addUsers {
     display: none;
     align-items: center;
     padding-bottom: 15px;
 }
-.blockAddUsersImg{
+
+.blockAddUsersImg {
     width: 27px;
     height: 27px;
 }
-.blockAddUsersImg img{
+
+.blockAddUsersImg img {
     width: 27px;
     height: 27px;
 }
-.btnAddUsers{
+
+.btnAddUsers {
     margin-left: 5px;
     color: var(--desactive-text);
 }
 
 
-.photoGroup{
+.photoGroup {
     width: 150px;
     height: 150px;
     margin: 0 auto;
     margin-bottom: 15px;
 }
-.photoGroup img{
+
+.photoGroup img {
     width: 150px;
     height: 150px;
     border-radius: 50%;
 }
-.edit, .nameEdit{
-    padding-bottom: 15px;    
+
+.edit,
+.nameEdit {
+    padding-bottom: 15px;
     position: relative;
 }
+
 /* .photoEdit{
     display: flex;
     flex-direction: column;
     align-items: center;
 } */
-#fileGroup{
+#fileGroup {
     display: none;
 }
-.iconBtn{
+
+.iconBtn {
     width: 27px;
     height: 27px;
     position: absolute;
     top: -3px;
 }
-.choiceFile{
+
+.choiceFile {
     cursor: pointer;
     color: var(--desactive-text);
     margin-left: 33px;
 }
-.choiceFile:hover, .btnAddUsers:hover{
-    color:var(--white);
+
+.choiceFile:hover,
+.btnAddUsers:hover {
+    color: var(--white);
 }
 
-.infoSize{
+.infoSize {
     display: block;
     font-size: 11px;
     color: var(--desactive-text);
     letter-spacing: 0.3px;
 }
 
-.btnAdd button{
+.btnAdd button {
     background-color: var(--desactive-violet);
     padding: 10px 20px;
     border-radius: 3px;
@@ -155,55 +180,96 @@
     font-weight: 500;
     transition: 0.2s;
 }
-.btnAdd button:hover{
+
+.btnAdd button:hover {
     background-color: var(--main-violet);
 }
 
-#nameEdit{
+#nameEdit {
     background-color: var(--main-bg);
     padding: 5px;
     color: var(--white);
 }
-.nameGroup{
-    color:var(--desactive-text);
+
+.nameGroup {
+    color: var(--desactive-text);
     padding-bottom: 5px;
 }
-.backBtn{
+
+.backBtn {
     display: none;
     position: absolute;
     width: 30px;
     height: 30px;
     left: 20px;
 }
-.backBtn img{
+
+.backBtn img {
     width: 30px;
     height: 30px;
 }
 
+.nameEdit .errName {
+    border-color: var(--red) !important;
+}
+
+.emptyUsers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 50px;
+    position: absolute;
+    top: calc(50% - 25px);
+    left: calc(50% - 75px);
+    background-color: var(--desactive-violet);
+    border-radius: 5px;
+    animation: showHide 3s forwards;
+}
+
+
+@keyframes showHide {
+    0% {
+        top: 100%;
+    }
+    
+    40% {
+        top: calc(50% - 25px)
+    }
+    60% {
+        top: calc(50% - 25px)
+    }
+    
+    100% {
+        top:100%
+    }
+
+}
 
 
 @media screen and (max-width:500px) {
-    .backBtn{
+    .backBtn {
         display: block;
     }
-    /* .container{
-        display: block;
-    } */
-    .groupParams{
+
+    .groupParams {
         width: 100%;
     }
-    .addFriends{
+
+    .addFriends {
         width: 100%;
-        display: none;
-    }
-    .activeContainer .groupParams{
         display: none;
     }
 
-    .activeContainer .addFriends{
+    .activeContainer .groupParams {
+        display: none;
+    }
+
+    .activeContainer .addFriends {
         display: block;
     }
-    .addUsers{
+
+    .addUsers {
         display: flex;
     }
 }

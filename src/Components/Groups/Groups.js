@@ -14,6 +14,9 @@ import { doc, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/
 import back from '../../img/back-dark.svg'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { selectedFriends } from "../HomePage/Friends";
+import { Loader } from "../Loader/Loader";
+import { Link, useNavigate } from "react-router-dom";
+import close from '../../img/close.svg'
 
 
 
@@ -22,6 +25,7 @@ import { selectedFriends } from "../HomePage/Friends";
 export function Groups() {
     const [activeContacts, setActiveContacs] = useState(false)
     // const [test, setTest] = useState([])
+    const navigate = useNavigate()
     const navRef = useRef()
     const friends = useSelector(state => state.friend.friend)
     const myInfo = useSelector(user => user.user)
@@ -47,7 +51,9 @@ export function Groups() {
         const combinedId = myInfo.id + uuid()
         const users = stateGroup.users
 
-        if (users.length > 0 && stateGroup.name !== '') {
+        if (users.length > 0 && stateGroup.name.trim() !== '') {
+            dispatchStateGroup({type: 'lengthNameErr', payload: initialStateGroup.lengthNameErr})
+
             const filteredUsers = users.map((obj) => {
                 const copiedObg = { ...obj }
                 const newKey = 'id'
@@ -93,7 +99,13 @@ export function Groups() {
                 uploadTask.on('state_changed',
                     (snapshot) => {
                         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        console.log(progress);
+                        // console.log(progress);
+                        if(progress < 100){
+                            dispatchStateGroup({type: 'loadPhotoGroup', payload: true})
+                        }else{
+                            dispatchStateGroup({type: 'loadPhotoGroup', payload: initialStateGroup.loadPhotoGroup})
+                            navigate('/')
+                        }
     
                     },
                     (error) => {
@@ -129,21 +141,16 @@ export function Groups() {
                     users: userObj,
                 },
                 [combinedId + '.name']: {
-                    name: stateGroup.name
+                    name: stateGroup.name.trim()
                 },
                 [combinedId + '.photo']: {
                     photo: null
                 },
                 [combinedId + '.date']: serverTimestamp(),
-                [combinedId + '.viewMessage']: {
-                    view: false,
-                    idSender: myInfo.id
-                },
-                [combinedId + '.idSender']: {
-                    idSender: myInfo.id
-                },
-                [combinedId + '.viewNewMessage']: {
-                    viewNewMess: true
+                [combinedId + '.viewMessage']:{
+                    newMessView: true,
+                    idSender:myInfo.id,
+                    viewMess:false
                 }
             })
 
@@ -154,61 +161,82 @@ export function Groups() {
                         users: userObj,
                     },
                     [combinedId + '.name']: {
-                        name: stateGroup.name
+                        name: stateGroup.name.trim()
                     },
                     [combinedId + '.photo']: {
                         photo: null
                     },
                     [combinedId + '.date']: serverTimestamp(),
-                    [combinedId + '.viewMessage']: {
-                        view: false,
-                    },
-                    [combinedId + '.idSender']: {
-                        idSender: myInfo.id
-                    },
-                    [combinedId + '.viewNewMessage']: {
-                        viewNewMess: false
+                    [combinedId + '.viewMessage']:{
+                        newMessView: false,
+                        idSender:myInfo.id,
+                        viewMess:false
                     }
                 })
 
             })
-        }else{
-            console.log('w')
+            if(!stateGroup.photo){
+                navigate('/')
+            }
         }
-
-        //dispatchStateGroup({type: 'init', payload:initialStateGroup})
-
+        if(stateGroup.name.trim() === ''){
+            dispatchStateGroup({type: 'lengthNameErr', payload: true})
+        }
+        if(users.length <= 0){
+            dispatchStateGroup({type: 'emptyUsers', payload: true})
+            setTimeout(() => {
+                dispatchStateGroup({type: 'emptyUsers', payload: initialStateGroup.emptyUsers})
+                console.log('w')
+                
+            },3100);
+            
+            // setTimeout(() => {
+            //     dispatchStateGroup({type: 'emptyUsers', payload: initialStateGroup.emptyUsers})
+            //     console.log('w')
+            //     return
+            // },3100)
+            
+        }
     }
-
-
 
     return (
         <>
             <UserNavigation innerRef={navRef} />
+            {
+                stateGroup.loadPhotoGroup ? 
+                <Loader></Loader>
+                :
+                <section className={style.groups}>
+                    <div className={activeContacts ? classNames(style.container, style.activeContainer, 'container') : classNames(style.container, 'container')}>
+                        <EditGroups active={setActiveContacs} state={[stateGroup, dispatchStateGroup]} addGroup={addGroup}></EditGroups>
+                        <div className={classNames(style.addFriends, 'add-friends')}>
+                            <div className={style.headerContacs}>
+                                <span onClick={() => setActiveContacs(false)} className={style.backBtn}><img src={back} alt="Back" /></span>
+                                <h2 className={classNames(style.header, 'header')}>
+                                    Contacts
+                                </h2>
+                            </div>
+                            <div className={style.contactContainer}>
+                                {(friends.length > 0) ? (
+                                    sortState.sort((a, b) => b.timePublic - a.timePublic).map((friend, indexBlock) => (
+                                        friend.deleted === false ? <Contacts addFriend={addFriend} indexBlock={indexBlock} key={friend.id} friends={friend}></Contacts> : false
+                                    ))
+                                ) : (
+                                    <Empty text={'Contacts list is empty'}></Empty>
+                                )}
+                            </div>
 
-            <section className={style.groups}>
-                <div className={activeContacts ? classNames(style.container, style.activeContainer, 'container') : classNames(style.container, 'container')}>
-                    <EditGroups active={setActiveContacs} state={[stateGroup, dispatchStateGroup]} addGroup={addGroup}></EditGroups>
-                    <div className={classNames(style.addFriends, 'add-friends')}>
-                        <div className={style.headerContacs}>
-                            <span onClick={() => setActiveContacs(false)} className={style.backBtn}><img src={back} alt="Back" /></span>
-                            <h2 className={classNames(style.header, 'header')}>
-                                Contacts
-                            </h2>
                         </div>
-                        <div className={style.contactContainer}>
-                            {(friends.length > 0) ? (
-                                sortState.sort((a, b) => b.timePublic - a.timePublic).map((friend, indexBlock) => (
-                                    friend.deleted === false ? <Contacts addFriend={addFriend} indexBlock={indexBlock} key={friend.id} friends={friend}></Contacts> : false
-                                ))
-                            ) : (
-                                <Empty text={'Contacts list is empty'}></Empty>
-                            )}
-                        </div>
-
                     </div>
-                </div>
-            </section>
+
+                    <div className={stateGroup.emptyUsers ? style.emptyUsers : ''}>
+                        <p className={style.container}>
+                            Select users
+                        </p>
+                    </div>
+                </section>
+            }
+            
         </>
 
     )

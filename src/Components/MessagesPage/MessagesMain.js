@@ -45,7 +45,7 @@ export default function MessagesMain() {
         if (messageText !== '') {
             const messageId = uuid()
             const date = Timestamp.now()
-            const userIdMess = user.id
+            // const userIdMess = user.id
 
             await updateDoc(doc(db, 'chats', infoChat.id), {
 
@@ -65,14 +65,10 @@ export default function MessagesMain() {
                     messageText
                 },
                 [infoChat.id + '.date']: serverTimestamp(),
-                [infoChat.id + '.viewMessage'] :{
-                    view: false,
-                },
-                [infoChat.id + '.idSender'] :{
-                    idSender:user.id
-                },
-                [infoChat.id + '.viewNewMessage'] :{
-                    viewNewMess: true
+                [infoChat.id + '.viewMessage']:{
+                    newMessView: true,
+                    idSender:user.id,
+                    viewMess:false
                 }
 
             })
@@ -86,14 +82,10 @@ export default function MessagesMain() {
                                 messageText
                             },
                             [infoChat.id + '.date']: serverTimestamp(),
-                            [infoChat.id + '.viewMessage'] :{
-                                view: false,
-                            },
-                            [infoChat.id + '.idSender'] :{
-                                idSender:user.id
-                            },
-                            [infoChat.id + '.viewNewMessage'] :{
-                                viewNewMess: false
+                            [infoChat.id + '.viewMessage']:{
+                                newMessView: false,
+                                idSender:user.id,
+                                viewMess:false
                             }
                         })
                     }
@@ -108,14 +100,10 @@ export default function MessagesMain() {
                             messageText
                         },
                         [infoChat.id + '.date']: serverTimestamp(),
-                        [infoChat.id + '.viewMessage'] :{
-                            view: false,
-                        },
-                        [infoChat.id + '.idSender'] :{
-                            idSender:user.id
-                        },
-                        [infoChat.id + '.viewNewMessage'] :{
-                            viewNewMess: false
+                        [infoChat.id + '.viewMessage']:{
+                            newMessView: false,
+                            idSender:user.id,
+                            viewMess:false
                         }
                     })
                 }
@@ -140,16 +128,18 @@ export default function MessagesMain() {
             // console.log("data")
             if (data) {
 
-                const findChat = data.find(el => el[0] === infoChat.id)
+                const findChat = data.find(el => el[0] === infoChat.id)                    
+                const viewMess = findChat[1].viewMessage
+                const view = viewMess.viewMess 
+                const idSender = viewMess.idSender 
+                const newMess = viewMess.newMessView
                 // console.log(findChat)
                 if (findChat && findChat[1].chat) {
                     // console.log(findChat[1].deleted )
                     const combinedId = findChat[0]
                     const name = findChat[1].name ? findChat[1].name.name : ''
                     const photo = findChat[1].photo.photo
-                    const view = findChat[1].viewMessage.view 
-                    const idSender = findChat[1].idSender ? findChat[1].idSender.idSender : null
-                    const newMess = findChat[1].viewNewMessage.viewNewMess 
+
 
                     if (findChat[1].deleted.deleted ) {//change
                         dispatch(updatePhotoName({ name, photo, combinedId }))
@@ -166,10 +156,6 @@ export default function MessagesMain() {
                     const usersArr = Object.entries(findChat[1].group.users)
                     const users = findChat[1].group.users
                     const infoUsers = Object.entries(infoChat.users)
-
-                    const view = findChat[1].viewMessage.view 
-                    const idSender = findChat[1].idSender ? findChat[1].idSender.idSender : null
-                    const newMess = findChat[1].viewNewMessage.viewNewMess 
                 
                     for(let i = 0; i < usersArr.length; i++){
                         if(usersArr[i][1].deleted !== infoUsers[i][1].deleted){

@@ -13,31 +13,27 @@ export default function FriendsList({friend}) {
     const {id, name, lastMessages, date, photo, view, friendId, idSender, newMess} = friend
     const myInfo = useSelector(state => state.user)
     const db = getFirestore()
-    // if(friend.users){
-    //     console.log(friend.users)
 
-    // }
 
     const delViewMess = async () => {//someting err
         try{
-            await updateDoc(doc(db, 'chatsList', myInfo.id), {
-                [id + '.viewNewMessage'] :{
-                    viewNewMess: true
-                }
-            })
-            if(friend.users && friend.deleted === false){
+
+            if(friend.users ){//&& friend.deleted === false
                 Object.entries(friend.users).map(async el => {
-                    if(el[0] !== myInfo.id){
-                        console.log('w')
+                    if(el[0] !== myInfo.id && el[1].deleted === false){
                         await updateDoc(doc(db, 'chatsList', el[0]), {
-                            [friend.id + '.viewMessage']: {
-                                view: true, 
-                            }
+                            [`${friend.id}.viewMessage.viewMess`]: true
                         })
                     }
                 })   
             }else{
-                return
+                console.log(friend.users )
+                await updateDoc(doc(db, 'chatsList', myInfo.id), {
+                    [`${id}.viewMessage.newMessView`] : true
+                })
+                await updateDoc(doc(db, 'chatsList', friendId), {
+                    [`${id}.viewMessage.viewMess`]: true 
+                })
             }
            
         } catch(err){

@@ -46,12 +46,10 @@ export function EditGroups({addGroup, state, active}) {
                 <div className={style.nameEdit}>
                     <p className={style.nameGroup}>Add name: </p>
                     <input value={state[0].name} onChange={(e) => {
-                        if(e.target.value.trim().length > 20){
-                            console.log('name length')
-                        }else{
-                            state[1]({type:'name', payload:e.target.value})
+                        if(e.target.value.trim().length < 20){
+                            state[1]({type:'name', payload:e.target.value})  
                         }
-                    }}type="text" id={style.nameEdit} placeholder='enter name group'/>
+                    }}type="text" id={style.nameEdit} placeholder='Enter name group' className={state[0].lengthNameErr ? style.errName : ''}/>
                     <label className={style.enterName} htmlFor={style.nameEdit}></label>
                     <span className={style.infoSize}>*name length no more than 20 characters</span>
                 </div>

@@ -25,26 +25,22 @@ export function SendMessages({setSizeWindow, sendMess, text, setMessageText, han
     const delViewMess = async () => {
         try{
             await updateDoc(doc(db, 'chatsList', myInfo.id), {
-                [infoChat.id + '.viewNewMessage'] :{
-                    viewNewMess: true
-                }
+                [`${infoChat.id}.viewMessage.newMessView`] :true
+                
             })
+
             if(infoChat.users ){
                 const usersGroup = Object.entries(infoChat.users)
                 usersGroup.map( async el => {
-                    if(el[1].delete === false && el[0] !== myInfo.id){
+                    if(el[1].deleted === false && el[0] !== myInfo.id){
                         await updateDoc(doc(db, 'chatsList', el[0]), {
-                            [infoChat.id + '.viewMessage']: {
-                                view: true, 
-                            }
+                            [`${infoChat.id}.viewMessage.viewMess`]: true 
                         })
                     }
                 })
             }else{
                 await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
-                    [infoChat.id + '.viewMessage']: {
-                        view: true, 
-                    }
+                    [`${infoChat.id}.viewMessage.viewMess`]: true 
                 })
             }
             

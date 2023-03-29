@@ -55,6 +55,8 @@ export function EditGroups({addGroup, state, active}) {
                 </div>
                 <div className={style.btnAdd}>
                     <button onClick={() => addGroup()} type='submit' value='Submit'>Create</button>
+                    
+                    {state[0].emptyUsers ? <p className={style.emptyUsers}>*select users</p>:<></>}
                 </div>
             </div>
             

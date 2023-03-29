@@ -156,7 +156,8 @@ export default function Profile() {
                             })
                             // console.log(messages)
                             friend.map(async (el) => {
-                                if (el.friendId) {//try catch
+                                console.log(el)
+                                if (el.friendId && el.deleted === false) {//try catch
                                     await updateDoc(doc(db, 'chatsList', el.friendId), {
                                         [el.id + '.photo']: {
                                             photo: downloadURL
@@ -279,18 +280,21 @@ export default function Profile() {
 
 
                 friend.map(async el => {
-                    await updateDoc(doc(db, 'chatsList', el.friendId), {
-                        [el.id + '.name']: {
-                            name: 'Deleted'
-                        },
-                        [el.id + '.photo']: {
-                            photo: null
-                        },
-                        [el.id + '.deleted']:{
-                            deleted:true
-                        } 
+                    if(el.deleted === false){
+                        await updateDoc(doc(db, 'chatsList', el.friendId), {
+                            [el.id + '.name']: {
+                                name: 'Deleted'
+                            },
+                            [el.id + '.photo']: {
+                                photo: null
+                            },
+                            [el.id + '.deleted']:{
+                                deleted:true
+                            } 
 
-                    });
+                        });
+                    }
+                    
                 })
                 friend.map( async (el) =>{
                     const docSnap = await getDoc(doc(db, 'chats', el.id));
@@ -313,9 +317,12 @@ export default function Profile() {
 
                 group.map(async el => {//          !!!!!!!WORK some error
                     const userArr = Object.entries(el.users)
-                    userArr.map(async userArr => {
-                        if(userArr[0] !== user.id && userArr[1].deleted === false){
-                            await updateDoc(doc(db, 'chatsList', userArr[0]), {
+                    console.log(group, userArr)
+                    userArr.map(async userGroup => {
+                        console.log(userGroup)
+                        if(userGroup[0] !== user.uid && userGroup[1].deleted === false){
+                            console.log(userGroup)
+                            await updateDoc(doc(db, 'chatsList', userGroup[0]), {
                                 [`${el.id}.group.users.${user.uid}.name`]:'Deleted',
                                 [`${el.id}.group.users.${user.uid}.photo`]:null,
                                 [`${el.id}.group.users.${user.uid}.deleted`]:true

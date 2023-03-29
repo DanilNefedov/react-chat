@@ -203,6 +203,8 @@ h6 {
     background-color: var(--main-violet);
 }
 
+
+
 @media screen and (max-width:770px) {
     
 
@@ -229,12 +231,3 @@ h6 {
         border-width: 0;
     }
 }
-/* 
-
-
-@media screen and (max-width: 450px) {
-    .active::after{
-        left: -7px;
-        top:0px;
-    }
-} */

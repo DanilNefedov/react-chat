@@ -5,7 +5,8 @@ export const initialStateGroup = {
     selectedPhoto:null,
     loadPhotoGroup:false,
     lengthNameErr:false,
-    emptyUsers:false
+    emptyUsers:false,
+    admin:false
 }
 
 
@@ -52,6 +53,11 @@ export function reducerGroup(state, action){
             return{
                 ...state,
                 emptyUsers: action.payload
+            }
+        case 'admin':
+            return{
+                ...state,
+                admin: action.payload
             }
         case 'init':
             return initGroup(action.payload)

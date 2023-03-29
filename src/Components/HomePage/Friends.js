@@ -13,7 +13,7 @@ import { initialStateModal, reducerModal } from '../../state/modalError';
 import { UserNavigation } from '../UserNavigation/UserNavigation';
 import { Empty } from '../Empty/Empty';
 import addGroups from '../../img/add-groups.svg'
-import { addGroup, addLastMessagesGroup, updatePhotoGroup, viewMessageGroup } from '../../store/groupSlice';
+import { addGroup, addLastMessagesGroup, deletedUser, updatePhotoGroup, viewMessageGroup } from '../../store/groupSlice';
 
 
 const FriendsList = React.lazy(() => import('./FriendsList/FriendsList'))
@@ -95,10 +95,12 @@ export default function Friends() {
                         }
                         dispatch(viewMessage({ newMess, view, combinedId, idSender }))
 
-                    } else if (infoChat.group) {
+                    } else if (infoChat.group) {//add deleted users dispatch
                         //console.log(lastMessages)
                         const find = groupList.find(el => el.id === combinedId)
+                        const findusers = !find ?? Object.entries(find.users) 
                         const users = infoChat.group.users
+                        const dataUsers = Object.entries(users)
                         const name = infoChat.name.name
                         if (findMyDayBase === findMyDayUser) {//change to variables and "?:"
                             const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
@@ -119,6 +121,12 @@ export default function Friends() {
                                 dispatch(updatePhotoGroup({photo, combinedId}))
                             }
                         }
+                        for(let i = 0; i < findusers.length; i++){
+                            if(findusers[i][1].deleted !== dataUsers[i][1].deleted){
+                                dispatch(deletedUser({combinedId, users}))
+                            }
+                        }
+
                         dispatch(viewMessageGroup({ newMess, view, combinedId, idSender }))
                     }
 

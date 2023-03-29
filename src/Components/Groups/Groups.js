@@ -17,6 +17,8 @@ import { selectedFriends } from "../HomePage/Friends";
 import { Loader } from "../Loader/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import close from '../../img/close.svg'
+import { initialStateModal, reducerModal } from "../../state/modalError";
+import { ModuleError } from "../ModalError/ModalError";
 
 
 
@@ -32,6 +34,7 @@ export function Groups() {
     const sortState = [...friends]
     const [stateGroup, dispatchStateGroup] = useReducer(reducerGroup, initialStateGroup)
     const db = getFirestore();
+    const [stateModalErr, dispatchStateErr] = useReducer(reducerModal, initialStateModal)
     // selectedFriends = []
     //------------------ CHANGE TO USEMEMO --------------------//
     const addFriend = (el) => {
@@ -53,7 +56,7 @@ export function Groups() {
 
         if (users.length > 0 && stateGroup.name.trim() !== '') {
             dispatchStateGroup({type: 'lengthNameErr', payload: initialStateGroup.lengthNameErr})
-
+            dispatchStateGroup({type: 'emptyUsers', payload: initialStateGroup.emptyUsers})
             const filteredUsers = users.map((obj) => {
                 const copiedObg = { ...obj }
                 const newKey = 'id'
@@ -108,12 +111,14 @@ export function Groups() {
                         }
     
                     },
-                    (error) => {
-                        console.log(error)
+                    () => {
+                        dispatchStateErr({ type: 'activeModalWindow', payload: true })
+                        dispatchStateErr({ type: 'errorClassName', payload: 'Error while downloading a file' })
                     },
                     () => {
                         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-    
+                            dispatchStateErr({ type: 'resetModal', payload: initialStateModal })
+
                             await updateDoc(doc(db, 'chatsList', myInfo.id), {
                                 [combinedId + '.photo']: {
                                     photo: downloadURL
@@ -181,21 +186,17 @@ export function Groups() {
         }
         if(stateGroup.name.trim() === ''){
             dispatchStateGroup({type: 'lengthNameErr', payload: true})
+            dispatchStateGroup({type: 'emptyUsers', payload: initialStateGroup.emptyUsers})
+
         }
         if(users.length <= 0){
-            dispatchStateGroup({type: 'emptyUsers', payload: true})
-            setTimeout(() => {
-                dispatchStateGroup({type: 'emptyUsers', payload: initialStateGroup.emptyUsers})
-                console.log('w')
-                
-            },3100);
-            
-            // setTimeout(() => {
-            //     dispatchStateGroup({type: 'emptyUsers', payload: initialStateGroup.emptyUsers})
-            //     console.log('w')
-            //     return
-            // },3100)
-            
+            dispatchStateGroup({type: 'emptyUsers', payload:true})
+            dispatchStateGroup({type: 'lengthNameErr', payload: initialStateGroup.lengthNameErr})
+
+        }
+        if(users.length <= 0 && stateGroup.name.trim() === ''){
+            dispatchStateGroup({type: 'emptyUsers', payload:true})
+            dispatchStateGroup({type: 'lengthNameErr', payload: true})
         }
     }
 
@@ -206,6 +207,7 @@ export function Groups() {
                 stateGroup.loadPhotoGroup ? 
                 <Loader></Loader>
                 :
+                <>
                 <section className={style.groups}>
                     <div className={activeContacts ? classNames(style.container, style.activeContainer, 'container') : classNames(style.container, 'container')}>
                         <EditGroups active={setActiveContacs} state={[stateGroup, dispatchStateGroup]} addGroup={addGroup}></EditGroups>
@@ -229,12 +231,11 @@ export function Groups() {
                         </div>
                     </div>
 
-                    <div className={stateGroup.emptyUsers ? style.emptyUsers : ''}>
-                        <p className={style.container}>
-                            Select users
-                        </p>
-                    </div>
                 </section>
+                {stateModalErr.activeModalWindow ? <ModuleError state={[stateModalErr, dispatchStateErr]}></ModuleError> : <></>}
+
+                </>
+                
             }
             
         </>

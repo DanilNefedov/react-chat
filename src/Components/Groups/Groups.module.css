@@ -213,37 +213,11 @@
     border-color: var(--red) !important;
 }
 
-.emptyUsers {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 150px;
-    height: 50px;
-    position: absolute;
-    top: calc(50% - 25px);
-    left: calc(50% - 75px);
-    background-color: var(--desactive-violet);
-    border-radius: 5px;
-    animation: showHide 3s forwards;
-}
-
-
-@keyframes showHide {
-    0% {
-        top: 100%;
-    }
-    
-    40% {
-        top: calc(50% - 25px)
-    }
-    60% {
-        top: calc(50% - 25px)
-    }
-    
-    100% {
-        top:100%
-    }
-
+.emptyUsers{
+    font-size: 14px;
+    font-weight: normal;
+    color:var(--red);
+    padding-top: 7px;
 }
 
 

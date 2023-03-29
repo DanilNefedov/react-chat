@@ -2,7 +2,7 @@ import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import style from './MessagesMain.module.css';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRef, useState } from 'react';
+import { useReducer, useRef, useState } from 'react';
 import { SendMessages } from './SendMessages';
 import { arrayUnion, doc, getDoc, getFirestore, onSnapshot, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
@@ -12,6 +12,7 @@ import { updatePhotoName, viewMessage } from '../../store/friendSlice';
 import back from '../../img/back-dark.svg'
 import { deletedUser, viewMessageGroup } from '../../store/groupSlice';
 import { MessagesField } from './MessagesField';
+import { initialStateGroup, reducerGroup } from '../../state/group';
 
 
 
@@ -32,6 +33,7 @@ export default function MessagesMain() {
     // console.log(infoChat)
 
     const dispatch = useDispatch()
+    const [stateGroup, dispatchStateGroup] = useReducer(reducerGroup, initialStateGroup)
 
     const [sizeWindow, setSizeWindow] = useState(window.visualViewport.height)//can change for reducer
     const [deletedAcc, setDeletedAcc] = useState(false)
@@ -129,7 +131,7 @@ export default function MessagesMain() {
             if (data) {
 
                 const findChat = data.find(el => el[0] === infoChat.id)                    
-                const viewMess = findChat[1].viewMessage
+                const viewMess = !findChat ?? findChat[1].viewMessage
                 const view = viewMess.viewMess 
                 const idSender = viewMess.idSender 
                 const newMess = viewMess.newMessView
@@ -160,6 +162,11 @@ export default function MessagesMain() {
                     for(let i = 0; i < usersArr.length; i++){
                         if(usersArr[i][1].deleted !== infoUsers[i][1].deleted){
                             dispatch(deletedUser({combinedId, users}))
+                        }
+
+                        if(usersArr[i][1].admin && usersArr[i][1].id === user.id){
+                            console.log(usersArr[i][1])
+                            dispatchStateGroup({type: 'admin', payload: true})
                         }
                     }
                     dispatch(viewMessageGroup({newMess, view,combinedId,idSender}))

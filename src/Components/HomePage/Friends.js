@@ -51,7 +51,7 @@ export default function Friends() {
                     const lastMessages = infoChat.lastMessage ? infoChat.lastMessage.messageText : 'No messages'
                     const photo = infoChat.photo.photo 
                     const userDate = infoChat.date.toDate()//err delete friend must update Date
-                    const timePublic = userDate.getTime() ? userDate.getTime() : '--:--'
+                    const timePublic = userDate.getTime() && userDate.getTime() 
                     const dateUserNow = new Date()
                     const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth() + 1}.${userDate.getFullYear()}`
                     const findMyDayUser = `${dateUserNow.getDate()}.${dateUserNow.getMonth() + 1}.${dateUserNow.getFullYear()}`
@@ -98,7 +98,7 @@ export default function Friends() {
                     } else if (infoChat.group) {//add deleted users dispatch
                         //console.log(lastMessages)
                         const find = groupList.find(el => el.id === combinedId)
-                        const findusers = !find ?? Object.entries(find.users) 
+                        const findUsers = find !== undefined && Object.entries(find.users) 
                         const users = infoChat.group.users
                         const dataUsers = Object.entries(users)
                         const name = infoChat.name.name
@@ -121,8 +121,8 @@ export default function Friends() {
                                 dispatch(updatePhotoGroup({photo, combinedId}))
                             }
                         }
-                        for(let i = 0; i < findusers.length; i++){
-                            if(findusers[i][1].deleted !== dataUsers[i][1].deleted){
+                        for(let i = 0; i < findUsers.length; i++){
+                            if(findUsers[i][1].deleted !== dataUsers[i][1].deleted){
                                 dispatch(deletedUser({combinedId, users}))
                             }
                         }

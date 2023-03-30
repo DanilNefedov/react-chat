@@ -1,4 +1,4 @@
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { Link, Outlet, Route, Routes, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import style from './MessagesMain.module.css';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ import back from '../../img/back-dark.svg'
 import { deletedUser, viewMessageGroup } from '../../store/groupSlice';
 import { MessagesField } from './MessagesField';
 import { initialStateGroup, reducerGroup } from '../../state/group';
-
+import edit from '../../img/edit.svg'
 
 
 export default function MessagesMain() {
@@ -131,11 +131,10 @@ export default function MessagesMain() {
             if (data) {
 
                 const findChat = data.find(el => el[0] === infoChat.id)                    
-                const viewMess = !findChat ?? findChat[1].viewMessage
+                const viewMess = findChat && findChat[1].viewMessage
                 const view = viewMess.viewMess 
                 const idSender = viewMess.idSender 
                 const newMess = viewMess.newMessView
-                // console.log(findChat)
                 if (findChat && findChat[1].chat) {
                     // console.log(findChat[1].deleted )
                     const combinedId = findChat[0]
@@ -200,6 +199,10 @@ export default function MessagesMain() {
             <div className={classNames(style.container, 'container')}>
                 <header className={style.header} ref={nameRef}>
                     <div className={style.user}>
+                        {stateGroup.admin && 
+                        <Link state={infoChat} to='/edit-group'>
+                            <img className={style.editIcon} src={edit} alt="edit" />
+                        </Link>}
                         <div className={style.userImg}>
                             <img src={infoChat.photo !== null ? infoChat.photo : img} alt="User" />
                         </div>

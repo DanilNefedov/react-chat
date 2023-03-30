@@ -317,11 +317,11 @@ export default function Profile() {
 
                 group.map(async el => {//          !!!!!!!WORK some error
                     const userArr = Object.entries(el.users)
-                    console.log(group, userArr)
+                    // console.log(group, userArr)
                     userArr.map(async userGroup => {
-                        console.log(userGroup)
+                        // console.log(userGroup)
                         if(userGroup[0] !== user.uid && userGroup[1].deleted === false){
-                            console.log(userGroup)
+                            // console.log(userGroup)
                             await updateDoc(doc(db, 'chatsList', userGroup[0]), {
                                 [`${el.id}.group.users.${user.uid}.name`]:'Deleted',
                                 [`${el.id}.group.users.${user.uid}.photo`]:null,

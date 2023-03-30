@@ -16,7 +16,7 @@ export default function FriendsList({friend}) {
     // console.log(friend)
 
 
-    const delViewMess = async () => {//someting err
+    const delViewMess = async () => {
         try{
             await updateDoc(doc(db, 'chatsList', myInfo.id), {
                 [`${id}.viewMessage.newMessView`] :true
@@ -27,7 +27,7 @@ export default function FriendsList({friend}) {
                 const usersGroup = Object.entries(friend.users)
                 usersGroup.map( async el => {
                     if(el[1].deleted === false && el[0] !== myInfo.id){
-                        console.log(el)
+                        // console.log(el)
                         await updateDoc(doc(db, 'chatsList', el[0]), {
                             [`${id}.viewMessage.viewMess`]: true 
                         })

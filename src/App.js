@@ -15,6 +15,7 @@ import { Groups } from './Components/Groups/Groups';
 const Friends = React.lazy(() => import('./Components/HomePage/Friends'))
 const MessagesMain = React.lazy(() => import('./Components/MessagesPage/MessagesMain'))
 const Profile = React.lazy(() => import('./Components/Profile/Profile'))
+const EditGroup = React.lazy(() => import('./Components/Groups/EditGroup/EditGroup'))
 
 function App() {
   
@@ -43,10 +44,19 @@ function App() {
               <Groups/>
             </Suspense>
           }/>
+
+          <Route path='/edit-group' element={
+            <Suspense fallback={<Loader></Loader>}>
+              <EditGroup></EditGroup>
+            </Suspense>
+          }/>
+
+
+
         </Route>
         <Route path='/login' element={<SingIn/>}/>
         <Route path='/registration' element={<Registration/>}/>
-        <Route path='/*' element={<Page404></Page404>}/>
+        <Route path='*' element={<Page404></Page404>}/>
       </Routes>
   );
 }

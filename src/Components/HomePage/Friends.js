@@ -13,7 +13,7 @@ import { initialStateModal, reducerModal } from '../../state/modalError';
 import { UserNavigation } from '../UserNavigation/UserNavigation';
 import { Empty } from '../Empty/Empty';
 import addGroups from '../../img/add-groups.svg'
-import { addGroup, addLastMessagesGroup, deletedUser, updatePhotoGroup, viewMessageGroup } from '../../store/groupSlice';
+import { addGroup, addLastMessagesGroup, deletedUser, updateNameGroup, updatePhotoGroup, viewMessageGroup } from '../../store/groupSlice';
 
 
 const FriendsList = React.lazy(() => import('./FriendsList/FriendsList'))
@@ -96,7 +96,7 @@ export default function Friends() {
                         dispatch(viewMessage({ newMess, view, combinedId, idSender }))
 
                     } else if (infoChat.group) {//add deleted users dispatch
-                        //console.log(lastMessages)
+                        // console.log('test')
                         const find = groupList.find(el => el.id === combinedId)
                         const findUsers = find !== undefined && Object.entries(find.users) 
                         const users = infoChat.group.users
@@ -110,6 +110,8 @@ export default function Friends() {
                                 dispatch(addLastMessagesGroup({ idSender, view, combinedId, lastMessages, date, timePublic }))
                             }else if(find.photo !== photo){
                                 dispatch(updatePhotoGroup({photo, combinedId}))
+                            }else if (find.name !== name){
+                                dispatch(updateNameGroup({name, combinedId}))
                             }
                         } else if (findMyDayBase !== findMyDayUser) {
                             const date = findMyDayBase
@@ -119,6 +121,8 @@ export default function Friends() {
                                 dispatch(addLastMessagesGroup({ idSender, view, combinedId, lastMessages, date, timePublic }))
                             }else if(find.photo !== photo){
                                 dispatch(updatePhotoGroup({photo, combinedId}))
+                            }else if (find.name !== name){
+                                dispatch(updateNameGroup({name, combinedId}))
                             }
                         }
                         for(let i = 0; i < findUsers.length; i++){

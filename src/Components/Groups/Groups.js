@@ -97,7 +97,7 @@ export function Groups() {
 
             if (stateGroup.photo !== null) {
                 const storage = getStorage();
-                const storageRef = ref(storage, `groups/${stateGroup.name.trim()}ID-${combinedId}`);
+                const storageRef = ref(storage, `groups/ID-${combinedId}`);
                 const uploadTask = uploadBytesResumable(storageRef, stateGroup.photo);
                 uploadTask.on('state_changed',
                     (snapshot) => {

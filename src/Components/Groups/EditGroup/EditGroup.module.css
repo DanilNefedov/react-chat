@@ -2,4 +2,99 @@
     width: 150px;
     height: 150px;
     border-radius: 50%;
+    
+}
+.editGroup{
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: var(--second-main);
+}
+.container{
+    height: 100vh;
+    margin-top: 50px;
+    max-width: 250px;
+}
+.photoGroup, .nameGroup{
+    width: 100%;
+}
+.photo{
+    display: flex;
+    align-items: end;
+}
+.editPhoto{
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+.iconEdit{
+    width: 30px;
+    height: 30px;
+}
+.iconAdd{
+    width: 38px;
+    height: 38px;
+    margin: 0 6px 0 -5px;
+}
+.nameGroup{
+    display: flex;
+    position: relative;
+}
+
+.editPhotoInput{
+    display: none;
+}
+
+.inputName{
+    background-color: var(--main-bg);
+    padding: 0 0 0 10px;
+    margin-left: 7px;
+    border-radius: 5px;
+    color:var(--white);
+    font-size: 15px;
+    border: 1px solid transparent;
+}
+.aboutName{
+    position: absolute;
+    top: 35px;
+    font-size: 13px;
+    color: var(--desactive-text);
+}
+
+.accept{
+    margin-top: 70px;
+}
+.btnAccept{
+    padding: 8px 15px 10px;
+    background-color: var(--desactive-violet);
+    border-radius: 5px;
+    color:var(--white);
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.btnAccept:hover{
+    background-color:var(--main-violet)
+}
+
+.errorName{
+    border-color: var(--red);
+}
+#editPhotoGroup{
+    display: none;
+}
+.labelPhoto{
+    color: var(--desactive-text);
+    transition: 0.2s;
+    font-size: 15px;
+    cursor: pointer;
+}
+.labelPhoto:hover{
+    color:var(--white);
+}
+.selecPhoto{
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
 }

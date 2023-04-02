@@ -39,7 +39,13 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
             if (doc.data()) {
                 const data = doc.data()
                 const chatId = infoChat.id
-                // console.log(data)
+                // let delMess = false
+                // if(findChat && findChat.messages){
+                //     if(data.messages.length < findChat.messages.length){
+                //         delMess = true
+                //     }
+                // }
+                // console.log(data.messages)
 
                 data.messages.map(el => {
                     const userId = el.userId
@@ -52,7 +58,7 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
                     const dayMess = dayArr[date.toDate().getDay()]//
                     const hoursMess = date.toDate().getHours()//
                     let minute = date.toDate().getMinutes().toString()//
-                    
+                    // console.log(el)
                     if (minute.length === 1) {
                         minute = `0${minute}`
                     }
@@ -81,6 +87,7 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
                     }
                     dispatch(addMessage({ name, chatId, userId, messageText, datePush, messageId, photo }))
                 })
+                
             } else {
                 return false
             }
@@ -90,7 +97,7 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
             unsub()
         }
     }, [findChat])
-    // console.log(findChat)
+    // console.log(infoChat)
     
     const addInfoEdit = (idMess, chat) =>{
         const key = idMess

@@ -156,7 +156,7 @@ export default function Profile() {
                             })
                             // console.log(messages)
                             friend.map(async (el) => {
-                                console.log(el)
+                                // console.log(el)
                                 if (el.friendId && el.deleted === false) {//try catch
                                     await updateDoc(doc(db, 'chatsList', el.friendId), {
                                         [el.id + '.photo']: {

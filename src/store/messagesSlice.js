@@ -69,6 +69,14 @@ import { createSlice } from "@reduxjs/toolkit";
                     findMess.text = action.payload.messageText
                 }
             },
+            deleteMessageStore(state, action){
+                const oldFriend = state.messages.find(el => el.chatId === action.payload.chatId)
+                if(oldFriend){
+                    const indexMess = oldFriend.messages.findIndex(elem => elem.messageId === action.payload.messageId)
+                    // console.log(indexMess)
+                    oldFriend.messages.splice(indexMess, 1)
+                }
+            },
             removeMessage(state){
                 state.messages = []
             }
@@ -78,6 +86,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 
-    export const {editMessage, updateNameMessages, updatePhotoMessages, addMessage, addMessagesOldFriend, removeMessage} = messagesSlice.actions;
+    export const {deleteMessageStore, editMessage, updateNameMessages, updatePhotoMessages, addMessage, addMessagesOldFriend, removeMessage} = messagesSlice.actions;
 
     export default messagesSlice.reducer;

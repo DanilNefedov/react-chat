@@ -4,10 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import send from '../../img/send.svg';
 import style from './MessagesMain.module.css';
 import done from '../../img/done-contact.svg'
-import { editMessage } from '../../store/messagesSlice';
+import { deleteMessageStore, editMessage } from '../../store/messagesSlice';
 import { editLastMessageGroup } from '../../store/groupSlice';
 import { editLastMessageFriend } from '../../store/friendSlice';
 import { initialEditMessage } from '../../state/editMessage';
+import deleteMess from '../../img/delete-white.svg'
+import classNames from "classnames"
 
 
 
@@ -74,7 +76,7 @@ export function SendMessages({stateEditMess, setSizeWindow, sendMess, text, setM
         const chatId = infoChat.id
         const messageId = stateEditMess[0].editMess.messageId
 
-        if(infoChat.lastMessages === messageText){
+        if(infoChat.lastMessages === messageText || messageText.trim() === ''){
             stateEditMess[1]({type: 'init', payload:initialEditMessage})
             
         }else{
@@ -124,6 +126,27 @@ export function SendMessages({stateEditMess, setSizeWindow, sendMess, text, setM
         }
     }
 
+
+    const deleteMessage = async () =>{
+        console.log('w')
+        const chatId = infoChat.id
+        const messageId = stateEditMess[0].editMess.messageId
+        const userId = myInfo.id
+
+        dispatch(deleteMessageStore({chatId, messageId, userId}))
+
+
+        const docSnap = await getDoc(doc(db, 'chats', chatId));
+            if (docSnap.exists()){
+                const array = docSnap.data().messages;
+                const updatedArray = array.findIndex((element) => element.id === messageId)
+                // console.log(updatedArray)
+                array.splice(updatedArray, 1)
+                // console.log(array)
+                await updateDoc(doc(db, 'chats', chatId), { messages: array });
+            }
+    } 
+
     // console.log(infoChat)
 
 
@@ -132,6 +155,9 @@ export function SendMessages({stateEditMess, setSizeWindow, sendMess, text, setM
             {stateEditMess[0].modal ? 
             <>
             <textarea onChange={(e) => stateEditMess[1]({type:'editText', payload:e.target.value})} ref={textAreaEdit} value={stateEditMess[0].editText} onKeyDown={handleEvent} name="messages" id='textareaEdit' type='text' className={style.input} rows="1" ></textarea>
+            <button onClick={() => deleteMessage()} className={classNames(style.send, style.deleteMess)}>
+                <img src={deleteMess} alt="delete message" />
+            </button>
             <button onClick={() => setEditMess()} className={style.send}>
                 <img src={done} alt="accept" />
             </button>

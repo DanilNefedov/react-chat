@@ -14,6 +14,8 @@ import { deletedUser, viewMessageGroup } from '../../store/groupSlice';
 import { MessagesField } from './MessagesField';
 import { initialStateGroup, reducerGroup } from '../../state/group';
 import edit from '../../img/edit.svg'
+import { EditMessges } from './EditMessages';
+import { initialEditMessage, reducerEditMessage } from '../../state/editMessage';
 
 
 export default function MessagesMain() {
@@ -21,6 +23,7 @@ export default function MessagesMain() {
     const group = useSelector(state => state.group.group)
     const user = useSelector(state => state.user)
     const navigate = useNavigate()
+    // const [editMess, setEditMess] = useState(false)
 
     const nameRef = useRef();
     const scrollRef = useRef();
@@ -34,6 +37,7 @@ export default function MessagesMain() {
 
     const dispatch = useDispatch()
     const [stateGroup, dispatchStateGroup] = useReducer(reducerGroup, initialStateGroup)
+    const [editMessage, dispatchEditMessage] = useReducer(reducerEditMessage, initialEditMessage)
 
     const [sizeWindow, setSizeWindow] = useState(window.visualViewport.height)//can change for reducer
     const [deletedAcc, setDeletedAcc] = useState(false)
@@ -132,9 +136,9 @@ export default function MessagesMain() {
 
                 const findChat = data.find(el => el[0] === infoChat.id)                    
                 const viewMess = findChat && findChat[1].viewMessage
-                const view = viewMess.viewMess 
-                const idSender = viewMess.idSender 
-                const newMess = viewMess.newMessView
+                const view = viewMess && viewMess.viewMess 
+                const idSender = viewMess && viewMess.idSender 
+                const newMess = viewMess && viewMess.newMessView
                 if (findChat && findChat[1].chat) {
                     // console.log(findChat[1].deleted )
                     const combinedId = findChat[0]
@@ -164,7 +168,7 @@ export default function MessagesMain() {
                         }
 
                         if(usersArr[i][1].admin && usersArr[i][1].id === user.id){
-                            console.log(usersArr[i][1])
+                            // console.log(usersArr[i][1])
                             dispatchStateGroup({type: 'admin', payload: true})
                         }
                     }
@@ -194,6 +198,8 @@ export default function MessagesMain() {
 
     }, [sizeWindow])
 
+
+
     return (
         <section className={style.messagesSec}>
             <div className={classNames(style.container, 'container')}>
@@ -218,15 +224,17 @@ export default function MessagesMain() {
                     </div>
                 </header>
 
-                <section ref={scrollRef} id='scroll' className={style.messages}>
-                    <MessagesField setSizeWindow={setSizeWindow} scrollRef={scrollRef} infoChat={infoChat}></MessagesField>
+                <section ref={scrollRef} id='scroll' className={editMessage.modal ? classNames(style.noScroll, style.messages) : style.messages}>
+                    <MessagesField stateEditMess={[editMessage, dispatchEditMessage]} setSizeWindow={setSizeWindow} scrollRef={scrollRef} infoChat={infoChat}></MessagesField>
+                    
                 </section>
                 {deletedAcc
                     ?
                     <div ref={footerRef} className={classNames(style.deletedInput)}>Account has been deleted</div>
                     :
-                    <SendMessages infoChat={infoChat} scrollRef={scrollRef} setSizeWindow={setSizeWindow}  innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />
+                    <SendMessages stateEditMess={[editMessage, dispatchEditMessage]} infoChat={infoChat} scrollRef={scrollRef} setSizeWindow={setSizeWindow}  innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />
                 }
+                {/* <EditMessges stateEditMess={[editMessage, dispatchEditMessage]}></EditMessges> */}
             </div>
         </section>
     );

@@ -50,6 +50,10 @@ const groupSlice = createSlice({
             const group = state.group.find(el => el.id === action.payload.combinedId)
             group.users = action.payload.users
         },
+        editLastMessageGroup(state, action){
+            const group = state.group.find(el => el.id === action.payload.combinedId)
+            group.lastMessages = action.payload.lastMessages
+        },
         removeGroup(state){
             state.group = []
         }
@@ -58,5 +62,5 @@ const groupSlice = createSlice({
 })
 
 
-export const {updateNameGroup, updatePhotoGroup, deletedUser, removeGroup, addGroup, viewMessageGroup, addLastMessagesGroup} = groupSlice.actions
+export const {editLastMessageGroup, updateNameGroup, updatePhotoGroup, deletedUser, removeGroup, addGroup, viewMessageGroup, addLastMessagesGroup} = groupSlice.actions
 export default groupSlice.reducer;

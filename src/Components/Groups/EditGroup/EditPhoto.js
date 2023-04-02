@@ -35,8 +35,9 @@ export function EditPhoto ({state, stateGroup}){
                 <img className={classNames( style.iconEdit, style.iconAdd)} src={download} alt="dedit photo" />
                 <input id={style.editPhotoGroup} className={style.editPhotoInput} type="file" onChange={(e) => showPhoto(e)} accept='image/*, .png, .jpg, .web' />
                 <label className={style.labelPhoto} htmlFor={style.editPhotoGroup}>Edit Photo</label>
+                <span className={style.infoPhoto}>*.png, .jpg, .web</span>
                 {stateGroup[0].loadPhotoGroup && <span className={style.selecPhoto}><img className={style.imgSelect} src={done} alt="done" /></span>}                
-
+                
             </div>
             
         </div>

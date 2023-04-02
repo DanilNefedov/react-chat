@@ -2,7 +2,7 @@ import { doc, getFirestore, updateDoc } from "firebase/firestore"
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage"
 import { useReducer } from "react"
 import { useDispatch } from "react-redux"
-import { useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { initialStateGroup, reducerGroup } from "../../../state/group"
 import { initialStateModal, reducerModal } from "../../../state/modalError"
 import { updateNameGroup, updatePhotoGroup } from "../../../store/groupSlice"
@@ -11,6 +11,7 @@ import { ModuleError } from "../../ModalError/ModalError"
 import style from './EditGroup.module.css'
 import { EditName } from "./EditName"
 import { EditPhoto } from "./EditPhoto"
+import back from '../../../img/close.svg'
 
 
 export default function EditGroup () {
@@ -76,6 +77,7 @@ export default function EditGroup () {
         }
     }
 
+
     return(
         (stateGroup.loadPhotoGroup ? 
         <Loader></Loader>:
@@ -90,6 +92,9 @@ export default function EditGroup () {
                     <button onClick={() => submitUpdates()} className={style.btnAccept}>Accept</button>
                 </div>
             </div>
+            <Link to={`/${state.id}`} className={style.back}>
+                <img src={back} alt="back" />
+            </Link>
         </section>
         {stateModalErr.activeModalWindow ? <ModuleError state={[stateModalErr, dispatchStateErr]}></ModuleError> : <></>}
         </>)

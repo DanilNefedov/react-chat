@@ -2,7 +2,7 @@ import style from './Friends.module.css';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '../Search/Search'
-import { addFrined, addLastMessage, deletedFriend, updatePhotoName, viewMessage } from '../../store/friendSlice'
+import { addFrined, addLastMessage, deletedFriend, editLastMessageFriend, updatePhotoName, viewMessage } from '../../store/friendSlice'
 import React, { Suspense, useReducer, useRef, useState } from 'react';
 import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
@@ -13,7 +13,7 @@ import { initialStateModal, reducerModal } from '../../state/modalError';
 import { UserNavigation } from '../UserNavigation/UserNavigation';
 import { Empty } from '../Empty/Empty';
 import addGroups from '../../img/add-groups.svg'
-import { addGroup, addLastMessagesGroup, deletedUser, updateNameGroup, updatePhotoGroup, viewMessageGroup } from '../../store/groupSlice';
+import { addGroup, addLastMessagesGroup, deletedUser, editLastMessageGroup, updateNameGroup, updatePhotoGroup, viewMessageGroup } from '../../store/groupSlice';
 
 
 const FriendsList = React.lazy(() => import('./FriendsList/FriendsList'))
@@ -79,6 +79,8 @@ export default function Friends() {
                                 dispatch(updatePhotoName({ combinedId, photo, name }))
                             } else if (find && deleted){
                                 dispatch(deletedFriend({combinedId, deleted, name, photo}))
+                            }else if(find.lastMessage !== lastMessages &&  find.timePublic === timePublic){
+                                dispatch(editLastMessageFriend({combinedId, lastMessages}))
                             }
 
                         } else {
@@ -91,6 +93,8 @@ export default function Friends() {
                                 dispatch(updatePhotoName({ combinedId, photo, name }))
                             } else if (find && deleted){
                                 dispatch(deletedFriend({combinedId, deleted, name, photo}))
+                            }else if(find.lastMessage !== lastMessages &&  find.timePublic === timePublic){
+                                dispatch(editLastMessageFriend({combinedId, lastMessages}))
                             }
                         }
                         dispatch(viewMessage({ newMess, view, combinedId, idSender }))
@@ -112,6 +116,8 @@ export default function Friends() {
                                 dispatch(updatePhotoGroup({photo, combinedId}))
                             }else if (find.name !== name){
                                 dispatch(updateNameGroup({name, combinedId}))
+                            }else if(find.lastMessage !== lastMessages &&  find.timePublic === timePublic){
+                                dispatch(editLastMessageGroup({combinedId, lastMessages}))
                             }
                         } else if (findMyDayBase !== findMyDayUser) {
                             const date = findMyDayBase
@@ -123,6 +129,8 @@ export default function Friends() {
                                 dispatch(updatePhotoGroup({photo, combinedId}))
                             }else if (find.name !== name){
                                 dispatch(updateNameGroup({name, combinedId}))
+                            }else if(find.lastMessage !== lastMessages &&  find.timePublic === timePublic){
+                                dispatch(editLastMessageGroup({combinedId, lastMessages}))
                             }
                         }
                         for(let i = 0; i < findUsers.length; i++){

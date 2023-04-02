@@ -62,6 +62,13 @@ import { createSlice } from "@reduxjs/toolkit";
                     })
                 }
             },
+            editMessage(state, action){
+                const oldFriend = state.messages.find(el => el.chatId === action.payload.chatId)
+                if(oldFriend){
+                    const findMess = oldFriend.messages.find(el =>el.messageId === action.payload.messageId)
+                    findMess.text = action.payload.messageText
+                }
+            },
             removeMessage(state){
                 state.messages = []
             }
@@ -71,6 +78,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 
-    export const {updateNameMessages, updatePhotoMessages, addMessage, addMessagesOldFriend, removeMessage} = messagesSlice.actions;
+    export const {editMessage, updateNameMessages, updatePhotoMessages, addMessage, addMessagesOldFriend, removeMessage} = messagesSlice.actions;
 
     export default messagesSlice.reducer;

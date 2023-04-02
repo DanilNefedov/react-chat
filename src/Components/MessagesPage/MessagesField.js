@@ -1,14 +1,16 @@
 import classNames from "classnames"
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage, updateNameMessages, updatePhotoMessages } from "../../store/messagesSlice";
+import { addMessage, editMessage, updateNameMessages, updatePhotoMessages } from "../../store/messagesSlice";
 import { Empty } from "../Empty/Empty";
 import style from './MessagesMain.module.css'
 import img from '../../img/user-M.png'
+import { EditMessges } from "./EditMessages";
 
 
-export function MessagesField({ setSizeWindow, infoChat, scrollRef }) {
+
+export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMess }) {
     const messagesState = useSelector(state => state.message.messages)
     const user = useSelector(state => state.user)
     const findChat = messagesState.find(el => el.chatId === infoChat.id)
@@ -70,6 +72,11 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef }) {
                             }
                         }
                         
+                        if(userMess !== undefined && messageText !== undefined && userMess.text !== undefined){
+                            if(userMess.text !== messageText){
+                                dispatch(editMessage({chatId, messageId, messageText}))
+                            }
+                        }
                         
                     }
                     dispatch(addMessage({ name, chatId, userId, messageText, datePush, messageId, photo }))
@@ -85,13 +92,24 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef }) {
     }, [findChat])
     // console.log(findChat)
     
+    const addInfoEdit = (idMess, chat) =>{
+        const key = idMess
+        const infoChat = chat
+        const editMess = infoChat.messages.find(el => el.messageId === key)
+        if(editMess){
+            stateEditMess[1]({type:'modal', payload:true}) 
+            stateEditMess[1]({type:'editMess', payload:editMess})
+            stateEditMess[1]({type:'editText', payload:editMess.text})
+        }
+    }
 
     return (
-
         (messagesState.length > 0 && findChat ? (findChat.messages.map(el => (
             el.userId === user.id ? (
                 <div key={el.messageId} className={style.messageContainerMe}>
-                    <span className={classNames("message", style.messagesMe)}>
+                    <span onClick={() => {
+                    addInfoEdit(el.messageId, findChat)
+                    }} className={classNames("message", style.messagesMe)}>
                         {/* <span className={style.nameSenderText}>{el.name}</span> */}
                         <span>{el.text}</span>
                         <span className={classNames(style.dateMessages, style.dateMe)}>{el.date}</span>
@@ -118,13 +136,11 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef }) {
                         <span className={classNames(style.dateMessages, style.dateFriend)}>{el.date}</span>
                     </span>
 
-
                 </div>
             )
-        ))) : (
+        ))): (
             <Empty text={'No Messages'}></Empty>
         ))
-
     );
 }
 

@@ -41,9 +41,12 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
 
 
                 if(findChat && findChat.messages){
+                    // console.log(data.messages, findChat.messages)
                     if(data.messages.length < findChat.messages.length){
                         for(let i = 0; i < findChat.messages.length; i++){
-                            if(data.messages[i] === undefined){
+                            // console.log(data.messages, findChat.messages)
+                            if(data.messages[i] === undefined || data.messages.length < findChat.messages.length){
+                                console.log('w')
                                 const messageId = findChat.messages[i].messageId
                                 dispatch(deleteMessageStore({chatId,messageId}))
                             }

@@ -5,7 +5,7 @@ import style from './Groups.module.css'
 import classNames from 'classnames';
 import { useReducer, useRef, useState } from "react";
 import { Contacts } from "./Contacts";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Empty } from "../Empty/Empty";
 import { initialStateGroup, reducerGroup } from "../../state/group";
 import { v4 as uuid } from 'uuid';
@@ -28,6 +28,7 @@ export function Groups() {
     const [activeContacts, setActiveContacs] = useState(false)
     // const [test, setTest] = useState([])
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const navRef = useRef()
     const friends = useSelector(state => state.friend.friend)
     const myInfo = useSelector(user => user.user)

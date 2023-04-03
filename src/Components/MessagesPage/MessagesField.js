@@ -1,12 +1,11 @@
 import classNames from "classnames"
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage, editMessage, updateNameMessages, updatePhotoMessages } from "../../store/messagesSlice";
+import { addMessage, deleteMessageStore, editMessage, updateNameMessages, updatePhotoMessages } from "../../store/messagesSlice";
 import { Empty } from "../Empty/Empty";
 import style from './MessagesMain.module.css'
 import img from '../../img/user-M.png'
-import { EditMessges } from "./EditMessages";
 
 
 
@@ -39,13 +38,18 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
             if (doc.data()) {
                 const data = doc.data()
                 const chatId = infoChat.id
-                // let delMess = false
-                // if(findChat && findChat.messages){
-                //     if(data.messages.length < findChat.messages.length){
-                //         delMess = true
-                //     }
-                // }
-                // console.log(data.messages)
+
+
+                if(findChat && findChat.messages){
+                    if(data.messages.length < findChat.messages.length){
+                        for(let i = 0; i < findChat.messages.length; i++){
+                            if(data.messages[i] === undefined){
+                                const messageId = findChat.messages[i].messageId
+                                dispatch(deleteMessageStore({chatId,messageId}))
+                            }
+                        }
+                    }
+                }
 
                 data.messages.map(el => {
                     const userId = el.userId
@@ -83,7 +87,6 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
                                 dispatch(editMessage({chatId, messageId, messageText}))
                             }
                         }
-                        
                     }
                     dispatch(addMessage({ name, chatId, userId, messageText, datePush, messageId, photo }))
                 })
@@ -97,7 +100,9 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
             unsub()
         }
     }, [findChat])
-    // console.log(infoChat)
+
+   
+    // console.log(messagesState)
     
     const addInfoEdit = (idMess, chat) =>{
         const key = idMess
@@ -109,9 +114,9 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
             stateEditMess[1]({type:'editText', payload:editMess.text})
         }
     }
-
+    // console.log(findChat)
     return (
-        (messagesState.length > 0 && findChat ? (findChat.messages.map(el => (
+        (messagesState.length > 0 && findChat && findChat.messages.length > 0 ? (findChat.messages.map(el => (
             el.userId === user.id ? (
                 <div key={el.messageId} className={style.messageContainerMe}>
                     <span onClick={() => {

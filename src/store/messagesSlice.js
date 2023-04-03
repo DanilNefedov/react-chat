@@ -73,7 +73,6 @@ import { createSlice } from "@reduxjs/toolkit";
                 const oldFriend = state.messages.find(el => el.chatId === action.payload.chatId)
                 if(oldFriend){
                     const indexMess = oldFriend.messages.findIndex(elem => elem.messageId === action.payload.messageId)
-                    // console.log(indexMess)
                     oldFriend.messages.splice(indexMess, 1)
                 }
             },

@@ -1,4 +1,3 @@
-import { Search } from "../Search/Search";
 import { UserNavigation } from "../UserNavigation/UserNavigation";
 import { EditGroups } from "./EditGroups";
 import style from './Groups.module.css'
@@ -9,16 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Empty } from "../Empty/Empty";
 import { initialStateGroup, reducerGroup } from "../../state/group";
 import { v4 as uuid } from 'uuid';
-import done from '../../img/done-contact.svg'
-import { doc, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import back from '../../img/back-dark.svg'
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { selectedFriends } from "../HomePage/Friends";
 import { Loader } from "../Loader/Loader";
-import { Link, useNavigate } from "react-router-dom";
-import close from '../../img/close.svg'
+import { useNavigate } from "react-router-dom";
 import { initialStateModal, reducerModal } from "../../state/modalError";
 import { ModuleError } from "../ModalError/ModalError";
+import { requestAddGroup } from "./functions/requestAddGroup";
 
 
 
@@ -26,17 +23,17 @@ import { ModuleError } from "../ModalError/ModalError";
 
 export function Groups() {
     const [activeContacts, setActiveContacs] = useState(false)
-    // const [test, setTest] = useState([])
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const navRef = useRef()
     const friends = useSelector(state => state.friend.friend)
     const myInfo = useSelector(user => user.user)
+    const group = useSelector(state => state.group.group)
     const sortState = [...friends]
     const [stateGroup, dispatchStateGroup] = useReducer(reducerGroup, initialStateGroup)
     const db = getFirestore();
     const [stateModalErr, dispatchStateErr] = useReducer(reducerModal, initialStateModal)
-    // selectedFriends = []
+
     //------------------ CHANGE TO USEMEMO --------------------//
     const addFriend = (el) => {
         const index = selectedFriends.indexOf(el);
@@ -49,141 +46,19 @@ export function Groups() {
         }
     }
     //------------------ CHANGE TO USEMEMO --------------------//
-    // console.log(selectedFriends)
 
     const addGroup = async () => {
         const combinedId = myInfo.id + uuid()
         const users = stateGroup.users
+        const findGroup = group.find(el => el.id === combinedId)
 
         if (users.length > 0 && stateGroup.name.trim() !== '') {
+
             dispatchStateGroup({type: 'lengthNameErr', payload: initialStateGroup.lengthNameErr})
             dispatchStateGroup({type: 'emptyUsers', payload: initialStateGroup.emptyUsers})
-            const filteredUsers = users.map((obj) => {
-                const copiedObg = { ...obj }
-                const newKey = 'id'
 
-                Object.keys(copiedObg).forEach(key => {
-                    if (key === 'friendId') {
-                        copiedObg[newKey] = copiedObg[key]
-                    }
-                })
-
-                delete copiedObg.date
-                delete copiedObg.friendId
-                delete copiedObg.idSender
-                delete copiedObg.lastMessages
-                delete copiedObg.newMess
-                delete copiedObg.timePublic
-                delete copiedObg.view
-
-                return copiedObg
-            })
-            const userObj = {};
-
-            const copiedObgMyInfo = { ...myInfo }
-            Object.keys(copiedObgMyInfo).forEach(el => {
-                if (el === 'email') {
-                    delete copiedObgMyInfo.email
-
-                }
-                copiedObgMyInfo.admin = true
-                copiedObgMyInfo.deleted = false
-            })
-
-            userObj[copiedObgMyInfo.id] = { ...copiedObgMyInfo }
-            filteredUsers.forEach(user => {
-                userObj[user.id] = { ...user, admin: false };
-            });
-
-
-            if (stateGroup.photo !== null) {
-                const storage = getStorage();
-                const storageRef = ref(storage, `groups/ID-${combinedId}`);
-                const uploadTask = uploadBytesResumable(storageRef, stateGroup.photo);
-                uploadTask.on('state_changed',
-                    (snapshot) => {
-                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        // console.log(progress);
-                        if(progress < 100){
-                            dispatchStateGroup({type: 'loadPhotoGroup', payload: true})
-                        }else{
-                            dispatchStateGroup({type: 'loadPhotoGroup', payload: initialStateGroup.loadPhotoGroup})
-                            navigate('/')
-                        }
-    
-                    },
-                    () => {
-                        dispatchStateErr({ type: 'activeModalWindow', payload: true })
-                        dispatchStateErr({ type: 'errorClassName', payload: 'Error while downloading a file' })
-                    },
-                    () => {
-                        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-                            dispatchStateErr({ type: 'resetModal', payload: initialStateModal })
-
-                            await updateDoc(doc(db, 'chatsList', myInfo.id), {
-                                [combinedId + '.photo']: {
-                                    photo: downloadURL
-                                }
-                            })
-    
-                            users.map(async user => {
-                                await updateDoc(doc(db, 'chatsList', user.friendId), {
-                                    [combinedId + '.photo']: {
-                                        photo: downloadURL
-                                    }
-                                })
-    
-                            })
-                        });
-                    }
-                );
-            }
-
+            requestAddGroup(users, myInfo, findGroup, dispatch, combinedId, db, navigate, [stateModalErr, dispatchStateErr], [stateGroup, dispatchStateGroup])
             
-            await setDoc(doc(db, 'chats', combinedId), { messages: [] })
-
-            await updateDoc(doc(db, 'chatsList', myInfo.id), {
-                [combinedId + '.group']: {
-                    users: userObj,
-                },
-                [combinedId + '.name']: {
-                    name: stateGroup.name.trim()
-                },
-                [combinedId + '.photo']: {
-                    photo: null
-                },
-                [combinedId + '.date']: serverTimestamp(),
-                [combinedId + '.viewMessage']:{
-                    newMessView: true,
-                    idSender:myInfo.id,
-                    viewMess:false
-                }
-            })
-
-            users.map(async user => {
-
-                await updateDoc(doc(db, 'chatsList', user.friendId), {
-                    [combinedId + '.group']: {
-                        users: userObj,
-                    },
-                    [combinedId + '.name']: {
-                        name: stateGroup.name.trim()
-                    },
-                    [combinedId + '.photo']: {
-                        photo: null
-                    },
-                    [combinedId + '.date']: serverTimestamp(),
-                    [combinedId + '.viewMessage']:{
-                        newMessView: false,
-                        idSender:myInfo.id,
-                        viewMess:false
-                    }
-                })
-
-            })
-            if(!stateGroup.photo){
-                navigate('/')
-            }
         }
         if(stateGroup.name.trim() === ''){
             dispatchStateGroup({type: 'lengthNameErr', payload: true})

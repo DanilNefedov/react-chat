@@ -11,6 +11,7 @@ import { Loader } from '../Loader/Loader';
 import React from 'react';
 import { initialStateModal, reducerModal } from '../../state/modalError';
 import { Empty } from '../Empty/Empty';
+import {requestSearch} from './functions/requestSearch'
 
 const SearchList = React.lazy(() => import('./SearchList'))
 
@@ -75,53 +76,9 @@ export function Search({ text, setText, searchListRef, searchRef, navRef }) {
                 const friendId = id
                 dispatch(addFrined({ combinedId, name, friendId, photo }))
             }
-            const res = await getDoc(doc(db, 'chats', combinedId))
-            if (!res.exists()) {
-
-                await setDoc(doc(db, 'chats', combinedId), {messages: [] })
-
-                await updateDoc(doc(db, 'chatsList', myInfo.id), {
-                    [combinedId + '.chat']:{
-                        id: id
-                    },
-                    [combinedId + '.name'] : {
-                        name: name,
-                    },
-                    [combinedId + '.photo'] : {
-                        photo: photo
-                    },
-                    [combinedId + '.date']: serverTimestamp(),
-                    [combinedId + '.deleted']:{
-                        deleted:false
-                    },
-                    [combinedId + '.viewMessage']:{
-                        newMessView: true,
-                        idSender:myInfo.id,
-                        viewMess:false
-                    }
-                })
-
-                await updateDoc(doc(db, 'chatsList', id), {
-                    [combinedId + '.chat']:{
-                        id: myInfo.id
-                    },
-                    [combinedId + '.name'] : {
-                        name: myInfo.name,
-                    },
-                    [combinedId + '.photo'] : {
-                        photo: myInfo.photo
-                    },
-                    [combinedId + '.date']: serverTimestamp(),
-                    [combinedId + '.deleted']:{
-                        deleted:false
-                    },
-                    [combinedId + '.viewMessage']:{
-                        newMessView: false,
-                        idSender:myInfo.id,
-                        viewMess:false
-                    }
-                })
-            }
+            
+            requestSearch({combinedId, db, myInfo, id, name, photo})
+            
             dispatchModal({type:'resetModal', payload:initialStateModal})
         } catch (error) {
             dispatchModal({type:'activeModalWindow', payload:true})

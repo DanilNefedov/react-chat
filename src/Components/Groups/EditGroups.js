@@ -3,12 +3,9 @@ import classNames from 'classnames';
 import img from '../../img/group-av.png'
 import download from '../../img/download.svg'
 import addUsers from '../../img/add.svg'
-import { useState } from 'react';
 
 
 export function EditGroups({addGroup, state, active}) {
-    // const [activeContacts, setActiveContacs] = useState(false)
-    // console.log(state)
 
     const showPhoto = (e) =>{
         if(window.FileReader){
@@ -30,7 +27,6 @@ export function EditGroups({addGroup, state, active}) {
                 <div className={style.photoEdit}>
                     <div className={style.photoGroup}>
                         {state[0].selectedPhoto !== null ? <img src={state[0].selectedPhoto} alt="Photo group" /> : <img src={img} alt="Photo group" />}
-                        {/* <img src={img} alt="Photo group" /> */}
                     </div>
                     <div className={style.edit}>
                         <img className={classNames(style.iconBtn)} src={download} alt="download" />

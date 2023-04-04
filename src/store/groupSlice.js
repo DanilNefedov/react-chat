@@ -9,7 +9,7 @@ const groupSlice = createSlice({
     name: 'group',
     initialState,
     reducers:{
-        addGroup(state, action){
+        addGroupState(state, action){
             //console.log(action.payload.lastMessages)
             state.group.push({
                 id:action.payload.combinedId,
@@ -62,5 +62,5 @@ const groupSlice = createSlice({
 })
 
 
-export const {editLastMessageGroup, updateNameGroup, updatePhotoGroup, deletedUser, removeGroup, addGroup, viewMessageGroup, addLastMessagesGroup} = groupSlice.actions
+export const {editLastMessageGroup, updateNameGroup, updatePhotoGroup, deletedUser, removeGroup, addGroupState, viewMessageGroup, addLastMessagesGroup} = groupSlice.actions
 export default groupSlice.reducer;

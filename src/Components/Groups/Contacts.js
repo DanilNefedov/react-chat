@@ -6,8 +6,7 @@ import { useState } from 'react';
 
 
 export function Contacts ({friends, indexBlock, addFriend}){
-    const {id, name, friendId, photo} = friends
-    // console.log(friends)
+    const { name, photo} = friends
 
     const [selected, setSelected] = useState([]);
 
@@ -21,7 +20,6 @@ export function Contacts ({friends, indexBlock, addFriend}){
         setSelected(newSelected);
 
     }
-//    console.log(selected)
 
     return(
 

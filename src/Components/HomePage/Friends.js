@@ -2,18 +2,18 @@ import style from './Friends.module.css';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '../Search/Search'
-import { addFrined, addLastMessage, deletedFriend, editLastMessageFriend, updatePhotoName, viewMessage } from '../../store/friendSlice'
 import React, { Suspense, useReducer, useRef, useState } from 'react';
 import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ModuleError } from '../ModalError/ModalError';
 import { Loader } from '../Loader/Loader';
 import { initialStateModal, reducerModal } from '../../state/modalError';
 import { UserNavigation } from '../UserNavigation/UserNavigation';
 import { Empty } from '../Empty/Empty';
 import addGroups from '../../img/add-groups.svg'
-import { addGroup, addLastMessagesGroup, deletedUser, editLastMessageGroup, updateNameGroup, updatePhotoGroup, viewMessageGroup } from '../../store/groupSlice';
+import { updateFriends } from './functions/updateFriends';
+import { updateGroups } from './functions/updateGroups';
 
 
 const FriendsList = React.lazy(() => import('./FriendsList/FriendsList'))
@@ -44,13 +44,12 @@ export default function Friends() {
         const unsub = onSnapshot(doc(db, "chatsList", myInfo.id), (doc) => {
             if (doc.data()) {
                 const data = Object.entries(doc.data())
-                // console.log(data)
                 data.map(el => {
                     const combinedId = el[0]
                     const infoChat = el[1]
                     const lastMessages = infoChat.lastMessage ? infoChat.lastMessage.messageText : 'No messages'
                     const photo = infoChat.photo.photo 
-                    const userDate = infoChat.date && infoChat.date.toDate()//err delete friend must update Date
+                    const userDate = infoChat.date && infoChat.date.toDate()
                     const timePublic = userDate.getTime() && userDate.getTime() 
                     const dateUserNow = new Date()
                     const findMyDayBase = `${userDate.getDate()}.${userDate.getMonth() + 1}.${userDate.getFullYear()}`
@@ -64,82 +63,22 @@ export default function Friends() {
                         minute = `0${minute}`
                     }
                     if (combinedId && infoChat.chat) {
-                        const find = friendList.find(el => el.id === combinedId)
-                        const friendId = infoChat.chat.id
-                        const name = infoChat.name.name
-                        const deleted = infoChat.deleted.deleted
-                        if (findMyDayBase === findMyDayUser) {
-                            const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
-                            // console.log(find.lastMessages, lastMessages)
-                            if (!find ) {
-                                dispatch(addFrined({deleted, newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
-                            } else if (find && find.timePublic !== timePublic ) {
-                                dispatch(addLastMessage({deleted, idSender, view, combinedId, lastMessages, date, timePublic }))
-                            } else if (find.name !== name || find.photo !== photo) {
-                                dispatch(updatePhotoName({ combinedId, photo, name }))
-                            } else if (find && deleted){
-                                dispatch(deletedFriend({combinedId, deleted, name, photo}))
-                            }else if(find.lastMessage !== lastMessages &&  find.timePublic === timePublic){
-                                dispatch(editLastMessageFriend({combinedId, lastMessages}))
-                            }
 
-                        } else {
-                            const date = findMyDayBase
-                            if (!find ) {
-                                dispatch(addFrined({deleted, newMess, view, combinedId, name, date, friendId, timePublic, lastMessages, photo, idSender }))
-                            } else if (find && find.lastMessages !== lastMessages ) {
-                                dispatch(addLastMessage({deleted, idSender, view, combinedId, lastMessages, date, timePublic }))
-                            } else if (find.name !== name || find.photo !== photo) {
-                                dispatch(updatePhotoName({ combinedId, photo, name }))
-                            } else if (find && deleted){
-                                dispatch(deletedFriend({combinedId, deleted, name, photo}))
-                            }else if(find.lastMessage !== lastMessages &&  find.timePublic === timePublic){
-                                dispatch(editLastMessageFriend({combinedId, lastMessages}))
-                            }
-                        }
-                        dispatch(viewMessage({ newMess, view, combinedId, idSender }))
+                        updateFriends(friendList, infoChat, findMyDayBase, 
+                            findMyDayUser, userDate, minute, 
+                            combinedId, dispatch, newMess, 
+                            view, timePublic, lastMessages, 
+                            photo, idSender)
+                        
 
-                    } else if (infoChat.group) {//add deleted users dispatch
-                        // console.log('test')
-                        const find = groupList.find(el => el.id === combinedId)
-                        const findUsers = find !== undefined && Object.entries(find.users) 
-                        const users = infoChat.group.users
-                        const dataUsers = Object.entries(users)
-                        const name = infoChat.name.name
-                        if (findMyDayBase === findMyDayUser) {//change to variables and "?:"
-                            const date = `${userDate.getHours()}:${minute}`//maybe err in userDate
-                            if (!find) {
-                                dispatch(addGroup({ combinedId, users, photo, name, lastMessages, date, timePublic, view, idSender, newMess }))
-                            } else if (find && find.timePublic !== timePublic) {
-                                dispatch(addLastMessagesGroup({ idSender, view, combinedId, lastMessages, date, timePublic }))
-                            }else if(find.photo !== photo){
-                                dispatch(updatePhotoGroup({photo, combinedId}))
-                            }else if (find.name !== name){
-                                dispatch(updateNameGroup({name, combinedId}))
-                            }else if(find.lastMessage !== lastMessages &&  find.timePublic === timePublic){
-                                dispatch(editLastMessageGroup({combinedId, lastMessages}))
-                            }
-                        } else if (findMyDayBase !== findMyDayUser) {
-                            const date = findMyDayBase
-                            if (!find) {
-                                dispatch(addGroup({ combinedId, users, photo, name, lastMessages, date, timePublic, view, idSender, newMess }))
-                            } else if (find.timePublic !== timePublic) {
-                                dispatch(addLastMessagesGroup({ idSender, view, combinedId, lastMessages, date, timePublic }))
-                            }else if(find.photo !== photo){
-                                dispatch(updatePhotoGroup({photo, combinedId}))
-                            }else if (find.name !== name){
-                                dispatch(updateNameGroup({name, combinedId}))
-                            }else if(find.lastMessage !== lastMessages &&  find.timePublic === timePublic){
-                                dispatch(editLastMessageGroup({combinedId, lastMessages}))
-                            }
-                        }
-                        for(let i = 0; i < findUsers.length; i++){
-                            if(findUsers[i][1].deleted !== dataUsers[i][1].deleted){
-                                dispatch(deletedUser({combinedId, users}))
-                            }
-                        }
+                    } else if (infoChat.group) {
 
-                        dispatch(viewMessageGroup({ newMess, view, combinedId, idSender }))
+                        updateGroups(groupList, infoChat, findMyDayBase, 
+                            findMyDayUser, userDate, minute, 
+                            combinedId, dispatch, newMess, 
+                            view, timePublic, lastMessages, 
+                            photo, idSender)
+                        
                     }
 
                 })
@@ -154,8 +93,8 @@ export default function Friends() {
         return () => {
             unsub()
         }
-    }, [friendList, groupList])//friendList
-    // console.log(groupList)
+    }, [friendList, groupList])
+
 
     function resize() {
         if (containerFrineds.current !== null) {
@@ -229,7 +168,6 @@ export default function Friends() {
                                 <Suspense fallback={<Loader></Loader>}>
                                     {(friendList.length > 0 || groupList.length > 0) ? (
                                         sortState.sort((a, b) => b.timePublic - a.timePublic).map((friend) => (
-                                            // console.log(friend)
                                             <FriendsList key={friend.id} friend={friend}></FriendsList>
                                         ))
                                     ) : (

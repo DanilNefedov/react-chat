@@ -1,15 +1,15 @@
-import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
-import { useEffect, useMemo, useRef } from 'react';
+import { doc, getFirestore, updateDoc } from 'firebase/firestore';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import send from '../../img/send.svg';
 import style from './MessagesMain.module.css';
 import done from '../../img/done-contact.svg'
-import { deleteMessageStore, editMessage } from '../../store/messagesSlice';
-import { editLastMessageGroup } from '../../store/groupSlice';
-import { editLastMessageFriend } from '../../store/friendSlice';
+import { deleteMessageStore } from '../../store/messagesSlice';
 import { initialEditMessage } from '../../state/editMessage';
 import deleteMess from '../../img/delete-white.svg'
 import classNames from "classnames"
+import { requestEditMess } from './functions/requestEditMess';
+import { requestDeleteMess } from './functions/requestDeleteMess';
 
 
 
@@ -22,7 +22,6 @@ export function SendMessages({stateEditMess, setSizeWindow, sendMess, text, setM
 
     const dispatch = useDispatch()
 
-    // console.log(infoChat)
 
     useEffect(() =>{
         window.addEventListener("resize", keyboardDidShow )
@@ -81,47 +80,9 @@ export function SendMessages({stateEditMess, setSizeWindow, sendMess, text, setM
             stateEditMess[1]({type: 'init', payload:initialEditMessage})
             
         }else{
-            const docSnap = await getDoc(doc(db, 'chats', chatId));
-            if (docSnap.exists()){
-                const array = docSnap.data().messages;
-                const updatedArray = array.map((element) =>{
-                    if (element.id === messageId) {
-                        dispatch(editMessage({chatId, messageId, messageText}))
-                        return { ...element, messageText: messageText };
-                    }else{
-                        return element;
-                    }
-                })
 
-                await updateDoc(doc(db, 'chats', chatId), { messages: updatedArray });
-            }
-
-
-            if(infoChat.users){
-                const usersArr = Object.entries(infoChat.users)
-                usersArr.map(async el =>{
-                    if(el[1].deleted === false ){
-                        await updateDoc(doc(db, 'chatsList', el[0]), {
-                            [`${infoChat.id}.lastMessage.messageText`]: messageText 
-                        })
-                        const lastMessages = messageText
-                        const combinedId = infoChat.id
-                        dispatch(editLastMessageGroup({combinedId, lastMessages}))
-
-                    }
-                })
-            }else{
-                await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
-                    [`${infoChat.id}.lastMessage.messageText`]: messageText 
-                })
-                await updateDoc(doc(db, 'chatsList', myInfo.id), {
-                    [`${infoChat.id}.lastMessage.messageText`] :messageText
-                })
-                const lastMessages = messageText
-                const combinedId = infoChat.id
-                dispatch(editLastMessageFriend({combinedId, lastMessages}))
-
-            }
+            requestEditMess(db, chatId, infoChat, messageId, dispatch, messageText, myInfo)
+            
             stateEditMess[1]({type: 'init', payload:initialEditMessage})
 
         }
@@ -134,50 +95,13 @@ export function SendMessages({stateEditMess, setSizeWindow, sendMess, text, setM
         const userId = myInfo.id
 
         dispatch(deleteMessageStore({chatId, messageId, userId}))
-        const docSnapChats = await getDoc(doc(db, 'chats', chatId));
 
-        if (docSnapChats.exists()){
-            const array = docSnapChats.data().messages;
-            const updatedArray = array.findIndex((element) => element.id === messageId)
-            array.splice(updatedArray, 1)
-            await updateDoc(doc(db, 'chats', chatId), { messages: array });
-        }
-
-
-        const messageStateChat = messagesState.find(el => el.chatId === infoChat.id)
-        const newLastMessage = messageStateChat.messages.length >= 2 ? messageStateChat.messages[messageStateChat.messages.length - 2].text : "No messages"
-        if(messageStateChat.messages[messageStateChat.messages.length - 1].messageId === messageId){
-            
-            if(infoChat.users){
-                const usersArr = Object.entries(infoChat.users)
-                usersArr.map(async el =>{
-                    if(el[1].deleted === false ){
-                        await updateDoc(doc(db, 'chatsList', el[0]), {
-                            [`${infoChat.id}.lastMessage.messageText`]: newLastMessage 
-                        })
-                        const lastMessages = newLastMessage
-                        const combinedId = infoChat.id
-                        dispatch(editLastMessageGroup({combinedId, lastMessages}))
-                    }
-                })
-            }else{
-                await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
-                    [`${infoChat.id}.lastMessage.messageText`]: newLastMessage 
-                })
-                await updateDoc(doc(db, 'chatsList', myInfo.id), {
-                    [`${infoChat.id}.lastMessage.messageText`] :newLastMessage 
-                })
-                const lastMessages = newLastMessage 
-                const combinedId = infoChat.id
-                dispatch(editLastMessageFriend({combinedId, lastMessages}))
-            }
-            
-        }
+        requestDeleteMess(chatId, messageId, db, dispatch, infoChat, messagesState, myInfo)
+        
         stateEditMess[1]({type: 'init', payload:initialEditMessage})
 
     } 
 
-    // console.log(infoChat)
 
 
     return (

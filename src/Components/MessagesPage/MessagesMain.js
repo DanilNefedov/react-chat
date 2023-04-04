@@ -1,11 +1,10 @@
-import { Link, Outlet, Route, Routes, useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import style from './MessagesMain.module.css';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReducer, useRef, useState } from 'react';
 import { SendMessages } from './SendMessages';
-import { arrayUnion, doc, getDoc, getFirestore, onSnapshot, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
-import { v4 as uuid } from 'uuid';
+import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
 import img from '../../img/user-M.png'
 import { useEffect } from 'react';
 import { updatePhotoName, viewMessage } from '../../store/friendSlice';
@@ -14,8 +13,8 @@ import { deletedUser, viewMessageGroup } from '../../store/groupSlice';
 import { MessagesField } from './MessagesField';
 import { initialStateGroup, reducerGroup } from '../../state/group';
 import edit from '../../img/edit.svg'
-import { EditMessges } from './EditMessages';
 import { initialEditMessage, reducerEditMessage } from '../../state/editMessage';
+import { requestSendMess } from './functions/requestSendMess';
 
 
 export default function MessagesMain() {
@@ -23,7 +22,6 @@ export default function MessagesMain() {
     const group = useSelector(state => state.group.group)
     const user = useSelector(state => state.user)
     const navigate = useNavigate()
-    // const [editMess, setEditMess] = useState(false)
 
     const nameRef = useRef();
     const scrollRef = useRef();
@@ -33,13 +31,12 @@ export default function MessagesMain() {
 
     const [link] = Object.values(useParams())
     const infoChat = friend.find(el => el.id === link) ? friend.find(el => el.id === link) : group.find(el => el.id === link)
-    // console.log(infoChat)
 
     const dispatch = useDispatch()
     const [stateGroup, dispatchStateGroup] = useReducer(reducerGroup, initialStateGroup)
     const [editMessage, dispatchEditMessage] = useReducer(reducerEditMessage, initialEditMessage)
 
-    const [sizeWindow, setSizeWindow] = useState(window.visualViewport.height)//can change for reducer
+    const [sizeWindow, setSizeWindow] = useState(window.visualViewport.height)
     const [deletedAcc, setDeletedAcc] = useState(false)
     const [text, setMessageText] = useState('');
 
@@ -47,73 +44,10 @@ export default function MessagesMain() {
         const messageText = text
         setMessageText('')
 
-
         if (messageText !== '') {
-            const messageId = uuid()
-            const date = Timestamp.now()
-            // const userIdMess = user.id
 
-            await updateDoc(doc(db, 'chats', infoChat.id), {
-
-                messages: arrayUnion({
-                    id: messageId,
-                    messageText,
-                    userId: user.id,
-                    date: date,
-                    photo: user.photo,
-                    name:user.name,
-                    deleted:false
-                })
-            })
-
-            await updateDoc(doc(db, 'chatsList', user.id), {
-                [infoChat.id + '.lastMessage']: {
-                    messageText
-                },
-                [infoChat.id + '.date']: serverTimestamp(),
-                [infoChat.id + '.viewMessage']:{
-                    newMessView: true,
-                    idSender:user.id,
-                    viewMess:false
-                }
-
-            })
-
-            if(infoChat.users){
-                for(const key in infoChat.users){
-                    const res = await getDoc(doc(db, 'chatsList', key))
-                    if (res.exists()) {
-                        await updateDoc(doc(db, 'chatsList', key), {
-                            [infoChat.id + '.lastMessage']: {
-                                messageText
-                            },
-                            [infoChat.id + '.date']: serverTimestamp(),
-                            [infoChat.id + '.viewMessage']:{
-                                newMessView: false,
-                                idSender:user.id,
-                                viewMess:false
-                            }
-                        })
-                    }
-                }
-                
-           }else{
-                const res = await getDoc(doc(db, 'chatsList', infoChat.friendId))
-                // console.log('w')
-                if (res.exists()) {
-                    await updateDoc(doc(db, 'chatsList', infoChat.friendId), {
-                        [infoChat.id + '.lastMessage']: {
-                            messageText
-                        },
-                        [infoChat.id + '.date']: serverTimestamp(),
-                        [infoChat.id + '.viewMessage']:{
-                            newMessView: false,
-                            idSender:user.id,
-                            viewMess:false
-                        }
-                    })
-                }
-            }
+            requestSendMess(db, infoChat, messageText, user)
+        
         }
 
     }
@@ -128,10 +62,9 @@ export default function MessagesMain() {
 
 
     useEffect(() => {
-        const unsub = onSnapshot(doc(db, "chatsList", user.id), (doc) => {//ERROR update Deleted status
+        const unsub = onSnapshot(doc(db, "chatsList", user.id), (doc) => {
             
             const data = doc.data() ?  Object.entries(doc.data()) : false
-            // console.log("data")
             if (data) {
 
                 const findChat = data.find(el => el[0] === infoChat.id)                    
@@ -140,13 +73,12 @@ export default function MessagesMain() {
                 const idSender = viewMess && viewMess.idSender 
                 const newMess = viewMess && viewMess.newMessView
                 if (findChat && findChat[1].chat) {
-                    // console.log(findChat[1].deleted )
                     const combinedId = findChat[0]
                     const name = findChat[1].name ? findChat[1].name.name : ''
                     const photo = findChat[1].photo.photo
 
 
-                    if (findChat[1].deleted.deleted ) {//change
+                    if (findChat[1].deleted.deleted ) {
                         dispatch(updatePhotoName({ name, photo, combinedId }))
                         setDeletedAcc(true)
                         return
@@ -168,7 +100,6 @@ export default function MessagesMain() {
                         }
 
                         if(usersArr[i][1].admin && usersArr[i][1].id === user.id){
-                            // console.log(usersArr[i][1])
                             dispatchStateGroup({type: 'admin', payload: true})
                         }
                     }
@@ -180,7 +111,6 @@ export default function MessagesMain() {
             unsub()
         }
     }, [infoChat])
-    // console.log(infoChat)
 
     useEffect(()=>{
         if (scrollRef.current !== null) {
@@ -234,7 +164,6 @@ export default function MessagesMain() {
                     :
                     <SendMessages stateEditMess={[editMessage, dispatchEditMessage]} infoChat={infoChat} scrollRef={scrollRef} setSizeWindow={setSizeWindow}  innerRef={footerRef} handleEvent={handleEvent} sendMess={sendMess} text={text} setMessageText={setMessageText} />
                 }
-                {/* <EditMessges stateEditMess={[editMessage, dispatchEditMessage]}></EditMessges> */}
             </div>
         </section>
     );

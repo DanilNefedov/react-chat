@@ -13,8 +13,6 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
     const messagesState = useSelector(state => state.message.messages)
     const user = useSelector(state => state.user)
     const findChat = messagesState.find(el => el.chatId === infoChat.id)
-    // console.log(friend)
-
     const db = getFirestore()
     const dispatch = useDispatch()
     const dayArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -39,16 +37,13 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
                 const data = doc.data()
                 const chatId = infoChat.id
 
-
                 if(findChat && findChat.messages){
-                    // console.log(data.messages, findChat.messages)
                     if(data.messages.length < findChat.messages.length){
                         for(let i = 0; i < findChat.messages.length; i++){
-                            // console.log(data.messages, findChat.messages)
                             if(data.messages[i] === undefined || data.messages.length < findChat.messages.length){
-                                console.log('w')
                                 const messageId = findChat.messages[i].messageId
                                 dispatch(deleteMessageStore({chatId,messageId}))
+                                
                             }
                         }
                     }
@@ -60,12 +55,10 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
                     const messageId = el.id
                     const date = el.date
                     const photo = el.photo 
-                    // console.log(photo)
                     const name = el.name 
-                    const dayMess = dayArr[date.toDate().getDay()]//
-                    const hoursMess = date.toDate().getHours()//
-                    let minute = date.toDate().getMinutes().toString()//
-                    // console.log(el)
+                    const dayMess = dayArr[date.toDate().getDay()]
+                    const hoursMess = date.toDate().getHours()
+                    let minute = date.toDate().getMinutes().toString()
                     if (minute.length === 1) {
                         minute = `0${minute}`
                     }
@@ -73,13 +66,13 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
 
                     if (findChat && findChat.messages) {
                         const userMess = findChat.messages.find(el => el.messageId === messageId)
-                        if(userMess !== undefined && userMess.photo !== undefined && photo !== undefined){//some err "cant reading undefined of photo"
+                        if(userMess !== undefined && userMess.photo !== undefined && photo !== undefined){
                             if (userMess.photo !== photo) {
                                 dispatch(updatePhotoMessages({ messageId, chatId, photo }))
                             }
                         }
                         
-                        if(userMess !== undefined && userMess.name !== undefined && name !== undefined){//some err "cant reading undefined of name"
+                        if(userMess !== undefined && userMess.name !== undefined && name !== undefined){
                             if (userMess.name !== name) {
                                 dispatch(updateNameMessages({ messageId, chatId, name }))
                             }
@@ -105,7 +98,6 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
     }, [findChat])
 
    
-    // console.log(messagesState)
     
     const addInfoEdit = (idMess, chat) =>{
         const key = idMess
@@ -117,7 +109,7 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
             stateEditMess[1]({type:'editText', payload:editMess.text})
         }
     }
-    // console.log(findChat)
+
     return (
         (messagesState.length > 0 && findChat && findChat.messages.length > 0 ? (findChat.messages.map(el => (
             el.userId === user.id ? (
@@ -125,7 +117,6 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
                     <span onClick={() => {
                     addInfoEdit(el.messageId, findChat)
                     }} className={classNames("message", style.messagesMe)}>
-                        {/* <span className={style.nameSenderText}>{el.name}</span> */}
                         <span>{el.text}</span>
                         <span className={classNames(style.dateMessages, style.dateMe)}>{el.date}</span>
 
@@ -134,7 +125,6 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
                         <span className={style.imgSenderBlock}>
                             <img className={style.photoSender} src={el.photo ? el.photo : img} alt="Photo user" />
                         </span>
-                        {/* <span className={el.photo ? style.desactiveName : style.nameSender}>{el.name}</span> */}
                     </span>
                 </div>
             ):(
@@ -143,10 +133,8 @@ export function MessagesField({ setSizeWindow, infoChat, scrollRef, stateEditMes
                         <span className={style.imgSenderBlock}>
                         </span>
                         <img className={style.photoSender} src={el.photo ? el.photo : img} alt="Photo user" />
-                        {/* <span className={el.photo ? style.desactiveName : style.nameSender}>{el.name}</span> */}
                     </span>
                     <span className={classNames("message", style.messagesFriend)}>
-                        {/* <span className={style.nameSenderText}>{el.name}</span> */}
                         <span>{el.text}</span>
                         <span className={classNames(style.dateMessages, style.dateFriend)}>{el.date}</span>
                     </span>

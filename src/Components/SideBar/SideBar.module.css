@@ -3,7 +3,6 @@
     border-width: 0 1px 0 0;
     border-color: var(--main-border);
     border-style: solid;
-    /* font-size: 14px; */
 }
 
 .nav{
@@ -128,49 +127,3 @@
     }
 }
 
-/* @media screen and (max-width: 770px) {
-    .logo{
-        padding: 13px 13px;
-    }
-    .logoImg{
-        width: 35px;
-        height: 35px;
-    }
-    .home{
-        padding: 14px 7px 0;
-    }
-    .profile, .exit{
-        padding: 10px 7px;
-    }
-    .imgCont{
-        width: 25px;
-        height: 25px;
-    }
-    .imgCont img{
-        width: 25px;
-        height: 25px;
-    }
-    .nameNav{
-        font-size: 12px;
-    }
-    
-}
-
-@media screen and (max-width: 450px) {
-    .logo{
-        padding: 9.5px;
-    }
-    
-    .imgCont{
-        width: 23px;
-        height: 23px;
-    }
-    .imgCont img{
-        width: 23px;
-        height: 23px;
-    }
-    .nameNav{
-        font-size: 12px;
-        line-height: 13px;
-    }
-} */

@@ -136,11 +136,7 @@
     position: relative;
 }
 
-/* .photoEdit{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-} */
+
 #fileGroup {
     display: none;
 }

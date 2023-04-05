@@ -9,28 +9,48 @@ export function updateGroups (groupList, infoChat, findMyDayBase, findMyDayUser,
     if (findMyDayBase === findMyDayUser) {
         const date = `${userDate.getHours()}:${minute}`
         if (!find) {
+
             dispatch(addGroupState({ combinedId, users, photo, name, lastMessages, date, timePublic, view, idSender, newMess }))
+            
         } else if (find && find.timePublic !== timePublic) {
+
             dispatch(addLastMessagesGroup({ idSender, view, combinedId, lastMessages, date, timePublic }))
+
         }else if(find.photo !== photo){
+
             dispatch(updatePhotoGroup({photo, combinedId}))
+
         }else if (find.name !== name){
+
             dispatch(updateNameGroup({name, combinedId}))
+
         }else if(find.lastMessage !== lastMessages &&  find.timePublic === timePublic){
+
             dispatch(editLastMessageGroup({combinedId, lastMessages}))
+
         }
     } else if (findMyDayBase !== findMyDayUser) {
         const date = findMyDayBase
         if (!find) {
+
             dispatch(addGroupState({ combinedId, users, photo, name, lastMessages, date, timePublic, view, idSender, newMess }))
+            
         } else if (find.timePublic !== timePublic) {
+
             dispatch(addLastMessagesGroup({ idSender, view, combinedId, lastMessages, date, timePublic }))
+
         }else if(find.photo !== photo){
+
             dispatch(updatePhotoGroup({photo, combinedId})) 
+
         }else if (find.name !== name){
+
             dispatch(updateNameGroup({name, combinedId}))
+
         }else if(find.lastMessage !== lastMessages &&  find.timePublic === timePublic){
+
             dispatch(editLastMessageGroup({combinedId, lastMessages}))
+            
         }
     }
     for(let i = 0; i < findUsers.length; i++){

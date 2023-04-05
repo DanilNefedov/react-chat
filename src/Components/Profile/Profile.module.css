@@ -170,7 +170,6 @@
 .selected{
     width: 25px;
     height: 25px;
-    /* background-color: green; */
     margin-left: 10px;
 }
 .back{
@@ -207,7 +206,6 @@
     }
     .editUserInfo{
         display: block;
-        /* height: 65%; */
         width: 100%;
         padding: 0 20px 120px 20px;
     }
@@ -223,7 +221,6 @@
     }
 }
 
-/* -----------------------------------------------------------------------460--------------------------------------------------------- */
 @media screen and (max-width: 500px) {
     .back{
         display: block;
@@ -232,29 +229,6 @@
 }
 
 @media screen and (max-width : 460px){
-    /* .userInfo{
-        padding: 15px 10px 10px;
-    } */
-    /* .photoSection, .nameUser, .deletePhoto{
-        margin-bottom: 10px;
-    }
-    .emailUser{
-        margin-bottom: 0;
-    }
-    .containerBtn{
-        margin-left: -3px;
-    } */
-    /* .editUserInfo{
-        padding: 0 10px 120px 8px;
-    } */
-    /* .infoSize{
-        font-size: 10px;
-        line-height: 10px;
-        bottom: -15px;
-    }
-    .editPhoto, .nameSection{
-        margin-bottom: 26px;
-    } */
 
     .nameSection, .emailSection{
         flex-wrap: wrap;
@@ -265,115 +239,7 @@
     }
 }
 
-@media screen and (max-width:375px) {
-    /* .userInfo, .editUserInfo{
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-    .userInfo{
-        padding-left: 6px;
-    }
-    .editEmail, .editName{
-       padding: 3px 5px;
-    } */
-}
 
-/* @media screen and (max-width: 770px){
-    .container{
-        height: calc(100vh - 57px);
-    }
-    .userPhoto img{
-        width: 80px;
-        height: 80px;
-    }
-    .btnDelete{
-        font-size: 14px;
-    }
-    .iconBtn{
-        width: 22px;
-        height: 22px;
-        margin-right: 4px;
-    }
-    .editField, .editAbout{
-        margin-right: 10px;
-    }
-    .editPhoto{
-        margin-bottom: 30px;
-    }
-    .infoSize{
-        font-size: 8.5px;
-        bottom: -19px;
-    }
-    .userInfo{
-        padding-bottom: 15px;
-    }
-    .containerBtn{
-        margin-top: 15px;
-    }
-    .nameSection{
-        margin-bottom: 30px;
-    }
-    .deletePhoto{
-        margin-bottom: 15px;
-    }
-    .btnUpdate{
-        font-size: 14px;
-        padding: 7px 15px;
-    }
-    .editEmail, .editName{
-        font-size: 14px;
-        width: 137px;
-    }
-} */
-
-/* @media screen and (max-width: 450px) {
-    .userPhoto img{
-        width: 60px;
-        height: 60px;
-    }
-    .photoSection{
-        margin-bottom: 20px;
-    }
-    .nameUser, .emailUser{
-        margin-bottom: 6px;
-    }
-    .containerBtn{
-        margin-top: 8px;
-    }
-    .userInfo{
-        padding: 15px 20px 8px 21px;
-    }
-    .editPhoto{
-        margin-bottom: 23px;
-    }
-    .deletePhoto{
-        margin-bottom: 8px;
-    }
-    .nameSection{
-        margin-bottom: 23px;
-    }
-    .profile{
-        font-size: 10px;
-    }
-    .btnDelete{
-        font-size: 10px;
-    }
-    .iconBtn{
-        width: 17px;
-        height: 17px;
-    }
-    .infoSize{
-        font-size: 7px;
-        line-height: 7px;
-        bottom: -10px;
-    }
-    .btnUpdate{
-        font-size: 11px;
-    }
-    .editEmail, .editName{
-        font-size: 10px;
-    }
-} */
 
 
 

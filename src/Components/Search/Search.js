@@ -2,9 +2,8 @@ import search from '../../img/search.svg';
 import style from './Search.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { addFrined } from '../../store/friendSlice';
-import { collection, doc, getDoc, getDocs, getFirestore, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
+import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
 import { Suspense, useEffect, useReducer, useRef, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { ModuleError } from '../ModalError/ModalError';
 import classNames from 'classnames';
 import { Loader } from '../Loader/Loader';

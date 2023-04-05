@@ -87,11 +87,7 @@
 .list:hover{
     background-color: #252632;
 }
-/* .empty{
-    color: var(--white);
-    text-align: center;
-    padding-top: 20px;
-} */
+
 #searchIcon::-webkit-search-cancel-button {
     -webkit-appearance: none;
     width: 20px;
@@ -100,80 +96,3 @@
     background-size: cover;
     cursor: pointer;
 }
-
-/* @media screen and (max-width:770px){
-    #searchIcon{
-        height: 45px;
-        font-size: 13px;
-        padding: 2px 0 0 45px;
-        color:var(--white);
-    }
-    .loupe{
-        top:calc(50% - 10px);
-        left: 13px;
-    }
-    .loupe img{
-        width: 17px;
-        height: 17px;
-        top:calc(50% - 9px);
-    }
-    .searchList{
-        padding: 14px;
-    }
-    .user{
-        width: 40px;
-        height: 40px;
-    }
-    .user img{
-        width: 40px;
-        height: 40px;
-    }
-    .list{
-        padding: 11px 14px 10px 11px;
-    }
-    .searchList{
-        padding: 0 3px 0 0 ;
-    }
-    /* .name{
-        font-size: 12px;
-    } */
-    /* #searchIcon{
-        font-size: 12px;
-        
-    } 
-} */
-
-/* @media screen and (max-width: 450px) {
-    .search img{
-        width: 14px;
-        height: 14px;
-    }
-    #searchIcon{
-        height: 35px;
-        font-size: 10px;
-        padding-left: 30px;
-    }
-    .loupe{
-        top:calc(50% - 9px);
-        left: 8px;
-    }
-    .empty{
-        padding-top: 15px;
-        font-size: 10px;
-    }
-    .list{
-        padding: 5px 10px 5.5px 10px;
-    }
-    .user{
-        width: 27px;
-        height: 27px;
-        margin-right: 0;
-    }
-    .user img{
-        width: 27px;
-        height: 27px;
-    }
-    .name{
-        font-size: 10px;
-    }
-} */

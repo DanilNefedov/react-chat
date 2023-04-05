@@ -6,9 +6,8 @@ import addPhoto from '../../img/add.svg'
 import edit from '../../img/edit.svg'
 import emailImg from '../../img/email.svg'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
-import { doc, getDoc, getFirestore, onSnapshot, updateDoc } from 'firebase/firestore'
-import { removePhoto, updateUser } from '../../store/authSlice'
+import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore'
+import { removePhoto } from '../../store/authSlice'
 import { deleteObject, getStorage, ref } from 'firebase/storage'
 import { getAuth, updateProfile } from 'firebase/auth'
 import done from '../../img/done.svg'
@@ -50,7 +49,6 @@ export function ChangeProfile ({ state, stateProfile}){
                     if (docSnap.exists()){
                         const array = docSnap.data().messages;
                         const updatedArray = array.map((element) =>{
-                            console.log(element)
                             if (element.userId === user.id) {
                                 element.photo = null
                                 return { ...element};

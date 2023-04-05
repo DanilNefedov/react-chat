@@ -4,7 +4,7 @@ import style from './Profile.module.css'
 import { useReducer, useRef } from "react"
 import { deleteUser, EmailAuthProvider, getAuth, reauthenticateWithCredential, signOut } from "firebase/auth";
 import { removeUser,} from "../../store/authSlice"
-import { deleteDoc, doc, getDoc, getFirestore, updateDoc } from "firebase/firestore"
+import { deleteDoc, doc, getFirestore } from "firebase/firestore"
 import { Modal } from "../Modal/Modal"
 import { removeFrined } from "../../store/friendSlice"
 import { ModuleError } from "../ModalError/ModalError"

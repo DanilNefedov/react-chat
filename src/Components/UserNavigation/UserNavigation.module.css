@@ -39,9 +39,6 @@
 .search{
     display: none;
     margin-top: 5px;
-    /* position: absolute;
-    left: 5px;
-    top:calc(50% - 8px) ; */
     background-color: var(--main-bg);
     width: 17px;
     height: 17px;
@@ -82,34 +79,3 @@
         max-width: 100px;
     }
 }
-/* @media screen and (max-width: 770px){
-    .userNav{
-        padding: 10.5px 12px;
-    }
-    .photoUser{
-        width: 40px;
-        height: 40px;
-        margin-left: 10px;
-    }
-    .nameUser{
-        font-size: 15px;
-    }
-}
-
-
-
-@media screen and (max-width: 450px) {
-    .userNav{
-        padding: 7px;
-    }
-    .photoUser{
-        width: 25px;
-        height: 25px;
-        margin-left: 10px;
-    }
-    .nameUser{
-        font-size: 12px;
-    }
-    
-    
-} */

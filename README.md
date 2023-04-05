@@ -7,7 +7,7 @@ It also uses the [Firebase](https://console.firebase.google.com/) database, thro
 
 ### The keys for the [SDK](https://firebase.google.com/docs/web/learn-more?authuser=0&hl=en#modular-version) package are stored in the ***.env*** file 
 
- **find a user** - the user is searched by his name. It is also important to take into account the case of 
+ **find a user** - the user is searched by his name. It is also important to take into account the case of.
 
  **change your groups** - modifying a group to the creators of the group.
 

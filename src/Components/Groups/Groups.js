@@ -34,7 +34,6 @@ export function Groups() {
     const db = getFirestore();
     const [stateModalErr, dispatchStateErr] = useReducer(reducerModal, initialStateModal)
 
-    //------------------ CHANGE TO USEMEMO --------------------//
     const addFriend = (el) => {
         const index = selectedFriends.indexOf(el);
         if (index === -1) {
@@ -45,7 +44,6 @@ export function Groups() {
             dispatchStateGroup({ type: 'users', payload: selectedFriends })
         }
     }
-    //------------------ CHANGE TO USEMEMO --------------------//
 
     const addGroup = async () => {
         const combinedId = myInfo.id + uuid()

@@ -18,6 +18,7 @@
     height: 50px; 
     width: 50px;
     border-radius: 50%;
+    object-fit: cover;
 }
 .userPhoto{
     height: 50px; 
@@ -51,11 +52,7 @@
     -webkit-box-orient: vertical;
     word-break: break-all;
 }
-.listDateCheck{
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-}
+
 .check{
     margin-top: 7px;
     width: 20px;
@@ -68,4 +65,12 @@
     background-color: var(--main-violet);
     text-align: center;
     font-weight: normal;
+}
+
+
+.listDateCheck{
+    display: flex;
+    flex-direction: column;
+    /* autoprefixer: off */
+    align-items: end;
 }
